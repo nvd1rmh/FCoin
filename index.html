@@ -76,10 +76,14 @@
     .connect-copy { color:var(--muted); font-size:11px; line-height:1.9; margin:10px 0 13px; }
     .connect-button,.telegram-link { display:flex; width:100%; align-items:center; justify-content:center; text-align:center; border:0; border-radius:13px; padding:13px 14px; font-weight:800; text-decoration:none; cursor:pointer; }
     .connect-button { background:linear-gradient(100deg,#9affd4,#54d9a5); color:#10291e; }
-    .telegram-link { margin-top:9px; color:#d8f8eb; background:#ffffff0b; border:1px solid var(--border); }
-    .connect-button[hidden],.telegram-link[hidden] { display:none; }
+    .connect-button[hidden],.pairing-box[hidden] { display:none; }
+    .pairing-box { margin-top:12px; padding:13px; border-radius:15px; border:1px solid #8ef0c629; background:#07150f55; text-align:center; }
+    .pairing-label { color:var(--muted); font-size:11px; }
+    .pairing-code { margin:7px 0 10px; direction:ltr; letter-spacing:5px; font:800 28px/1.3 Arial,sans-serif; color:var(--mint); }
+    .copy-code-button { border:1px solid #8ef0c64a; border-radius:10px; padding:9px 13px; color:#d8f8eb; background:#8ef0c610; cursor:pointer; }
     .disconnect-button { display:none; width:100%; margin-top:9px; border:1px solid #ff737333; border-radius:12px; padding:10px; color:#ffb5b5; background:#e64b4b12; cursor:pointer; }
-    .connect-button:disabled,.disconnect-button:disabled { opacity:.55; cursor:wait; }
+    .change-account-button { display:none; width:100%; margin-top:9px; border:1px solid var(--border); border-radius:12px; padding:10px; color:#e9e7f0; background:#ffffff09; cursor:pointer; }
+    .connect-button:disabled,.disconnect-button:disabled,.change-account-button:disabled,.copy-code-button:disabled { opacity:.55; cursor:wait; }
     .connect-state { color:var(--mint); font-size:11px; margin-top:10px; text-align:center; }
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
     @media (min-height: 800px) { .intro { margin-top:44px; } .coin-area { min-height:320px; } }
@@ -103,8 +107,15 @@
       <div class="connect-heading"><span class="connect-icon">🔗</span><span>اتصال حساب تلگرام</span></div>
       <p id="connectCopy" class="connect-copy">برای دیدن موجودی و ذخیرهٔ F Coin روی حساب خودت، حساب تلگرامت را امن وصل کن.</p>
       <button id="connectButton" class="connect-button" type="button">اتصال امن با تلگرام</button>
-      <a id="telegramLink" class="telegram-link" href="#" target="_blank" rel="noopener" hidden>رفتن به تلگرام برای تأیید اتصال</a>
+      <div id="pairingBox" class="pairing-box" hidden>
+        <div class="pairing-label">کد یک‌بارمصرف شما — ۵ دقیقه اعتبار</div>
+        <div id="pairingCode" class="pairing-code" dir="ltr">--------</div>
+        <button id="copyCodeButton" class="copy-code-button" type="button">کپی کد</button>
+        <p class="connect-copy">کد را در پیوی بات فرنو بفرست:<br><b dir="ltr">/fcoinlink 12345678</b></p>
+        <div id="pairingProgress" class="connect-state">منتظر تأیید کد در بات…</div>
+      </div>
       <button id="disconnectButton" class="disconnect-button" type="button">قطع اتصال این مرورگر</button>
+      <button id="changeAccountButton" class="change-account-button" type="button">اتصال حساب تلگرام دیگر</button>
       <div id="connectState" class="connect-state" role="status" aria-live="polite"></div>
     </section>
 
@@ -161,8 +172,12 @@
       const exchangeButton = $("exchangeButton");
       const statusBox = $("status");
       const connectButton = $("connectButton");
-      const telegramLink = $("telegramLink");
+      const pairingBox = $("pairingBox");
+      const pairingCode = $("pairingCode");
+      const pairingProgress = $("pairingProgress");
+      const copyCodeButton = $("copyCodeButton");
       const disconnectButton = $("disconnectButton");
+      const changeAccountButton = $("changeAccountButton");
       const connectCopy = $("connectCopy");
       const connectState = $("connectState");
       const connectionBadge = $("connectionBadge");
@@ -206,7 +221,8 @@
       function renderConnection(connected, userId) {
         connectButton.hidden = connected;
         disconnectButton.style.display = connected && !tg?.initData ? "block" : "none";
-        telegramLink.hidden = true;
+        changeAccountButton.style.display = connected && !tg?.initData ? "block" : "none";
+        pairingBox.hidden = true;
         connectionBadge.textContent = connected ? "اتصال امن" : "آمادهٔ اتصال";
         connectCopy.textContent = connected
           ? (userId ? "حساب تلگرام شما با موفقیت وصل شد. موجودی و تبدیل‌ها برای همین حساب ذخیره می‌شوند." : "اتصال تلگرام فعال است؛ موجودی این حساب را می‌بینی.")
@@ -224,11 +240,24 @@
       async function apiRequest(endpoint, { body = {}, token = "", allowErrorStatus = false } = {}) {
         const headers = { "Content-Type": "application/json" };
         if (token) headers.Authorization = "Bearer " + token;
-        const response = await fetch(API_BASE.replace(/\/$/, "") + "/api/fcoin/" + endpoint, {
-          method: "POST",
-          headers,
-          body: JSON.stringify(body)
-        });
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 12000);
+        let response;
+        try {
+          response = await fetch(API_BASE.replace(/\/$/, "") + "/api/fcoin/" + endpoint, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(body),
+            signal: controller.signal
+          });
+        } catch (error) {
+          if (error && error.name === "AbortError") {
+            throw new Error("سرور دیر پاسخ داد. اتصال اینترنت را بررسی کن و دوباره بزن.");
+          }
+          throw new Error("ارتباط با سرور برقرار نشد. نسخهٔ جدید بات باید روی میزبان بارگذاری و Reload شود.");
+        } finally {
+          window.clearTimeout(timeout);
+        }
         let data;
         try { data = await response.json(); } catch (_) {
           throw new Error("پاسخ سرور قابل خواندن نیست (" + response.status + ").");
@@ -262,24 +291,27 @@
         if (linking) return;
         linking = true;
         connectButton.disabled = true;
-        connectButton.textContent = "در حال ساخت اتصال امن…";
-        connectState.textContent = "در حال آماده‌سازی لینک یک‌بارمصرف";
-        telegramLink.hidden = true;
+        connectButton.textContent = "در حال ساخت کد اتصال…";
+        connectCopy.textContent = "داریم یک کد یک‌بارمصرف امن برای اتصال سایت به حساب تلگرامت می‌سازیم.";
+        connectState.textContent = "";
+        pairingBox.hidden = true;
+        pairingCode.textContent = "--------";
+        pairingProgress.textContent = "منتظر تأیید کد در بات…";
         try {
           const started = await apiRequest("connect/start");
-          const deepLink = started.deep_link;
-          const nonce = new URL(deepLink).searchParams.get("start");
-          if (!nonce || !nonce.startsWith("fcoin_")) throw new Error("لینک اتصال سرور معتبر نیست.");
-          telegramLink.href = deepLink;
-          telegramLink.hidden = false;
-          connectState.textContent = "لینک یک‌بارمصرف آماده شد؛ آن را باز کن و Start را در بات بزن.";
-          connectButton.textContent = "لینک دوباره باز شود";
-          connectButton.disabled = true;
-          const deadline = Date.now() + 10 * 60 * 1000;
+          if (!started || !/^\d{8}$/.test(started.pairing_code || "")) {
+            throw new Error("سرور کد اتصال معتبر برنگرداند؛ نسخهٔ جدید بات را روی میزبان Reload کن.");
+          }
+          const code = started.pairing_code;
+          pairingCode.textContent = code;
+          pairingBox.hidden = false;
+          connectButton.textContent = "در انتظار تأیید در بات…";
+          connectState.textContent = "کد را در پیوی بات بفرست؛ این صفحه خودش اتصال را بررسی می‌کند.";
+          const deadline = Date.now() + Math.min(300, started.expires_in || 300) * 1000;
           let linkedUserId = 0;
           while (Date.now() < deadline && !accessToken) {
             await new Promise((resolve) => window.setTimeout(resolve, 1800));
-            const result = await apiRequest("connect/finish", { body: { nonce }, allowErrorStatus: true });
+            const result = await apiRequest("connect/finish", { body: { code }, allowErrorStatus: true });
             if (result.response.status === 202 && result.data && result.data.ok) continue;
             if (!result.response.ok || !result.data || result.data.ok !== true || !result.data.access_token) {
               throw new Error(result.data && result.data.error ? result.data.error : "تأیید اتصال انجام نشد.");
@@ -288,17 +320,19 @@
             linkedUserId = result.data.user_id;
             localStorage.setItem(SESSION_KEY, accessToken);
           }
-          if (!accessToken) throw new Error("زمان لینک تمام شد؛ دوباره اتصال را شروع کن.");
-          telegramLink.hidden = true;
+          if (!accessToken) throw new Error("مهلت کد تمام شد؛ برای اتصال دوباره کد تازه بساز.");
+          pairingBox.hidden = true;
           connectState.textContent = "✅ حساب وصل شد؛ در حال دریافت موجودی…";
           connectButton.textContent = "اتصال امن با تلگرام";
           renderConnection(true, linkedUserId);
           await request("state");
           showStatus("اتصال انجام شد! F Coinهای این مرورگر به حساب تلگرامت وصل شدند.", "info");
         } catch (error) {
-          connectState.textContent = "";
+          pairingProgress.textContent = "اتصال کامل نشد.";
+          pairingBox.hidden = !pairingCode.textContent.match(/^\d{8}$/);
           showStatus(error && error.message ? error.message : "اتصال برقرار نشد؛ دوباره تلاش کن.", "error");
-          connectButton.textContent = "تلاش دوباره برای اتصال";
+          connectCopy.textContent = "برای شروع دوباره، کد تازه بساز و آن را در پیوی بات بفرست.";
+          connectButton.textContent = "ساخت کد تازه";
           connectButton.disabled = false;
         } finally {
           linking = false;
@@ -331,10 +365,13 @@
       tapButton.addEventListener("click", () => runAction("tap", "یک F Coin به موجودی شما اضافه شد."));
       exchangeButton.addEventListener("click", () => runAction("exchange", "تبدیل با موفقیت انجام شد."));
       connectButton.addEventListener("click", beginAccountLink);
-      telegramLink.addEventListener("click", (event) => {
-        if (hasTelegramAuth() && typeof tg.openTelegramLink === "function") {
-          event.preventDefault();
-          tg.openTelegramLink(telegramLink.href);
+      copyCodeButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(pairingCode.textContent);
+          copyCodeButton.textContent = "کد کپی شد ✓";
+          window.setTimeout(() => { copyCodeButton.textContent = "کپی کد"; }, 1800);
+        } catch (_) {
+          showStatus("کپی خودکار در دسترس نیست؛ کد را نگه‌دار و دستی بفرست.", "error");
         }
       });
       disconnectButton.addEventListener("click", async () => {
@@ -356,6 +393,26 @@
           showStatus(error && error.message ? error.message : "قطع اتصال انجام نشد.", "error");
         } finally {
           disconnectButton.disabled = false;
+        }
+      });
+      changeAccountButton.addEventListener("click", async () => {
+        changeAccountButton.disabled = true;
+        try {
+          if (accessToken) await apiRequest("disconnect", { token: accessToken });
+          localStorage.removeItem(SESSION_KEY);
+          accessToken = "";
+          serverState = null;
+          $("fcoinBalance").replaceChildren(document.createTextNode("—"));
+          $("energyValue").textContent = "—";
+          $("energyBar").style.width = "0%";
+          $("botBalance").textContent = "—";
+          renderConnection(false);
+          updateButtons();
+          beginAccountLink();
+        } catch (error) {
+          showStatus(error && error.message ? error.message : "تغییر حساب انجام نشد؛ دوباره تلاش کن.", "error");
+        } finally {
+          changeAccountButton.disabled = false;
         }
       });
 
