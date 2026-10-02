@@ -70,6 +70,17 @@
     .status.show { display:block; }
     .status.error { color:#ffb5b5; background:#e64b4b18; border:1px solid #ff737333; }
     .status.info { color:#c7c2d2; background:#ffffff09; border:1px solid var(--border); }
+    .connect-card { margin-top:16px; padding:16px; border:1px solid #8ef0c62b; border-radius:20px; background:linear-gradient(135deg,#8ef0c610,#ffffff04); }
+    .connect-heading { display:flex; align-items:center; gap:10px; font-weight:800; font-size:14px; }
+    .connect-icon { width:36px; height:36px; display:grid; place-items:center; border-radius:12px; background:#8ef0c617; color:var(--mint); font-size:18px; }
+    .connect-copy { color:var(--muted); font-size:11px; line-height:1.9; margin:10px 0 13px; }
+    .connect-button,.telegram-link { display:flex; width:100%; align-items:center; justify-content:center; text-align:center; border:0; border-radius:13px; padding:13px 14px; font-weight:800; text-decoration:none; cursor:pointer; }
+    .connect-button { background:linear-gradient(100deg,#9affd4,#54d9a5); color:#10291e; }
+    .telegram-link { margin-top:9px; color:#d8f8eb; background:#ffffff0b; border:1px solid var(--border); }
+    .connect-button[hidden],.telegram-link[hidden] { display:none; }
+    .disconnect-button { display:none; width:100%; margin-top:9px; border:1px solid #ff737333; border-radius:12px; padding:10px; color:#ffb5b5; background:#e64b4b12; cursor:pointer; }
+    .connect-button:disabled,.disconnect-button:disabled { opacity:.55; cursor:wait; }
+    .connect-state { color:var(--mint); font-size:11px; margin-top:10px; text-align:center; }
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
     @media (min-height: 800px) { .intro { margin-top:44px; } .coin-area { min-height:320px; } }
     @media (max-width:360px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .coin-button{width:210px;} }
@@ -79,13 +90,22 @@
   <main class="app">
     <header>
       <div class="brand"><span class="brand-mark">F</span><span>فرنوسلف</span></div>
-      <div class="live">اتصال امن</div>
+      <div id="connectionBadge" class="live">آمادهٔ اتصال</div>
     </header>
 
     <section class="intro">
       <div class="eyebrow">بازی کن، جمع کن، تبدیل کن</div>
       <h1>دنیای F Coin</h1>
       <p>برای جمع‌کردن سکه، روی سکه بزن!</p>
+    </section>
+
+    <section class="connect-card" aria-label="اتصال حساب تلگرام">
+      <div class="connect-heading"><span class="connect-icon">🔗</span><span>اتصال حساب تلگرام</span></div>
+      <p id="connectCopy" class="connect-copy">برای دیدن موجودی و ذخیرهٔ F Coin روی حساب خودت، حساب تلگرامت را امن وصل کن.</p>
+      <button id="connectButton" class="connect-button" type="button">اتصال امن با تلگرام</button>
+      <a id="telegramLink" class="telegram-link" href="#" target="_blank" rel="noopener" hidden>رفتن به تلگرام برای تأیید اتصال</a>
+      <button id="disconnectButton" class="disconnect-button" type="button">قطع اتصال این مرورگر</button>
+      <div id="connectState" class="connect-state" role="status" aria-live="polite"></div>
     </section>
 
     <section class="balance-card" aria-label="موجودی F Coin">
@@ -140,8 +160,17 @@
       const tapButton = $("tapButton");
       const exchangeButton = $("exchangeButton");
       const statusBox = $("status");
+      const connectButton = $("connectButton");
+      const telegramLink = $("telegramLink");
+      const disconnectButton = $("disconnectButton");
+      const connectCopy = $("connectCopy");
+      const connectState = $("connectState");
+      const connectionBadge = $("connectionBadge");
+      const SESSION_KEY = "ferno_fcoin_session";
       let serverState = null;
       let busy = false;
+      let accessToken = localStorage.getItem(SESSION_KEY) || "";
+      let linking = false;
 
       function showStatus(message, type) {
         statusBox.textContent = message;
@@ -174,6 +203,17 @@
         updateButtons();
       }
 
+      function renderConnection(connected, userId) {
+        connectButton.hidden = connected;
+        disconnectButton.style.display = connected && !tg?.initData ? "block" : "none";
+        telegramLink.hidden = true;
+        connectionBadge.textContent = connected ? "اتصال امن" : "آمادهٔ اتصال";
+        connectCopy.textContent = connected
+          ? (userId ? "حساب تلگرام شما با موفقیت وصل شد. موجودی و تبدیل‌ها برای همین حساب ذخیره می‌شوند." : "اتصال تلگرام فعال است؛ موجودی این حساب را می‌بینی.")
+          : "برای دیدن موجودی و ذخیرهٔ F Coin روی حساب خودت، حساب تلگرامت را امن وصل کن.";
+        connectState.textContent = connected ? "● اتصال امن فعال است" : "";
+      }
+
       function updateButtons() {
         const canAct = !busy && !!serverState;
         tapButton.disabled = !canAct || serverState.energy <= 0;
@@ -181,25 +221,89 @@
         exchangeButton.textContent = busy ? "در حال پردازش…" : "تبدیل F Coin";
       }
 
-      async function request(endpoint) {
-        if (!tg || typeof tg.initData !== "string" || !tg.initData) {
-          throw new Error("اطلاعات ورود تلگرام در دسترس نیست. این صفحه را از داخل بات باز کنید.");
-        }
+      async function apiRequest(endpoint, { body = {}, token = "", allowErrorStatus = false } = {}) {
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers.Authorization = "Bearer " + token;
         const response = await fetch(API_BASE.replace(/\/$/, "") + "/api/fcoin/" + endpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ init_data: tg.initData })
+          headers,
+          body: JSON.stringify(body)
         });
         let data;
         try { data = await response.json(); } catch (_) {
           throw new Error("پاسخ سرور قابل خواندن نیست (" + response.status + ").");
         }
+        if (allowErrorStatus) return { response, data };
         if (!response.ok || !data || data.ok !== true) {
           const detail = data && (data.error || data.message);
           throw new Error(detail ? String(detail) : "درخواست ناموفق بود (" + response.status + ").");
         }
-        render(data);
         return data;
+      }
+
+      function hasTelegramAuth() {
+        return !!(tg && typeof tg.initData === "string" && tg.initData);
+      }
+
+      async function request(endpoint) {
+        if (!hasTelegramAuth() && !accessToken) {
+          throw new Error("برای اتصال موجودی، ابتدا حساب تلگرامت را وصل کن.");
+        }
+        const data = await apiRequest(endpoint, {
+          body: hasTelegramAuth() ? { init_data: tg.initData } : {},
+          token: hasTelegramAuth() ? "" : accessToken
+        });
+        render(data);
+        renderConnection(true);
+        return data;
+      }
+
+      async function beginAccountLink() {
+        if (linking) return;
+        linking = true;
+        connectButton.disabled = true;
+        connectButton.textContent = "در حال ساخت اتصال امن…";
+        connectState.textContent = "در حال آماده‌سازی لینک یک‌بارمصرف";
+        telegramLink.hidden = true;
+        try {
+          const started = await apiRequest("connect/start");
+          const deepLink = started.deep_link;
+          const nonce = new URL(deepLink).searchParams.get("start");
+          if (!nonce || !nonce.startsWith("fcoin_")) throw new Error("لینک اتصال سرور معتبر نیست.");
+          telegramLink.href = deepLink;
+          telegramLink.hidden = false;
+          connectState.textContent = "لینک یک‌بارمصرف آماده شد؛ آن را باز کن و Start را در بات بزن.";
+          connectButton.textContent = "لینک دوباره باز شود";
+          connectButton.disabled = true;
+          const deadline = Date.now() + 10 * 60 * 1000;
+          let linkedUserId = 0;
+          while (Date.now() < deadline && !accessToken) {
+            await new Promise((resolve) => window.setTimeout(resolve, 1800));
+            const result = await apiRequest("connect/finish", { body: { nonce }, allowErrorStatus: true });
+            if (result.response.status === 202 && result.data && result.data.ok) continue;
+            if (!result.response.ok || !result.data || result.data.ok !== true || !result.data.access_token) {
+              throw new Error(result.data && result.data.error ? result.data.error : "تأیید اتصال انجام نشد.");
+            }
+            accessToken = result.data.access_token;
+            linkedUserId = result.data.user_id;
+            localStorage.setItem(SESSION_KEY, accessToken);
+          }
+          if (!accessToken) throw new Error("زمان لینک تمام شد؛ دوباره اتصال را شروع کن.");
+          telegramLink.hidden = true;
+          connectState.textContent = "✅ حساب وصل شد؛ در حال دریافت موجودی…";
+          connectButton.textContent = "اتصال امن با تلگرام";
+          renderConnection(true, linkedUserId);
+          await request("state");
+          showStatus("اتصال انجام شد! F Coinهای این مرورگر به حساب تلگرامت وصل شدند.", "info");
+        } catch (error) {
+          connectState.textContent = "";
+          showStatus(error && error.message ? error.message : "اتصال برقرار نشد؛ دوباره تلاش کن.", "error");
+          connectButton.textContent = "تلاش دوباره برای اتصال";
+          connectButton.disabled = false;
+        } finally {
+          linking = false;
+          connectButton.disabled = false;
+        }
       }
 
       async function runAction(endpoint, successMessage) {
@@ -226,12 +330,52 @@
 
       tapButton.addEventListener("click", () => runAction("tap", "یک F Coin به موجودی شما اضافه شد."));
       exchangeButton.addEventListener("click", () => runAction("exchange", "تبدیل با موفقیت انجام شد."));
-
-      request("state").catch((error) => {
-        showStatus(error && error.message ? error.message : "دریافت موجودی ناموفق بود.", "error");
+      connectButton.addEventListener("click", beginAccountLink);
+      telegramLink.addEventListener("click", (event) => {
+        if (hasTelegramAuth() && typeof tg.openTelegramLink === "function") {
+          event.preventDefault();
+          tg.openTelegramLink(telegramLink.href);
+        }
       });
+      disconnectButton.addEventListener("click", async () => {
+        if (!accessToken) return;
+        disconnectButton.disabled = true;
+        try {
+          await apiRequest("disconnect", { token: accessToken });
+          localStorage.removeItem(SESSION_KEY);
+          accessToken = "";
+          serverState = null;
+          $("fcoinBalance").replaceChildren(document.createTextNode("—"));
+          $("energyValue").textContent = "—";
+          $("energyBar").style.width = "0%";
+          $("botBalance").textContent = "—";
+          renderConnection(false);
+          updateButtons();
+          showStatus("اتصال این مرورگر قطع شد.", "info");
+        } catch (error) {
+          showStatus(error && error.message ? error.message : "قطع اتصال انجام نشد.", "error");
+        } finally {
+          disconnectButton.disabled = false;
+        }
+      });
+
+      if (hasTelegramAuth()) {
+        renderConnection(true);
+        request("state").catch((error) => showStatus(error && error.message ? error.message : "دریافت موجودی ناموفق بود.", "error"));
+      } else if (accessToken) {
+        renderConnection(true);
+        request("state").catch((error) => {
+          localStorage.removeItem(SESSION_KEY);
+          accessToken = "";
+          renderConnection(false);
+          showStatus(error && error.message ? error.message : "نشست منقضی شده؛ دوباره حساب را وصل کن.", "error");
+        });
+      } else {
+        renderConnection(false);
+        updateButtons();
+      }
       window.setInterval(() => {
-        if (!busy && tg && tg.initData) {
+        if (!busy && (hasTelegramAuth() || accessToken)) {
           request("state").catch((error) => {
             showStatus(error && error.message ? error.message : "به‌روزرسانی انرژی ناموفق بود.", "error");
           });
