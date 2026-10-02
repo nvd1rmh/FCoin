@@ -102,19 +102,18 @@
     .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(72vw, 292px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#fff4bd 0%,#ffd734 19%,#ef9b0d 51%,#9f3214 100%); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff7c2410,0 0 62px #ffb51e55,0 22px 38px #0009,0 39px 64px #ec4c1c36,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #6f210b,inset 0 -18px 24px #9a3510; transform:rotateX(5deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:manipulation; -webkit-user-select:none; }
     .coin-button:before { content:""; position:absolute; z-index:-1; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff3ae 0deg 1.2deg,#e5a321 1.2deg 2.8deg,#9d4217 2.8deg 3.5deg,#ffd957 3.5deg 5.3deg); box-shadow:inset 0 2px 3px #fff9,inset 0 -3px 5px #67200e; }
     .coin-button:after { content:""; position:absolute; inset:9px; border-radius:50%; border:4px solid #ffea8e; background:radial-gradient(ellipse at 28% 14%,#fffdebe8,transparent 23%),radial-gradient(ellipse at 72% 83%,#9c351a40,transparent 46%),linear-gradient(145deg,#fff0a7 0%,#ffd53c 38%,#efa711 68%,#c84719 100%); box-shadow:inset 0 0 0 3px #9c431c63,inset 0 0 0 7px #fff4c28c,inset 0 2px 10px #fff9,0 1px 1px #8e321c; pointer-events:none; }
-    .coin-button:active { transform:rotateX(2deg) scale(.94) translateY(4px); filter:brightness(1.14); box-shadow:0 0 0 8px #ffd45a0d,0 0 0 18px #ffd45a08,0 0 42px #f8a62355,0 12px 22px #0008,inset 0 3px 3px #fffbd0,inset 0 -6px 9px #7b350d; }
+    .coin-button:active { transform:rotateX(5deg); filter:brightness(1.03); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff7c2410,0 0 54px #ffb51e45,0 22px 38px #0009,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #6f210b,inset 0 -18px 24px #9a3510; }
     .coin-button:disabled { cursor:wait; filter:saturate(.5) brightness(.82); }
     .coin-face { position:absolute; z-index:1; inset:11px; border-radius:50%; pointer-events:none; }
     .coin-engraving { position:absolute; inset:17%; border:1px solid #fff4bf8c; border-radius:50%; box-shadow:inset 0 0 0 3px #9b431b2b,inset 0 0 0 5px #fff2a35c,0 1px 1px #fff9; }
     .coin-letter { position:absolute; left:50%; top:50%; display:grid; place-items:center; width:52%; height:52%; border-radius:50%; transform:translate(-50%,-50%) rotate(-7deg); font-size:clamp(96px,29vw,134px); line-height:.8; font-weight:1000; color:#fff1a0; -webkit-text-fill-color:#fff1a0; -webkit-text-stroke:1.5px #a83d13; text-shadow:0 2px 0 #fffbd0,0 5px 0 #f7b91e,0 8px 0 #c45414,0 11px 2px #76230e,0 15px 12px #5d1c0da8; font-family:Arial Black,Arial,sans-serif; }
-    .tap-float { position:absolute; z-index:4; top:38%; left:50%; color:#fff8dc; font-size:24px; font-weight:900; text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0; pointer-events:none; white-space:nowrap; animation:tap-rise .62s cubic-bezier(.2,.75,.3,1) forwards; will-change:transform,opacity; }
-    @keyframes tap-rise { 0% { opacity:0; transform:translate(-50%,8px) scale(.72); } 18% { opacity:1; transform:translate(-50%,0) scale(1.08); } 100% { opacity:0; transform:translate(-50%,-54px) scale(.92); } }
+    .tap-float { position:absolute; z-index:4; top:38%; left:50%; color:#fff8dc; font-size:40px; font-weight:1000; text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0; pointer-events:none; white-space:nowrap; animation:tap-rise .72s cubic-bezier(.2,.75,.3,1) forwards; will-change:transform,opacity; }
+    @keyframes tap-rise { 0% { opacity:0; transform:translate(-50%,5px) scale(.9); } 20% { opacity:1; transform:translate(-50%,0) scale(1); } 100% { opacity:0; transform:translate(-50%,-50px) scale(1); } }
     .coin-stars { position:absolute; left:50%; top:50%; width:68%; height:68%; border:1px solid #fff4b979; border-radius:50%; transform:translate(-50%,-50%); box-shadow:0 0 0 3px #a3451b28,inset 0 0 0 3px #fff1a448; }
     .coin-glint { position:absolute; z-index:2; width:27%; height:11%; top:16%; left:18%; border-radius:50%; background:#fffde5e8; filter:blur(11px); transform:rotate(-38deg); pointer-events:none; }
-    .coin-button:not(:disabled) { animation:coin-float 3.6s ease-in-out infinite; }
-    .coin-button:not(:disabled):active { animation:none; }
-    .coin-button.tap-pulse { animation:tap-press .16s ease-out; }
-    @keyframes tap-press { 0% { transform:rotateX(5deg) scale(1); } 48% { transform:rotateX(2deg) scale(.955) translateY(2px); filter:brightness(1.12); } 100% { transform:rotateX(5deg) scale(1); } }
+    .coin-button:not(:disabled) { animation:none; }
+    .coin-button:not(:disabled):active { animation:none; transform:rotateX(5deg); filter:brightness(1.03); }
+    .coin-button.tap-pulse { animation:none; }
     @keyframes coin-float { 0%,100% { translate:0 0; } 50% { translate:0 -5px; } }
     .tap-hint { margin-top:22px; color:#c5c2d0; font-size:13px; }
     .tap-hint strong { color:var(--gold); }
@@ -217,9 +216,9 @@
         <div class="tap-hint">هر ضربه <strong>+1 F Coin</strong></div>
       </section>
       <section class="energy-card" aria-label="انرژی">
-        <div class="energy-top"><span>⚡ انرژی</span><span class="energy-count"><b id="energyValue">—</b> <em>/ 500</em></span></div>
+        <div class="energy-top"><span>⚡ انرژی</span><span class="energy-count"><b id="energyValue">—</b> <em>/ 1000</em></span></div>
         <div class="bar"><div id="energyBar" class="bar-fill"></div></div>
-        <div class="energy-note">با هر ضربه، یک واحد انرژی مصرف می‌شود.</div>
+        <div class="energy-note">هر ضربه ۱ انرژی مصرف می‌کند؛ ۱۰ انرژی در هر دقیقه شارژ می‌شود.</div>
       </section>
       <footer>موجودی شما از سرور دریافت و تأیید می‌شود.</footer>
     </section>
@@ -231,12 +230,15 @@
         <div class="exchange-card">
           <div class="exchange-heading">
             <strong>نرخ تبدیل شفاف</strong>
-            <div class="rate" aria-label="هر ۱۰٬۰۰۰ اف کوین برابر ۲۵ سکه است">
-              <span class="rate-amount">10,000 F</span><span>=</span><span class="rate-amount" dir="rtl">25 سکه</span>
+            <div class="rate" aria-label="هر ۱٬۰۰۰ اف کوین برابر ۱ سکه است">
+              <span class="rate-amount">1,000 F</span><span>=</span><span class="rate-amount" dir="rtl">1 سکه</span>
             </div>
           </div>
-          <p class="exchange-sub">تبدیل به‌صورت بلوک‌های کامل ۱۰٬۰۰۰ F انجام می‌شود؛ موجودی قابل تبدیل پس از تأیید سرور کم خواهد شد.</p>
-          <button id="exchangeButton" class="exchange-button" type="button" disabled>تبدیل F Coin</button>
+          <p class="exchange-sub">مقدار دلخواهت را وارد کن؛ حداقل ۱٬۰۰۰ F Coin. هر ۱٬۰۰۰ F برابر ۱ سکهٔ ربات است و محاسبه به‌صورت نسبتی و رو به پایین انجام می‌شود.</p>
+          <label class="exchange-sub" for="exchangeAmount">مقدار F Coin برای تبدیل</label>
+          <input id="exchangeAmount" class="self-input" type="number" min="1000" step="1" inputmode="numeric" placeholder="حداقل 1,000">
+          <div class="bot-balance">دریافتی تخمینی: <b id="exchangePreview">—</b> سکه</div>
+          <button id="exchangeButton" class="exchange-button" type="button" disabled>تبدیل مقدار دلخواه</button>
           <div class="bot-balance">موجودی سکه بات: <b id="botBalance">—</b></div>
         </div>
       </div>
@@ -294,6 +296,8 @@
       const $ = (id) => document.getElementById(id);
       const tapButton = $("tapButton");
       const exchangeButton = $("exchangeButton");
+      const exchangeAmount = $("exchangeAmount");
+      const exchangePreview = $("exchangePreview");
       const statusBox = $("status");
       const connectButton = $("connectButton");
       const pairingBox = $("pairingBox");
@@ -353,9 +357,9 @@
         unit.className = "balance-unit";
         unit.textContent = "F";
         $("fcoinBalance").append(unit);
-        const energy = Math.max(0, Math.min(500, serverState.energy - queuedTaps - inFlightTaps));
+        const energy = Math.max(0, Math.min(1000, serverState.energy - queuedTaps - inFlightTaps));
         $("energyValue").textContent = energy.toLocaleString("en-US");
-        $("energyBar").style.width = (energy / 5) + "%";
+        $("energyBar").style.width = (energy / 10) + "%";
         $("botBalance").textContent = serverState.bot_coin_balance.toLocaleString("en-US");
       }
 
@@ -379,8 +383,17 @@
         const canAct = !!serverState;
         tapButton.disabled = busy || !canAct || serverState.energy - queuedTaps - inFlightTaps <= 0;
         exchangeButton.disabled = busy || queuedTaps > 0 || inFlightTaps > 0 ||
-          !canAct || serverState.fcoin_balance < 10000;
-        exchangeButton.textContent = busy ? "در حال پردازش…" : "تبدیل F Coin";
+          !canAct || !Number.isInteger(Number(exchangeAmount.value)) ||
+          Number(exchangeAmount.value) < 1000 ||
+          Number(exchangeAmount.value) > serverState.fcoin_balance;
+        exchangeButton.textContent = busy ? "در حال پردازش…" : "تبدیل مقدار دلخواه";
+        const amount = Number(exchangeAmount.value);
+        const estimate = Number.isSafeInteger(amount) && amount >= 10000
+          ? Math.floor(amount * 75 / 10000)
+          : 0;
+        exchangePreview.textContent = estimate
+          ? estimate.toLocaleString("en-US")
+          : "—";
       }
 
       async function apiRequest(endpoint, { body = {}, token = "", allowErrorStatus = false } = {}) {
@@ -717,7 +730,6 @@
         const guardCard = selfCard("🛡 نگهبان چت", "نسخه‌ها و تغییرات پیام‌های ورودی را برای بررسی بعدی در گفت‌وگوی ربات نگه می‌دارد.");
         appendSelfToggle(guardCard, "ذخیرهٔ پیام‌های حذف‌شده", "deleted_enabled", guard.deleted_enabled);
         appendSelfToggle(guardCard, "ذخیرهٔ پیام‌های ویرایش‌شده", "edited_enabled", guard.edited_enabled);
-        appendSelfToggle(guardCard, "نگه‌داری رسانهٔ موقت", "temporary_media_enabled", guard.temporary_media_enabled);
         const timed = state.timed || {};
         const timedCard = selfCard("💬 پاسخ خودکار، زمان‌دار و منشی", "پس از ثبت عبارت، وقتی مخاطب همان عبارت را بفرستد ربات پاسخ تعریف‌شده را می‌دهد.");
         appendSelfToggle(timedCard, "پاسخ زمان‌دار فعال", "timed_enabled", timed.enabled);
@@ -790,13 +802,6 @@
         const forcedCard = selfCard("👥 عضویت اجباری", "کانال باید عمومی باشد و ربات در آن ادمین باشد.");
         appendStringListEditor(forcedCard, state.forced_channels || [], "یوزرنیم کانال، مانند @Channel", "forced");
         selfApp.append(forcedCard);
-
-        const lockCard = selfCard("🔒 قفل زمان‌بندی‌شده", "ساعت تهران استفاده می‌شود. نوع «خانواده» فقط گفتگوهای مورداعتماد را مجاز می‌کند.");
-        appendScheduleEditor(lockCard, state.scheduled_locks || []);
-        selfApp.append(lockCard);
-        const chatsCard = selfCard("💬 قفل‌های هر پیوی و خانواده", "تنظیمات روی گفتگوهای Business ثبت‌شده اعمال می‌شوند؛ شناسه‌ها برای تشخیص گفتگو نمایش داده می‌شوند.");
-        appendChatLockEditor(chatsCard, state.chat_locks || [], new Set(state.trusted_chat_ids || []));
-        selfApp.append(chatsCard);
 
         const tools = selfCard("🧰 ابزارهای پنل تلگرام", "ابزارهایی که به متن یا رسانهٔ یک گفت‌وگوی مشخص نیاز دارند، در همان پیوی حساب Business اجرا می‌شوند.");
         [
@@ -876,144 +881,6 @@
         }));
         form.append(add);
         card.append(form);
-      }
-
-      function appendScheduleEditor(card, schedules) {
-        schedules.forEach((rule) => {
-          const row = document.createElement("div");
-          row.className = "self-listrow";
-          const days = ["هر روز", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه", "یکشنبه"];
-          const weekday = Number(rule.weekday);
-          const title = document.createElement("span");
-          title.textContent = (days[weekday + 1] || "هر روز") + " · " +
-            rule.start_time + " تا " + rule.end_time + " · " +
-            (rule.lock_type === "family" ? "خانواده" : "همه");
-          const remove = document.createElement("button");
-          remove.type = "button";
-          remove.textContent = "حذف";
-          remove.addEventListener("click", () => selfAction({ action: "schedule_delete", lock_id: rule.lock_id }));
-          row.append(title, remove);
-          card.append(row);
-        });
-        const form = document.createElement("div");
-        form.className = "self-form";
-        selfInput(form, "روز", -1, "weekday", { select: [
-          ["-1", "هر روز"], ["0", "دوشنبه"], ["1", "سه‌شنبه"], ["2", "چهارشنبه"],
-          ["3", "پنجشنبه"], ["4", "جمعه"], ["5", "شنبه"], ["6", "یکشنبه"],
-        ] });
-        selfInput(form, "از ساعت", "23:00", "start_time", { type: "time" });
-        selfInput(form, "تا ساعت", "06:00", "end_time", { type: "time" });
-        selfInput(form, "نوع قفل", "all", "lock_type", { select: [["all", "همه"], ["family", "فقط خانواده"]] });
-        const add = document.createElement("button");
-        add.type = "button";
-        add.className = "self-action";
-        add.textContent = "افزودن قفل زمان‌بندی";
-        add.addEventListener("click", () => selfAction({
-          action: "schedule_add",
-          weekday: Number(form.querySelector('[data-self-input="weekday"]').value),
-          start_time: form.querySelector('[data-self-input="start_time"]').value,
-          end_time: form.querySelector('[data-self-input="end_time"]').value,
-          lock_type: form.querySelector('[data-self-input="lock_type"]').value,
-        }));
-        form.append(add);
-        card.append(form);
-      }
-
-      function appendChatLockEditor(card, chats, trustedIds) {
-        const lockLabels = {
-          link: "لینک", reply: "ریپلای", photo: "عکس", sticker: "استیکر",
-          private: "پیوی", voice: "ویس", video_note: "ویدیو مسیج",
-          animation: "گیف", file: "فایل", audio: "آهنگ", location: "لوکیشن",
-          forward: "فوروارد", hashtag: "هشتگ",
-        };
-        chats.forEach((chat) => {
-          const section = document.createElement("details");
-          section.className = "self-card";
-          const summary = document.createElement("summary");
-          summary.textContent = "گفتگوی " + chat.chat_id.toLocaleString("en-US");
-          section.append(summary);
-          const trustRow = document.createElement("div");
-          trustRow.className = "self-row";
-          const trustLabel = document.createElement("label");
-          trustLabel.textContent = "افزودن به خانوادهٔ مورداعتماد";
-          const trustToggle = document.createElement("input");
-          trustToggle.type = "checkbox";
-          trustToggle.className = "self-switch";
-          trustToggle.checked = trustedIds.has(chat.chat_id);
-          trustRow.append(trustLabel, trustToggle);
-          section.append(trustRow);
-          trustToggle.addEventListener("change", async () => {
-            trustToggle.disabled = true;
-            try {
-              const state = await userApiRequest("self/action", { action: "trusted_toggle", chat_id: chat.chat_id });
-              renderSelf(state);
-            } catch (error) {
-              showStatus(error && error.message ? error.message : "وضعیت خانواده ذخیره نشد.", "error");
-            }
-          });
-          Object.entries(lockLabels).forEach(([key, text]) => {
-            const row = document.createElement("div");
-            row.className = "self-row";
-            const label = document.createElement("label");
-            label.textContent = "قفل " + text;
-            const toggle = document.createElement("input");
-            toggle.type = "checkbox";
-            toggle.className = "self-switch";
-            toggle.checked = !!chat.locks[key];
-            toggle.addEventListener("change", async () => {
-              toggle.disabled = true;
-              try {
-                const state = await userApiRequest("self/action", {
-                  action: "chat_lock", chat_id: chat.chat_id, lock_type: key, enabled: toggle.checked,
-                });
-                renderSelf(state);
-              } catch (error) {
-                toggle.checked = !toggle.checked;
-                showStatus(error && error.message ? error.message : "قفل ذخیره نشد.", "error");
-              } finally {
-                toggle.disabled = false;
-              }
-            });
-            row.append(label, toggle);
-            section.append(row);
-          });
-          (chat.filters || []).forEach((keyword) => {
-            const filterRow = document.createElement("div");
-            filterRow.className = "self-listrow";
-            const filterText = document.createElement("span");
-            filterText.textContent = "فیلتر: " + keyword;
-            const removeFilter = document.createElement("button");
-            removeFilter.type = "button";
-            removeFilter.textContent = "حذف";
-            removeFilter.addEventListener("click", () => selfAction({
-              action: "chat_filter_delete",
-              chat_id: chat.chat_id,
-              keyword,
-            }));
-            filterRow.append(filterText, removeFilter);
-            section.append(filterRow);
-          });
-          const filterForm = document.createElement("div");
-          filterForm.className = "self-form";
-          selfInput(filterForm, "فیلتر مخصوص این گفتگو", "", "chat_filter", { placeholder: "عبارت ممنوع" });
-          const addFilter = document.createElement("button");
-          addFilter.type = "button";
-          addFilter.className = "self-action";
-          addFilter.textContent = "افزودن فیلتر برای این پیوی";
-          addFilter.addEventListener("click", () => selfAction({
-            action: "chat_filter_add",
-            chat_id: chat.chat_id,
-            keyword: filterForm.querySelector("input").value,
-          }));
-          filterForm.append(addFilter);
-          section.append(filterForm);
-          card.append(section);
-        });
-        if (!chats.length) {
-          const empty = document.createElement("p");
-          empty.textContent = "بعد از دریافت پیام در یک پیوی Business، گفتگو برای تنظیم قفل اینجا ظاهر می‌شود.";
-          card.append(empty);
-        }
       }
 
       async function selfAction(payload) {
@@ -1110,13 +977,13 @@
         }
       }
 
-      async function runAction(endpoint, successMessage) {
+      async function runAction(endpoint, successMessage, body = {}) {
         if (busy) return;
         busy = true;
         hideStatus();
         updateButtons();
         try {
-          const result = await request(endpoint);
+          const result = await request(endpoint, body);
           if (endpoint === "exchange") {
             const amount = Number.isInteger(result.exchanged_fcoin) ? result.exchanged_fcoin.toLocaleString("en-US") : "";
             const credited = Number.isInteger(result.credited_coins) ? result.credited_coins.toLocaleString("en-US") : "";
@@ -1183,11 +1050,7 @@
         label.style.left = (x / bounds.width * 100) + "%";
         label.style.top = (y / bounds.height * 100) + "%";
         tapButton.append(label);
-        tapButton.classList.remove("tap-pulse");
-        void tapButton.offsetWidth;
-        tapButton.classList.add("tap-pulse");
-        window.setTimeout(() => label.remove(), 650);
-        window.setTimeout(() => tapButton.classList.remove("tap-pulse"), 180);
+        window.setTimeout(() => label.remove(), 720);
       }
 
       function selectTab(panelId) {
@@ -1213,7 +1076,12 @@
       }
 
       tapButton.addEventListener("click", handleTap);
-      exchangeButton.addEventListener("click", () => runAction("exchange", "تبدیل با موفقیت انجام شد."));
+      exchangeAmount.addEventListener("input", updateButtons);
+      exchangeButton.addEventListener("click", () => runAction(
+        "exchange",
+        "تبدیل با موفقیت انجام شد.",
+        { amount: Number(exchangeAmount.value) }
+      ));
       claimDailyButton.addEventListener("click", claimDailyMission);
       document.querySelectorAll(".tab-button").forEach((button) => {
         button.addEventListener("click", () => selectTab(button.dataset.tab));
