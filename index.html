@@ -29,43 +29,92 @@
     .app { padding-bottom:110px; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
-    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 24px), 500px); display:grid; grid-template-columns:repeat(4,1fr); gap:5px; padding:7px; border:1px solid var(--border); border-radius:19px; background:#171622ed; box-shadow:0 12px 36px #0008; backdrop-filter:blur(16px); }
+    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 24px), 500px); display:grid; grid-template-columns:repeat(5,1fr); gap:5px; padding:7px; border:1px solid var(--border); border-radius:19px; background:#171622ed; box-shadow:0 12px 36px #0008; backdrop-filter:blur(16px); }
     .tab-button { min-width:0; border:0; border-radius:13px; padding:9px 4px 8px; background:transparent; color:var(--muted); font-size:10px; cursor:pointer; }
     .tab-button span { display:block; font-size:18px; line-height:1.2; margin-bottom:3px; }
     .tab-button.active { color:#b8ffdf; background:#62e5aa1c; }
     .placeholder-card { margin-top:22px; padding:26px 20px; text-align:center; border:1px solid var(--border); border-radius:22px; background:linear-gradient(145deg,#ffffff0d,#ffffff03); }
+    .onboarding { display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-rows:auto auto; align-items:center; column-gap:12px; margin:4px 0 7px; padding:9px 12px; border:1px solid #8ef0c650; border-radius:17px; background:linear-gradient(105deg,#11251d,#171622); box-shadow:0 8px 24px #0004,inset 0 1px #fff2; text-align:right; }
+    .onboarding[hidden] { display:none; }
+    .onboarding h2 { grid-column:1; grid-row:1; margin:0 0 3px; font-size:13px; }
+    .onboarding > p { grid-column:1; grid-row:2; margin:0; color:#c1c0cb; font-size:9px; line-height:1.5; }
+    .onboarding .connect-card { grid-column:2; grid-row:1 / span 2; margin:0; padding:0; border:0; background:transparent; }
+    .onboarding-kicker { display:none; }
+    .onboarding #connectCopy { display:none; }
+    .onboarding .connect-button { min-width:118px; padding:10px 12px; font-size:11px; }
+    .onboarding .pairing-box { grid-column:1 / -1; grid-row:3; padding:8px; }
+    .onboarding.is-pairing { display:block; text-align:center; }
+    .onboarding.is-pairing #connectCopy { display:block; }
+    .onboarding.is-pairing .connect-card { padding:8px; border:1px solid #8ef0c62b; background:#8ef0c610; }
+    .onboarding.is-pairing .connect-button { width:100%; }
+    .onboarding .pairing-label { font-size:10px; }
+    .onboarding .pairing-code { font-size:23px; margin:3px 0 6px; }
+    .onboarding .connect-copy { margin:5px 0; }
     .placeholder-icon { font-size:42px; }
     .placeholder-card h1 { margin:14px 0 8px; }
     .placeholder-card p { margin:0; color:var(--muted); font-size:13px; line-height:1.9; }
+    .mission-hero { margin-top:20px; padding:19px; border:1px solid #ffd45a2a; border-radius:22px; background:radial-gradient(ellipse at 80% 0,#ffca4b20,transparent 56%),linear-gradient(145deg,#221b25,#171622); }
+    .mission-hero-top { display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:11px; }
+    .mission-level { margin:9px 0 14px; font-size:20px; font-weight:900; }
+    .mission-level small { color:var(--gold); font-size:12px; }
+    .mission-xp-bar { height:10px; overflow:hidden; border-radius:99px; background:#ffffff15; }
+    .mission-xp-fill { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#ff724d,#ffd45a); box-shadow:0 0 14px #ffbd3b78; transition:width .35s ease; }
+    .mission-next { margin-top:8px; color:var(--muted); font-size:10px; }
+    .mission-list { display:grid; gap:11px; margin-top:15px; }
+    .mission-card { padding:15px; border:1px solid var(--border); border-radius:18px; background:linear-gradient(145deg,#ffffff0c,#ffffff04); }
+    .mission-card-top { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .mission-title { font-size:13px; font-weight:800; line-height:1.7; }
+    .mission-reward { flex:none; color:var(--gold); font-size:11px; font-weight:800; }
+    .mission-progress { margin-top:10px; display:flex; justify-content:space-between; color:var(--muted); font-size:10px; }
+    .mission-mini-bar { height:6px; border-radius:99px; margin-top:7px; background:#ffffff12; overflow:hidden; }
+    .mission-mini-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,#64d9a5,#b6ffd9); }
+    .mission-claim { width:100%; border:0; border-radius:13px; padding:13px; margin-top:12px; color:#10291e; background:linear-gradient(100deg,#9affd4,#54d9a5); font-weight:900; cursor:pointer; }
+    .mission-claim:disabled { opacity:.45; cursor:not-allowed; }
+    .self-card { margin-top:13px; padding:16px; border:1px solid var(--border); border-radius:19px; background:linear-gradient(145deg,#ffffff0c,#ffffff04); }
+    .self-card h2 { margin:0 0 8px; font-size:15px; }
+    .self-card p { color:var(--muted); font-size:11px; line-height:1.8; margin:0 0 12px; }
+    .self-row { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 0; border-top:1px solid #ffffff0b; }
+    .self-row:first-child { border-top:0; }
+    .self-row label { font-size:12px; line-height:1.6; }
+    .self-switch { accent-color:#66e2ad; width:19px; height:19px; flex:none; }
+    .self-input,.self-select { width:100%; min-width:0; border:1px solid var(--border); border-radius:11px; padding:11px 12px; margin:5px 0; color:#fff; background:#0e0d16; font:inherit; font-size:12px; }
+    .self-form { display:grid; gap:6px; margin-top:9px; }
+    .self-action { width:100%; border:1px solid #8ef0c62d; border-radius:11px; padding:11px; background:#8ef0c610; color:#c9ffe6; font-size:12px; font-weight:800; cursor:pointer; }
+    .self-action.danger { color:#ffb5b5; border-color:#ff737333; background:#e64b4b12; }
+    .self-action:disabled { opacity:.5; cursor:wait; }
+    .self-listrow { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 0; border-top:1px solid #ffffff0b; color:#dedce6; font-size:11px; line-height:1.7; }
+    .self-listrow button { border:0; color:#ffb5b5; background:transparent; cursor:pointer; }
+    .self-disabled { opacity:.5; }
     .profile-card { margin-top:20px; padding:18px; border:1px solid #8ef0c62b; border-radius:20px; background:linear-gradient(135deg,#8ef0c610,#ffffff04); }
     header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
     .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:17px; letter-spacing:-.4px; }
     .brand-mark { width:38px; height:38px; border-radius:13px; display:grid; place-items:center; color:#241a07; background:linear-gradient(145deg,#ffe788,#ffb938); box-shadow:0 5px 22px #ffc64a45; font-weight:900; }
     .live { color:var(--mint); border:1px solid #8ef0c62e; background:#8ef0c610; border-radius:99px; padding:8px 11px; font-size:11px; }
     .live:before { content:""; display:inline-block; width:6px;height:6px; border-radius:50%; background:currentColor; margin-left:6px; vertical-align:1px; }
-    .intro { text-align:center; margin:34px 0 19px; }
-    .eyebrow { color:var(--gold); font-size:12px; letter-spacing:.4px; }
     h1 { font-size:26px; margin:8px 0 6px; }
-    .intro p { color:var(--muted); font-size:13px; margin:0; }
-    .balance-card { position:relative; overflow:hidden; border:1px solid #ffe28d2b; background:radial-gradient(ellipse at 15% 0,#ffd45a16,transparent 48%),linear-gradient(135deg,#ffffff10,#ffffff04); border-radius:24px; padding:17px 19px; display:flex; justify-content:space-between; align-items:center; box-shadow:inset 0 1px #fff2,0 12px 30px #0002; }
+    .balance-card { position:relative; overflow:hidden; margin-top:8px; border:1px solid #ffe28d45; background:radial-gradient(ellipse at 15% 0,#ffd45a20,transparent 48%),linear-gradient(135deg,#ffffff12,#ffffff04); border-radius:22px; padding:12px 17px; display:flex; justify-content:space-between; align-items:center; box-shadow:inset 0 1px #fff3,0 12px 30px #0002; }
     .balance-card:after { content:""; position:absolute; width:145px; height:145px; left:-78px; top:-94px; border:1px solid #ffd45a16; border-radius:50%; box-shadow:0 0 0 13px #ffd45a08,0 0 0 27px #ffd45a05; pointer-events:none; }
     .balance-label { color:var(--muted); font-size:12px; margin-bottom:7px; }
     .balance-value { font-size:30px; font-weight:900; direction:ltr; text-align:right; letter-spacing:.4px; color:#fff7dc; text-shadow:0 2px 18px #ffd45a38; font-variant-numeric:tabular-nums; }
     .balance-unit { font-size:13px; color:var(--gold); margin-right:6px; text-shadow:0 0 14px #ffd45a80; }
     .wallet-icon { position:relative; width:53px; height:53px; border-radius:18px; display:grid; place-items:center; font-size:25px; color:#fff1b4; background:linear-gradient(145deg,#ffe990,#e79724 60%,#9b4d12); border:1px solid #fff4b878; box-shadow:inset 0 2px 3px #fff9, inset 0 -5px 9px #74370a8c,0 8px 18px #e99f2440; text-shadow:0 2px 3px #74400b; }
-    .coin-area { flex:1; min-height:300px; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:23px 0 14px; perspective:900px; }
-    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(64vw, 252px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#ffec9c 0%,#ffd44c 18%,#ef9d1c 52%,#a84a0c 100%); box-shadow:0 0 0 8px #ffd45a0d,0 0 0 18px #ffd45a08,0 0 48px #f8a62335,0 24px 38px #0008,0 37px 54px #f8a62322,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #7b350d,inset 0 -17px 22px #a54c0d; transform:rotateX(7deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:manipulation; -webkit-user-select:none; }
-    .coin-button:before { content:""; position:absolute; z-index:-1; inset:4px; border-radius:50%; background:repeating-conic-gradient(from 0deg,#ffdc72 0deg 2.2deg,#c87518 2.2deg 4.1deg); box-shadow:inset 0 2px 3px #fff8,inset 0 -3px 5px #74350c; }
-    .coin-button:after { content:""; position:absolute; inset:13px; border-radius:50%; border:2px solid #fff4bdc9; background:radial-gradient(circle at 32% 23%,#fff7c96b,transparent 35%),radial-gradient(circle at 68% 78%,#9945093d,transparent 42%); box-shadow:inset 0 0 0 5px #c87d1b2e,inset 0 2px 7px #fff4,0 1px 1px #8e4a0c; pointer-events:none; }
+    .coin-area { min-height:clamp(250px, 39vh, 345px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:1100px; }
+    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(72vw, 292px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#fff4bd 0%,#ffd734 19%,#ef9b0d 51%,#9f3214 100%); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff7c2410,0 0 62px #ffb51e55,0 22px 38px #0009,0 39px 64px #ec4c1c36,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #6f210b,inset 0 -18px 24px #9a3510; transform:rotateX(5deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:manipulation; -webkit-user-select:none; }
+    .coin-button:before { content:""; position:absolute; z-index:-1; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff3ae 0deg 1.2deg,#e5a321 1.2deg 2.8deg,#9d4217 2.8deg 3.5deg,#ffd957 3.5deg 5.3deg); box-shadow:inset 0 2px 3px #fff9,inset 0 -3px 5px #67200e; }
+    .coin-button:after { content:""; position:absolute; inset:9px; border-radius:50%; border:4px solid #ffea8e; background:radial-gradient(ellipse at 28% 14%,#fffdebe8,transparent 23%),radial-gradient(ellipse at 72% 83%,#9c351a40,transparent 46%),linear-gradient(145deg,#fff0a7 0%,#ffd53c 38%,#efa711 68%,#c84719 100%); box-shadow:inset 0 0 0 3px #9c431c63,inset 0 0 0 7px #fff4c28c,inset 0 2px 10px #fff9,0 1px 1px #8e321c; pointer-events:none; }
     .coin-button:active { transform:rotateX(2deg) scale(.94) translateY(4px); filter:brightness(1.14); box-shadow:0 0 0 8px #ffd45a0d,0 0 0 18px #ffd45a08,0 0 42px #f8a62355,0 12px 22px #0008,inset 0 3px 3px #fffbd0,inset 0 -6px 9px #7b350d; }
     .coin-button:disabled { cursor:wait; filter:saturate(.5) brightness(.82); }
-    .coin-face { position:absolute; z-index:1; inset:22px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; pointer-events:none; }
-    .coin-brand { color:#96500e; font:900 9px/1 Arial,sans-serif; letter-spacing:3.2px; text-shadow:0 1px #fff4a4; opacity:.86; }
-    .coin-letter { display:block; font-size:clamp(82px,24vw,112px); line-height:.88; font-weight:1000; color:#a44e0d; background:linear-gradient(180deg,#fff2aa 0%,#ffd66a 34%,#a55210 100%); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; filter:drop-shadow(0 2px 0 #fff6a5) drop-shadow(0 7px 3px #7c390b8c); font-family:Arial,sans-serif; }
-    .coin-stars { color:#9c5410; font-size:13px; letter-spacing:5px; text-shadow:0 1px #fff3a5; opacity:.9; }
-    .coin-glint { position:absolute; z-index:2; width:22%; height:11%; top:18%; left:23%; border-radius:50%; background:#fffbd0aa; filter:blur(8px); transform:rotate(-35deg); pointer-events:none; }
+    .coin-face { position:absolute; z-index:1; inset:11px; border-radius:50%; pointer-events:none; }
+    .coin-engraving { position:absolute; inset:17%; border:1px solid #fff4bf8c; border-radius:50%; box-shadow:inset 0 0 0 3px #9b431b2b,inset 0 0 0 5px #fff2a35c,0 1px 1px #fff9; }
+    .coin-letter { position:absolute; left:50%; top:50%; display:grid; place-items:center; width:52%; height:52%; border-radius:50%; transform:translate(-50%,-50%) rotate(-7deg); font-size:clamp(96px,29vw,134px); line-height:.8; font-weight:1000; color:#fff1a0; -webkit-text-fill-color:#fff1a0; -webkit-text-stroke:1.5px #a83d13; text-shadow:0 2px 0 #fffbd0,0 5px 0 #f7b91e,0 8px 0 #c45414,0 11px 2px #76230e,0 15px 12px #5d1c0da8; font-family:Arial Black,Arial,sans-serif; }
+    .tap-float { position:absolute; z-index:4; top:38%; left:50%; color:#fff8dc; font-size:24px; font-weight:900; text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0; pointer-events:none; white-space:nowrap; animation:tap-rise .62s cubic-bezier(.2,.75,.3,1) forwards; will-change:transform,opacity; }
+    @keyframes tap-rise { 0% { opacity:0; transform:translate(-50%,8px) scale(.72); } 18% { opacity:1; transform:translate(-50%,0) scale(1.08); } 100% { opacity:0; transform:translate(-50%,-54px) scale(.92); } }
+    .coin-stars { position:absolute; left:50%; top:50%; width:68%; height:68%; border:1px solid #fff4b979; border-radius:50%; transform:translate(-50%,-50%); box-shadow:0 0 0 3px #a3451b28,inset 0 0 0 3px #fff1a448; }
+    .coin-glint { position:absolute; z-index:2; width:27%; height:11%; top:16%; left:18%; border-radius:50%; background:#fffde5e8; filter:blur(11px); transform:rotate(-38deg); pointer-events:none; }
     .coin-button:not(:disabled) { animation:coin-float 3.6s ease-in-out infinite; }
     .coin-button:not(:disabled):active { animation:none; }
+    .coin-button.tap-pulse { animation:tap-press .16s ease-out; }
+    @keyframes tap-press { 0% { transform:rotateX(5deg) scale(1); } 48% { transform:rotateX(2deg) scale(.955) translateY(2px); filter:brightness(1.12); } 100% { transform:rotateX(5deg) scale(1); } }
     @keyframes coin-float { 0%,100% { translate:0 0; } 50% { translate:0 -5px; } }
     .tap-hint { margin-top:22px; color:#c5c2d0; font-size:13px; }
     .tap-hint strong { color:var(--gold); }
@@ -116,9 +165,8 @@
     .connect-button:disabled,.disconnect-button:disabled,.change-account-button:disabled,.copy-code-button:disabled { opacity:.55; cursor:wait; }
     .connect-state { color:var(--mint); font-size:11px; margin-top:10px; text-align:center; }
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
-    @media (min-height: 800px) { .intro { margin-top:44px; } .coin-area { min-height:320px; } }
-    @media (max-width:360px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .coin-button{width:210px;} }
-    @media (prefers-reduced-motion: reduce) { .coin-button:not(:disabled) { animation:none; } }
+    @media (max-width:360px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .coin-button{width:226px;} }
+    @media (prefers-reduced-motion: reduce) { .coin-button:not(:disabled) { animation:none; } .tap-float { animation-duration:.01ms; } }
   </style>
 </head>
 <body>
@@ -135,24 +183,34 @@
     </section>
 
     <section id="homePanel" class="tab-panel active" aria-label="خانه">
-      <section class="intro">
-        <div class="eyebrow">بازی کن، جمع کن، تبدیل کن</div>
-        <h1>دنیای F Coin</h1>
-        <p>برای جمع‌کردن سکه، روی سکه بزن!</p>
-      </section>
       <section class="balance-card" aria-label="موجودی F Coin">
         <div>
-          <div class="balance-label">موجودی شما</div>
+          <div class="balance-label">موجودی F Coin شما</div>
           <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
         </div>
         <div class="wallet-icon" aria-hidden="true">◈</div>
       </section>
+      <section id="onboarding" class="onboarding" aria-live="polite">
+        <div class="onboarding-kicker">مرحلهٔ اول</div>
+        <h2>برای شروع، حسابت رو وصل کن</h2>
+        <p>اتصال امن را انجام بده تا موجودی مخصوص حساب خودت ذخیره شود.</p>
+        <div class="connect-card" aria-label="اتصال حساب تلگرام">
+          <p id="connectCopy" class="connect-copy">یک کد چهاررقمی بساز و دستور آماده را در پیوی ربات بفرست.</p>
+          <button id="connectButton" class="connect-button" type="button">اتصال امن با تلگرام</button>
+          <div id="pairingBox" class="pairing-box" hidden>
+            <div class="pairing-label">کد یک‌بارمصرف — ۵ دقیقه اعتبار</div>
+            <div id="pairingCode" class="pairing-code" dir="ltr">----</div>
+            <button id="copyCodeButton" class="copy-code-button" type="button">کپی دستور اتصال</button>
+            <p class="connect-copy">دستور را در پیوی ربات بفرست:<br><b id="pairingCommand" dir="ltr">/Code 0000</b></p>
+            <div id="pairingProgress" class="connect-state">منتظر تأیید کد در بات…</div>
+          </div>
+        </div>
+      </section>
       <section class="coin-area">
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
           <span class="coin-face">
-            <span class="coin-brand">FERNO · F COIN</span>
+            <span class="coin-engraving" aria-hidden="true"></span>
             <span class="coin-letter">F</span>
-            <span class="coin-stars" aria-hidden="true">✦ · ✦</span>
           </span>
           <span class="coin-glint" aria-hidden="true"></span>
         </button>
@@ -163,47 +221,60 @@
         <div class="bar"><div id="energyBar" class="bar-fill"></div></div>
         <div class="energy-note">با هر ضربه، یک واحد انرژی مصرف می‌شود.</div>
       </section>
-      <section class="exchange-card">
-        <div class="exchange-heading">
-          <strong>تبدیل به سکه‌های بات</strong>
-          <div class="rate" aria-label="هر ۱۰٬۰۰۰ اف کوین برابر ۲۵ سکه است">
-            <span class="rate-amount">10,000 F</span><span>=</span><span class="rate-amount" dir="rtl">25 سکه</span>
-          </div>
-        </div>
-        <p class="exchange-sub">F Coinهای خود را به موجودی سکه بات تبدیل کنید. تبدیل بر اساس مضرب کامل ۱۰٬۰۰۰ انجام می‌شود.</p>
-        <button id="exchangeButton" class="exchange-button" type="button" disabled>تبدیل F Coin</button>
-        <div class="bot-balance">موجودی سکه بات: <b id="botBalance">—</b></div>
-      </section>
-      <div id="status" class="status" role="status" aria-live="polite"></div>
       <footer>موجودی شما از سرور دریافت و تأیید می‌شود.</footer>
     </section>
+    <section id="convertPanel" class="tab-panel" aria-label="تبدیل">
+      <div class="placeholder-card">
+        <div class="placeholder-icon">🔄</div>
+        <h1>تبدیل F Coin</h1>
+        <p>F Coinهای خودت را به سکه‌های ربات تبدیل کن.</p>
+        <div class="exchange-card">
+          <div class="exchange-heading">
+            <strong>نرخ تبدیل شفاف</strong>
+            <div class="rate" aria-label="هر ۱۰٬۰۰۰ اف کوین برابر ۲۵ سکه است">
+              <span class="rate-amount">10,000 F</span><span>=</span><span class="rate-amount" dir="rtl">25 سکه</span>
+            </div>
+          </div>
+          <p class="exchange-sub">تبدیل به‌صورت بلوک‌های کامل ۱۰٬۰۰۰ F انجام می‌شود؛ موجودی قابل تبدیل پس از تأیید سرور کم خواهد شد.</p>
+          <button id="exchangeButton" class="exchange-button" type="button" disabled>تبدیل F Coin</button>
+          <div class="bot-balance">موجودی سکه بات: <b id="botBalance">—</b></div>
+        </div>
+      </div>
+    </section>
     <section id="selfPanel" class="tab-panel" aria-label="سلف">
-      <div class="placeholder-card"><div class="placeholder-icon">🛡️</div><h1>سلف</h1><p>بخش ابزارهای سلف در حال آماده‌سازی است.<br>به‌زودی با امکانات خفن برمی‌گردیم!</p></div>
+      <div class="placeholder-card"><div class="placeholder-icon">🛡️</div><h1>پنل سلف</h1><p>تنظیمات اکانت Business و قابلیت‌های خودت را از اینجا مدیریت کن.</p></div>
+      <div id="selfApp" class="mission-list">
+        <div class="mission-card"><div class="mission-title">در حال دریافت وضعیت پنل سلف…</div></div>
+      </div>
     </section>
     <section id="missionsPanel" class="tab-panel" aria-label="ماموریت‌ها">
-      <div class="placeholder-card"><div class="placeholder-icon">🎯</div><h1>ماموریت‌ها</h1><p>ماموریت‌های روزانه و جایزه‌های تجربه به‌زودی اینجا فعال می‌شوند.</p></div>
+      <div class="placeholder-card"><div class="placeholder-icon">🎯</div><h1>ماموریت‌های روزانه</h1><p>فعالیت کن، XP بگیر و برای هر لول‌آپ ۵۰۰ F Coin جایزه بگیر.</p></div>
+      <section class="mission-hero" aria-label="سطح و تجربه">
+        <div class="mission-hero-top"><span>⭐ سطح فعلی</span><span id="missionXpText">— XP</span></div>
+        <div class="mission-level">سطح <b id="missionLevel">—</b> <small>+۵۰۰ F / هر لول</small></div>
+        <div class="mission-xp-bar"><div id="missionXpFill" class="mission-xp-fill"></div></div>
+        <div id="missionNext" class="mission-next">گام بعدی: —</div>
+      </section>
+      <div id="missionList" class="mission-list">
+        <div class="mission-card"><div class="mission-title">برای دیدن ماموریت‌ها، حسابت را وصل کن.</div></div>
+      </div>
+      <button id="claimDailyButton" class="mission-claim" type="button" disabled>دریافت سکهٔ روزانه و +۵ XP</button>
     </section>
     <section id="accountPanel" class="tab-panel" aria-label="حساب کاربری">
       <div class="placeholder-card profile-card"><div class="placeholder-icon">👤</div><h1>حساب کاربری</h1><p id="profileStatus">وضعیت اتصال حساب تلگرام در این بخش نمایش داده می‌شود.</p></div>
-      <section class="connect-card" aria-label="اتصال حساب تلگرام">
-        <div class="connect-heading"><span class="connect-icon">🔗</span><span>اتصال حساب تلگرام</span></div>
-        <p id="connectCopy" class="connect-copy">برای دیدن موجودی و ذخیرهٔ F Coin روی حساب خودت، حساب تلگرامت را امن وصل کن.</p>
-        <button id="connectButton" class="connect-button" type="button">اتصال امن با تلگرام</button>
-        <div id="pairingBox" class="pairing-box" hidden>
-          <div class="pairing-label">کد یک‌بارمصرف شما — ۵ دقیقه اعتبار</div>
-          <div id="pairingCode" class="pairing-code" dir="ltr">--------</div>
-          <button id="copyCodeButton" class="copy-code-button" type="button">کپی کد</button>
-          <p class="connect-copy">کد را در پیوی بات فرنو بفرست:<br><b dir="ltr">/fcoinlink 12345678</b></p>
-          <div id="pairingProgress" class="connect-state">منتظر تأیید کد در بات…</div>
-        </div>
+      <section class="connect-card">
+        <div class="connect-heading"><span class="connect-icon">🔐</span><span>نشست و حریم خصوصی</span></div>
+        <p class="connect-copy">قطع اتصال فقط نشست F Coin این صفحه را می‌بندد و موجودی یا حساب تلگرام را حذف نمی‌کند.</p>
+        <div id="connectState" class="connect-state" role="status" aria-live="polite"></div>
         <button id="disconnectButton" class="disconnect-button" type="button">قطع اتصال این صفحه</button>
         <button id="changeAccountButton" class="change-account-button" type="button">اتصال حساب تلگرام دیگر</button>
-        <div id="connectState" class="connect-state" role="status" aria-live="polite"></div>
-        <p class="connect-copy">برای امنیت، اتصال سایت فقط تا وقتی این صفحه باز است نگه‌داری می‌شود. برای هر حساب تلگرام، کد اتصال همان حساب را جداگانه تأیید کن.</p>
+        <button id="closeMiniAppButton" class="change-account-button" type="button">بستن مینی‌اپ</button>
       </section>
     </section>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
     <nav class="tab-bar" aria-label="ناوبری اصلی">
       <button class="tab-button active" type="button" data-tab="homePanel" aria-current="page"><span>🏠</span>خانه</button>
+      <button class="tab-button" type="button" data-tab="convertPanel"><span>🔄</span>تبدیل</button>
       <button class="tab-button" type="button" data-tab="selfPanel"><span>🛡️</span>سلف</button>
       <button class="tab-button" type="button" data-tab="missionsPanel"><span>🎯</span>ماموریت‌ها</button>
       <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب کاربری</button>
@@ -235,6 +306,10 @@
       const connectState = $("connectState");
       const connectionBadge = $("connectionBadge");
       const connectionError = $("connectionError");
+      const onboarding = $("onboarding");
+      const selfApp = $("selfApp");
+      const missionList = $("missionList");
+      const claimDailyButton = $("claimDailyButton");
       const SESSION_KEY = "ferno_fcoin_session";
       sessionStorage.removeItem(SESSION_KEY);
       localStorage.removeItem(SESSION_KEY);
@@ -286,8 +361,9 @@
 
       function renderConnection(connected, userId) {
         connectButton.hidden = connected;
-        disconnectButton.style.display = connected && !tg?.initData ? "block" : "none";
-        changeAccountButton.style.display = connected && !tg?.initData ? "block" : "none";
+        onboarding.hidden = connected;
+        disconnectButton.style.display = connected && !!accessToken ? "block" : "none";
+        changeAccountButton.style.display = connected && !!accessToken ? "block" : "none";
         pairingBox.hidden = true;
         connectionBadge.textContent = connected ? "اتصال امن" : "آمادهٔ اتصال";
         $("profileStatus").textContent = connected
@@ -295,7 +371,7 @@
           : "هنوز حساب تلگرامی به F Coin وصل نشده است.";
         connectCopy.textContent = connected
           ? (userId ? "حساب تلگرام شما با موفقیت وصل شد. موجودی و تبدیل‌ها برای همین حساب ذخیره می‌شوند." : "اتصال تلگرام فعال است؛ موجودی این حساب را می‌بینی.")
-          : "برای دیدن موجودی و ذخیرهٔ F Coin روی حساب خودت، حساب تلگرامت را امن وصل کن.";
+          : "برای دیدن موجودی و ذخیرهٔ F Coin روی حساب خودت، کد اتصال را در پیوی ربات فرنو تأیید کن.";
         connectState.textContent = connected ? "● اتصال امن فعال است" : "";
       }
 
@@ -344,23 +420,633 @@
         return !!(tg && typeof tg.initData === "string" && tg.initData);
       }
 
-      async function request(endpoint, body = {}, beforeRender = null) {
+      async function userApiRequest(endpoint, body = {}) {
         if (!hasTelegramAuth() && !accessToken) {
           throw new Error("برای اتصال موجودی، ابتدا حساب تلگرامت را وصل کن.");
         }
-        const data = await apiRequest(endpoint, {
+        return apiRequest(endpoint, {
           body: hasTelegramAuth() ? { ...body, init_data: tg.initData } : body,
           token: hasTelegramAuth() ? "" : accessToken
         });
+      }
+
+      async function request(endpoint, body = {}, beforeRender = null) {
+        const data = await userApiRequest(endpoint, body);
         if (beforeRender) beforeRender();
         render(data);
-        renderConnection(true, hasTelegramAuth() && tg.initDataUnsafe?.user?.id);
+        renderConnection(true, data.user_id || (hasTelegramAuth() && tg.initDataUnsafe?.user?.id));
         return data;
+      }
+
+      function renderMissions(state) {
+        $("missionLevel").textContent = state.level.toLocaleString("en-US");
+        $("missionXpText").textContent = state.xp.toLocaleString("en-US") + " XP";
+        $("missionNext").textContent = "گام بعدی: " +
+          Math.max(0, state.level_target - state.xp).toLocaleString("en-US") + " XP تا سطح بعدی";
+        $("missionXpFill").style.width = Math.min(100, state.level_progress / state.level_target * 100) + "%";
+        missionList.replaceChildren();
+        state.missions.forEach((mission) => {
+          const card = document.createElement("article");
+          card.className = "mission-card";
+          const top = document.createElement("div");
+          top.className = "mission-card-top";
+          const title = document.createElement("div");
+          title.className = "mission-title";
+          title.textContent = (mission.completed ? "✅ " : "🎯 ") + mission.title;
+          const reward = document.createElement("div");
+          reward.className = "mission-reward";
+          reward.textContent = "+" + mission.xp_reward + " XP";
+          top.append(title, reward);
+          const progress = document.createElement("div");
+          progress.className = "mission-progress";
+          const progressLabel = document.createElement("span");
+          progressLabel.textContent = "پیشرفت امروز";
+          const progressValue = document.createElement("b");
+          progressValue.textContent =
+            mission.progress.toLocaleString("en-US") + " / " + mission.target.toLocaleString("en-US");
+          progress.append(progressLabel, progressValue);
+          const bar = document.createElement("div");
+          bar.className = "mission-mini-bar";
+          const fill = document.createElement("div");
+          fill.className = "mission-mini-fill";
+          fill.style.width = Math.min(100, mission.progress / mission.target * 100) + "%";
+          bar.append(fill);
+          card.append(top, progress, bar);
+          if (mission.id === "daily") {
+            claimDailyButton.disabled = mission.completed || !hasUserAccount();
+            claimDailyButton.textContent = mission.completed
+              ? "سکهٔ روزانهٔ امروز دریافت شد ✓"
+              : "دریافت سکهٔ روزانه و +۵ XP";
+          } else {
+            const link = document.createElement("a");
+            link.className = "connect-button";
+            link.style.marginTop = "12px";
+            link.href = "https://t.me/FarnoGP";
+            link.target = "_blank";
+            link.rel = "noopener";
+            link.textContent = mission.completed ? "چالش کامل شد ✓" : "رفتن به گپ و شروع بازی";
+            link.setAttribute("aria-disabled", mission.completed ? "true" : "false");
+            link.addEventListener("click", (event) => {
+              if (mission.completed) event.preventDefault();
+              else if (tg && typeof tg.openTelegramLink === "function") {
+                event.preventDefault();
+                tg.openTelegramLink("https://t.me/FarnoGP");
+              }
+            });
+            card.append(link);
+          }
+          missionList.append(card);
+        });
+      }
+
+      function hasUserAccount() {
+        return hasTelegramAuth() || !!accessToken;
+      }
+
+      async function refreshMissions() {
+        if (!hasUserAccount()) return;
+        const state = await userApiRequest("missions/state");
+        renderMissions(state);
+      }
+
+      async function claimDailyMission() {
+        if (busy || !hasUserAccount()) return;
+        claimDailyButton.disabled = true;
+        claimDailyButton.textContent = "در حال ثبت جایزه…";
+        try {
+          const result = await userApiRequest("missions/claim-daily");
+          renderMissions(result);
+          await request("state");
+          showStatus("🎉 " + result.daily_coins.toLocaleString("en-US") + " سکهٔ روزانه و ۵ XP گرفتی!", "info");
+        } catch (error) {
+          showStatus(error && error.message ? error.message : "دریافت ماموریت روزانه ناموفق بود.", "error");
+          try {
+            await refreshMissions();
+          } catch (refreshError) {
+            showStatus(
+              (error && error.message ? error.message : "دریافت ماموریت روزانه ناموفق بود.") +
+                " به‌روزرسانی وضعیت هم انجام نشد: " +
+                (refreshError && refreshError.message ? refreshError.message : "خطای ارتباط."),
+              "error"
+            );
+          }
+        } finally {
+          claimDailyButton.disabled =
+            claimDailyButton.textContent.includes("دریافت شد") || !hasUserAccount();
+        }
+      }
+
+      function selfCard(title, description) {
+        const card = document.createElement("section");
+        card.className = "self-card";
+        const heading = document.createElement("h2");
+        heading.textContent = title;
+        card.append(heading);
+        if (description) {
+          const detail = document.createElement("p");
+          detail.textContent = description;
+          card.append(detail);
+        }
+        return card;
+      }
+
+      function selfInput(parent, labelText, value, name, options = {}) {
+        const label = document.createElement("label");
+        label.textContent = labelText;
+        const input = document.createElement(options.select ? "select" : "input");
+        input.className = options.select ? "self-select" : "self-input";
+        input.dataset.selfInput = name;
+        if (options.select) {
+          options.select.forEach(([valueText, caption]) => {
+            const option = document.createElement("option");
+            option.value = valueText;
+            option.textContent = caption;
+            input.append(option);
+          });
+        } else {
+          input.type = options.type || "text";
+          if (options.type === "number") {
+            input.min = String(options.min || 0);
+            input.max = String(options.max || 9999);
+          }
+          if (options.placeholder) input.placeholder = options.placeholder;
+        }
+        input.value = value === null || value === undefined ? "" : String(value);
+        label.append(input);
+        parent.append(label);
+        return input;
+      }
+
+      function selfButton(text, action, payload = {}, danger = false) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "self-action" + (danger ? " danger" : "");
+        button.textContent = text;
+        button.addEventListener("click", async () => {
+          button.disabled = true;
+          try {
+            const state = await userApiRequest("self/action", { action, ...payload });
+            renderSelf(state);
+            showStatus("تنظیمات سلف به‌روز شد.", "info");
+          } catch (error) {
+            showStatus(error && error.message ? error.message : "ذخیرهٔ تنظیمات انجام نشد.", "error");
+          } finally {
+            button.disabled = false;
+          }
+        });
+        return button;
+      }
+
+      async function updateSelf(values) {
+        const state = await userApiRequest("self/action", { action: "update", values });
+        renderSelf(state);
+        showStatus("تغییرات ذخیره شد.", "info");
+      }
+
+      function appendSelfToggle(parent, title, key, value, disabled = false) {
+        const row = document.createElement("div");
+        row.className = "self-row";
+        const label = document.createElement("label");
+        label.textContent = title;
+        const control = document.createElement("input");
+        control.type = "checkbox";
+        control.className = "self-switch";
+        control.dataset.selfInput = key;
+        control.checked = !!value;
+        control.disabled = disabled;
+        control.addEventListener("change", async () => {
+          control.disabled = true;
+          try {
+            await updateSelf({ [key]: control.checked });
+          } catch (error) {
+            control.checked = !control.checked;
+            showStatus(error && error.message ? error.message : "ذخیرهٔ تنظیم انجام نشد.", "error");
+          } finally {
+            control.disabled = false;
+          }
+        });
+        row.append(label, control);
+        parent.append(row);
+      }
+
+      function renderSelf(state) {
+        selfApp.replaceChildren();
+        const summary = selfCard("وضعیت سلف", state.connected
+          ? "حساب Business به ربات متصل است. برای فعال بودن قابلیت‌ها، سلف باید روشن و موجودی سکه کافی باشد."
+          : "برای دسترسی به قابلیت‌های سلف، در تلگرام از مسیر Profile → Chat Automation ربات را اضافه کن و دسترسی‌های Manage Messages و Edit Profile را فعال کن.");
+        const status = document.createElement("div");
+        status.className = "self-row";
+        status.textContent = (state.self_active ? "🟢 سلف فعال" : "⚪ سلف غیرفعال") +
+          "  ·  موجودی: " + Number(state.coin_balance).toLocaleString("en-US") + " سکه";
+        summary.append(status);
+        if (state.connected) {
+          summary.append(selfButton(
+            state.self_active ? "خاموش‌کردن سلف" : "فعال‌کردن سلف",
+            state.self_active ? "deactivate" : "activate",
+            {},
+            state.self_active
+          ));
+        }
+        selfApp.append(summary);
+        if (!state.connected || !state.self_active) {
+          return;
+        }
+
+        const settings = state.settings || {};
+        const clock = selfCard("⏰ ساعت و پروفایل", "در قالب نام یا بیو از T برای ساعت و دقیقه، 0 برای ساعت و M برای دقیقه استفاده کن.");
+        appendSelfToggle(clock, "نمایش ساعت روی نام", "name_enabled", settings.name_enabled);
+        appendSelfToggle(clock, "نمایش ساعت روی بیو", "bio_enabled", settings.bio_enabled);
+        const clockForm = document.createElement("div");
+        clockForm.className = "self-form";
+        selfInput(clockForm, "قالب نام", settings.name_template, "name_template", { placeholder: "مثال: Fərno T" });
+        selfInput(clockForm, "قالب بیو", settings.bio_template, "bio_template", { placeholder: "مثال: ساعت T" });
+        const fontValues = (state.clock_fonts || []).map((font) => [font.key, font.sample]);
+        selfInput(clockForm, "فونت ساعت", settings.clock_font || "normal", "clock_font", { select: fontValues });
+        const saveClock = document.createElement("button");
+        saveClock.type = "button";
+        saveClock.className = "self-action";
+        saveClock.textContent = "ذخیرهٔ قالب و فونت";
+        saveClock.addEventListener("click", async () => {
+          saveClock.disabled = true;
+          try {
+            const values = {
+              clock_font: clockForm.querySelector('[data-self-input="clock_font"]').value,
+            };
+            const nameTemplate = clockForm.querySelector('[data-self-input="name_template"]').value.trim();
+            const bioTemplate = clockForm.querySelector('[data-self-input="bio_template"]').value.trim();
+            if (nameTemplate) values.name_template = nameTemplate;
+            if (bioTemplate) values.bio_template = bioTemplate;
+            await updateSelf(values);
+          } catch (error) {
+            showStatus(error && error.message ? error.message : "قالب ذخیره نشد.", "error");
+          } finally {
+            saveClock.disabled = false;
+          }
+        });
+        clockForm.append(saveClock);
+        clock.append(clockForm);
+        selfApp.append(clock);
+
+        const format = selfCard("✍️ سبک پیام‌ها", "قالب‌بندی روی متن پیام‌های خروجی حساب Business اعمال می‌شود.");
+        const styleOptions = [
+          ["none", "بدون قالب"], ["bold", "بولد"], ["italic", "ایتالیک"],
+          ["underline", "زیرخط"], ["strike", "خط‌خورده"], ["spoiler", "اسپویلر"], ["quote", "نقل‌قول"],
+        ];
+        const formatForm = document.createElement("div");
+        formatForm.className = "self-form";
+        selfInput(formatForm, "سبک متن", settings.chat_type || "none", "chat_type", { select: styleOptions });
+        const formatSave = document.createElement("button");
+        formatSave.type = "button";
+        formatSave.className = "self-action";
+        formatSave.textContent = "ذخیرهٔ سبک";
+        formatSave.addEventListener("click", async () => {
+          formatSave.disabled = true;
+          try {
+            await updateSelf({ chat_type: formatForm.querySelector("select").value });
+          } catch (error) {
+            showStatus(error && error.message ? error.message : "سبک ذخیره نشد.", "error");
+          } finally {
+            formatSave.disabled = false;
+          }
+        });
+        formatForm.append(formatSave);
+        format.append(formatForm);
+        selfApp.append(format);
+
+        const guard = state.guard || {};
+        const guardCard = selfCard("🛡 نگهبان چت", "نسخه‌ها و تغییرات پیام‌های ورودی را برای بررسی بعدی در گفت‌وگوی ربات نگه می‌دارد.");
+        appendSelfToggle(guardCard, "ذخیرهٔ پیام‌های حذف‌شده", "deleted_enabled", guard.deleted_enabled);
+        appendSelfToggle(guardCard, "ذخیرهٔ پیام‌های ویرایش‌شده", "edited_enabled", guard.edited_enabled);
+        appendSelfToggle(guardCard, "نگه‌داری رسانهٔ موقت", "temporary_media_enabled", guard.temporary_media_enabled);
+        const timed = state.timed || {};
+        const timedCard = selfCard("💬 پاسخ خودکار، زمان‌دار و منشی", "پس از ثبت عبارت، وقتی مخاطب همان عبارت را بفرستد ربات پاسخ تعریف‌شده را می‌دهد.");
+        appendSelfToggle(timedCard, "پاسخ زمان‌دار فعال", "timed_enabled", timed.enabled);
+        appendSelfToggle(timedCard, "منشی فعال", "secretary_enabled", timed.secretary_enabled);
+        const timedForm = document.createElement("div");
+        timedForm.className = "self-form";
+        selfInput(timedForm, "زمان انتظار (دقیقه)", timed.delay_minutes || 5, "delay_minutes", { type: "number", min: 1, max: 1440 });
+        selfInput(timedForm, "متن پاسخ زمان‌دار", timed.response_text, "response_text", { placeholder: "متن پاسخ بعد از زمان انتظار" });
+        selfInput(timedForm, "متن منشی", timed.secretary_text, "secretary_text", { placeholder: "پیام منشی" });
+        const timedSave = document.createElement("button");
+        timedSave.type = "button";
+        timedSave.className = "self-action";
+        timedSave.textContent = "ذخیرهٔ تنظیمات پاسخ";
+        timedSave.addEventListener("click", async () => {
+          timedSave.disabled = true;
+          try {
+            await updateSelf({
+              delay_minutes: Number(timedForm.querySelector('[data-self-input="delay_minutes"]').value),
+              response_text: timedForm.querySelector('[data-self-input="response_text"]').value,
+              secretary_text: timedForm.querySelector('[data-self-input="secretary_text"]').value,
+            });
+          } catch (error) {
+            showStatus(error && error.message ? error.message : "متن پاسخ ذخیره نشد.", "error");
+          } finally {
+            timedSave.disabled = false;
+          }
+        });
+        timedForm.append(timedSave);
+        timedCard.append(timedForm);
+        selfApp.append(guardCard, timedCard);
+
+        const spam = state.spam || {};
+        const spamCard = selfCard("🚫 آنتی‌اسپم هوشمند", "ارسال‌های تکراری مخاطب را در بازهٔ زمانی تعیین‌شده شناسایی می‌کند.");
+        appendSelfToggle(spamCard, "تشخیص پیام تکراری", "spam_enabled", spam.enabled);
+        const spamForm = document.createElement("div");
+        spamForm.className = "self-form";
+        selfInput(spamForm, "تعداد تکرار برای تشخیص", spam.repeat_threshold || 3, "repeat_threshold", { type: "number", min: 2, max: 10 });
+        selfInput(spamForm, "بازهٔ زمانی (ثانیه)", spam.window_seconds || 45, "window_seconds", { type: "number", min: 10, max: 300 });
+        const spamSave = document.createElement("button");
+        spamSave.type = "button";
+        spamSave.className = "self-action";
+        spamSave.textContent = "ذخیرهٔ آنتی‌اسپم";
+        spamSave.addEventListener("click", async () => {
+          spamSave.disabled = true;
+          try {
+            await updateSelf({
+              repeat_threshold: Number(spamForm.querySelector('[data-self-input="repeat_threshold"]').value),
+              window_seconds: Number(spamForm.querySelector('[data-self-input="window_seconds"]').value),
+            });
+          } catch (error) {
+            showStatus(error && error.message ? error.message : "تنظیم آنتی‌اسپم ذخیره نشد.", "error");
+          } finally {
+            spamSave.disabled = false;
+          }
+        });
+        spamForm.append(spamSave);
+        spamCard.append(spamForm);
+        selfApp.append(spamCard);
+
+        const preparedCard = selfCard("📝 متن آماده", "عبارت تکی را در گفت‌وگو بفرست تا پاسخ آماده ارسال شود.");
+        appendResponseEditor(preparedCard, state.prepared || [], "prepared");
+        selfApp.append(preparedCard);
+        const autoCard = selfCard("🔁 پاسخ‌های خودکار", "پاسخ به عبارت‌های تعریف‌شده در پیوی Business.");
+        appendResponseEditor(autoCard, state.auto_responses || [], "auto");
+        selfApp.append(autoCard);
+
+        const filterCard = selfCard("🚫 فیلتر کلمات", "پیام ورودی شامل کلمهٔ ثبت‌شده حذف می‌شود.");
+        appendStringListEditor(filterCard, state.filter_words || [], "کلمهٔ فیلتر", "filter");
+        selfApp.append(filterCard);
+        const forcedCard = selfCard("👥 عضویت اجباری", "کانال باید عمومی باشد و ربات در آن ادمین باشد.");
+        appendStringListEditor(forcedCard, state.forced_channels || [], "یوزرنیم کانال، مانند @Channel", "forced");
+        selfApp.append(forcedCard);
+
+        const lockCard = selfCard("🔒 قفل زمان‌بندی‌شده", "ساعت تهران استفاده می‌شود. نوع «خانواده» فقط گفتگوهای مورداعتماد را مجاز می‌کند.");
+        appendScheduleEditor(lockCard, state.scheduled_locks || []);
+        selfApp.append(lockCard);
+        const chatsCard = selfCard("💬 قفل‌های هر پیوی و خانواده", "تنظیمات روی گفتگوهای Business ثبت‌شده اعمال می‌شوند؛ شناسه‌ها برای تشخیص گفتگو نمایش داده می‌شوند.");
+        appendChatLockEditor(chatsCard, state.chat_locks || [], new Set(state.trusted_chat_ids || []));
+        selfApp.append(chatsCard);
+
+        const tools = selfCard("🧰 ابزارهای پنل تلگرام", "ابزارهایی که به متن یا رسانهٔ یک گفت‌وگوی مشخص نیاز دارند، در همان پیوی حساب Business اجرا می‌شوند.");
+        [
+          "ترجمه: «ترجمه سلام» یا روی پیام ریپلای کن و «ترجمه» بفرست.",
+          "تاریخ و ساعت: «تاریخ» را در پیوی بفرست.",
+          "آمار مخاطب: «آمار» را در پیوی بفرست.",
+          "نرخ ارز: «نرخ ارز» را در پیوی بفرست.",
+          "ساخت ویدیو مسیج، گیف یا استیکر: روی رسانه ریپلای کن و دستور همان ابزار را بفرست.",
+        ].forEach((text) => {
+          const row = document.createElement("div");
+          row.className = "self-listrow";
+          row.textContent = "• " + text;
+          tools.append(row);
+        });
+        selfApp.append(tools);
+      }
+
+      function appendResponseEditor(card, values, kind) {
+        values.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "self-listrow";
+          const text = document.createElement("span");
+          text.textContent = item.trigger_text + " ← " + item.response_text;
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.textContent = "حذف";
+          remove.addEventListener("click", () => selfAction({
+            action: kind + "_delete",
+            trigger: item.trigger_text,
+          }));
+          row.append(text, remove);
+          card.append(row);
+        });
+        const form = document.createElement("div");
+        form.className = "self-form";
+        selfInput(form, "عبارت شروع", "", "trigger", { placeholder: "عبارت یکتا" });
+        selfInput(form, "متن پاسخ", "", "response", { placeholder: "پاسخی که ربات بفرستد" });
+        const save = document.createElement("button");
+        save.type = "button";
+        save.className = "self-action";
+        save.textContent = "افزودن پاسخ";
+        save.addEventListener("click", () => selfAction({
+          action: kind + "_add",
+          trigger: form.querySelector('[data-self-input="trigger"]').value,
+          response: form.querySelector('[data-self-input="response"]').value,
+        }));
+        form.append(save);
+        card.append(form);
+      }
+
+      function appendStringListEditor(card, values, label, kind) {
+        values.forEach((value) => {
+          const row = document.createElement("div");
+          row.className = "self-listrow";
+          const text = document.createElement("span");
+          text.textContent = value;
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.textContent = "حذف";
+          remove.addEventListener("click", () => selfAction({
+            action: kind + "_delete",
+            [kind === "filter" ? "keyword" : "channel"]: value,
+          }));
+          row.append(text, remove);
+          card.append(row);
+        });
+        const form = document.createElement("div");
+        form.className = "self-form";
+        selfInput(form, label, "", "list_value");
+        const add = document.createElement("button");
+        add.type = "button";
+        add.className = "self-action";
+        add.textContent = "افزودن";
+        add.addEventListener("click", () => selfAction({
+          action: kind + "_add",
+          [kind === "filter" ? "keyword" : "channel"]: form.querySelector("input").value,
+        }));
+        form.append(add);
+        card.append(form);
+      }
+
+      function appendScheduleEditor(card, schedules) {
+        schedules.forEach((rule) => {
+          const row = document.createElement("div");
+          row.className = "self-listrow";
+          const days = ["هر روز", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه", "یکشنبه"];
+          const weekday = Number(rule.weekday);
+          const title = document.createElement("span");
+          title.textContent = (days[weekday + 1] || "هر روز") + " · " +
+            rule.start_time + " تا " + rule.end_time + " · " +
+            (rule.lock_type === "family" ? "خانواده" : "همه");
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.textContent = "حذف";
+          remove.addEventListener("click", () => selfAction({ action: "schedule_delete", lock_id: rule.lock_id }));
+          row.append(title, remove);
+          card.append(row);
+        });
+        const form = document.createElement("div");
+        form.className = "self-form";
+        selfInput(form, "روز", -1, "weekday", { select: [
+          ["-1", "هر روز"], ["0", "دوشنبه"], ["1", "سه‌شنبه"], ["2", "چهارشنبه"],
+          ["3", "پنجشنبه"], ["4", "جمعه"], ["5", "شنبه"], ["6", "یکشنبه"],
+        ] });
+        selfInput(form, "از ساعت", "23:00", "start_time", { type: "time" });
+        selfInput(form, "تا ساعت", "06:00", "end_time", { type: "time" });
+        selfInput(form, "نوع قفل", "all", "lock_type", { select: [["all", "همه"], ["family", "فقط خانواده"]] });
+        const add = document.createElement("button");
+        add.type = "button";
+        add.className = "self-action";
+        add.textContent = "افزودن قفل زمان‌بندی";
+        add.addEventListener("click", () => selfAction({
+          action: "schedule_add",
+          weekday: Number(form.querySelector('[data-self-input="weekday"]').value),
+          start_time: form.querySelector('[data-self-input="start_time"]').value,
+          end_time: form.querySelector('[data-self-input="end_time"]').value,
+          lock_type: form.querySelector('[data-self-input="lock_type"]').value,
+        }));
+        form.append(add);
+        card.append(form);
+      }
+
+      function appendChatLockEditor(card, chats, trustedIds) {
+        const lockLabels = {
+          link: "لینک", reply: "ریپلای", photo: "عکس", sticker: "استیکر",
+          private: "پیوی", voice: "ویس", video_note: "ویدیو مسیج",
+          animation: "گیف", file: "فایل", audio: "آهنگ", location: "لوکیشن",
+          forward: "فوروارد", hashtag: "هشتگ",
+        };
+        chats.forEach((chat) => {
+          const section = document.createElement("details");
+          section.className = "self-card";
+          const summary = document.createElement("summary");
+          summary.textContent = "گفتگوی " + chat.chat_id.toLocaleString("en-US");
+          section.append(summary);
+          const trustRow = document.createElement("div");
+          trustRow.className = "self-row";
+          const trustLabel = document.createElement("label");
+          trustLabel.textContent = "افزودن به خانوادهٔ مورداعتماد";
+          const trustToggle = document.createElement("input");
+          trustToggle.type = "checkbox";
+          trustToggle.className = "self-switch";
+          trustToggle.checked = trustedIds.has(chat.chat_id);
+          trustRow.append(trustLabel, trustToggle);
+          section.append(trustRow);
+          trustToggle.addEventListener("change", async () => {
+            trustToggle.disabled = true;
+            try {
+              const state = await userApiRequest("self/action", { action: "trusted_toggle", chat_id: chat.chat_id });
+              renderSelf(state);
+            } catch (error) {
+              showStatus(error && error.message ? error.message : "وضعیت خانواده ذخیره نشد.", "error");
+            }
+          });
+          Object.entries(lockLabels).forEach(([key, text]) => {
+            const row = document.createElement("div");
+            row.className = "self-row";
+            const label = document.createElement("label");
+            label.textContent = "قفل " + text;
+            const toggle = document.createElement("input");
+            toggle.type = "checkbox";
+            toggle.className = "self-switch";
+            toggle.checked = !!chat.locks[key];
+            toggle.addEventListener("change", async () => {
+              toggle.disabled = true;
+              try {
+                const state = await userApiRequest("self/action", {
+                  action: "chat_lock", chat_id: chat.chat_id, lock_type: key, enabled: toggle.checked,
+                });
+                renderSelf(state);
+              } catch (error) {
+                toggle.checked = !toggle.checked;
+                showStatus(error && error.message ? error.message : "قفل ذخیره نشد.", "error");
+              } finally {
+                toggle.disabled = false;
+              }
+            });
+            row.append(label, toggle);
+            section.append(row);
+          });
+          (chat.filters || []).forEach((keyword) => {
+            const filterRow = document.createElement("div");
+            filterRow.className = "self-listrow";
+            const filterText = document.createElement("span");
+            filterText.textContent = "فیلتر: " + keyword;
+            const removeFilter = document.createElement("button");
+            removeFilter.type = "button";
+            removeFilter.textContent = "حذف";
+            removeFilter.addEventListener("click", () => selfAction({
+              action: "chat_filter_delete",
+              chat_id: chat.chat_id,
+              keyword,
+            }));
+            filterRow.append(filterText, removeFilter);
+            section.append(filterRow);
+          });
+          const filterForm = document.createElement("div");
+          filterForm.className = "self-form";
+          selfInput(filterForm, "فیلتر مخصوص این گفتگو", "", "chat_filter", { placeholder: "عبارت ممنوع" });
+          const addFilter = document.createElement("button");
+          addFilter.type = "button";
+          addFilter.className = "self-action";
+          addFilter.textContent = "افزودن فیلتر برای این پیوی";
+          addFilter.addEventListener("click", () => selfAction({
+            action: "chat_filter_add",
+            chat_id: chat.chat_id,
+            keyword: filterForm.querySelector("input").value,
+          }));
+          filterForm.append(addFilter);
+          section.append(filterForm);
+          card.append(section);
+        });
+        if (!chats.length) {
+          const empty = document.createElement("p");
+          empty.textContent = "بعد از دریافت پیام در یک پیوی Business، گفتگو برای تنظیم قفل اینجا ظاهر می‌شود.";
+          card.append(empty);
+        }
+      }
+
+      async function selfAction(payload) {
+        try {
+          const state = await userApiRequest("self/action", payload);
+          renderSelf(state);
+          showStatus("تنظیمات ذخیره شد.", "info");
+        } catch (error) {
+          showStatus(error && error.message ? error.message : "ذخیرهٔ تنظیمات انجام نشد.", "error");
+        }
+      }
+
+      async function refreshSelf() {
+        if (!hasUserAccount()) {
+          selfApp.replaceChildren();
+          const card = selfCard("اتصال حساب لازم است", "برای مدیریت تنظیمات سلف، اول از تب خانه حساب تلگرامت را به F Coin وصل کن.");
+          const connect = document.createElement("button");
+          connect.type = "button";
+          connect.className = "self-action";
+          connect.textContent = "رفتن به خانه و اتصال";
+          connect.addEventListener("click", () => selectTab("homePanel"));
+          card.append(connect);
+          selfApp.append(card);
+          return;
+        }
+        const state = await userApiRequest("self/state");
+        renderSelf(state);
       }
 
       async function beginAccountLink() {
         if (linking) return;
         linking = true;
+        onboarding.classList.remove("is-pairing");
         connectionError.hidden = true;
         connectButton.disabled = true;
         connectButton.textContent = "در حال ساخت کد اتصال…";
@@ -371,11 +1057,13 @@
         pairingProgress.textContent = "منتظر تأیید کد در بات…";
         try {
           const started = await apiRequest("connect/start");
-          if (!started || !/^\d{8}$/.test(started.pairing_code || "")) {
+          if (!started || !/^\d{4}$/.test(started.pairing_code || "")) {
             throw new Error("سرور کد اتصال معتبر برنگرداند؛ نسخهٔ جدید بات را روی میزبان Reload کن.");
           }
           const code = started.pairing_code;
           pairingCode.textContent = code;
+          $("pairingCommand").textContent = "/Code " + code;
+          onboarding.classList.add("is-pairing");
           pairingBox.hidden = false;
           connectionError.hidden = true;
           connectButton.textContent = "در انتظار تأیید در بات…";
@@ -394,12 +1082,20 @@
           }
           if (!accessToken) throw new Error("مهلت کد تمام شد؛ برای اتصال دوباره کد تازه بساز.");
           pairingBox.hidden = true;
+          onboarding.classList.remove("is-pairing");
           connectState.textContent = "✅ حساب وصل شد؛ در حال دریافت موجودی…";
           connectButton.textContent = "اتصال امن با تلگرام";
           renderConnection(true, linkedUserId);
           await request("state");
           showStatus("اتصال انجام شد! F Coinهای این صفحه به حساب تلگرامت وصل شدند.", "info");
+          Promise.all([refreshMissions(), refreshSelf()]).catch((error) => {
+            showStatus(error && error.message ? error.message : "بعضی پنل‌ها به‌روزرسانی نشدند.", "error");
+          });
         } catch (error) {
+          accessToken = "";
+          serverState = null;
+          onboarding.classList.remove("is-pairing");
+          renderConnection(false);
           pairingProgress.textContent = "اتصال کامل نشد.";
           pairingBox.hidden = true;
           pairingCode.textContent = "--------";
@@ -468,12 +1164,30 @@
         flushingTaps = false;
       }
 
-      function handleTap() {
+      function handleTap(event) {
         if (!serverState || serverState.energy - queuedTaps - inFlightTaps <= 0) return;
         queuedTaps += 1;
         updateWalletDisplay();
         updateButtons();
+        showTapFeedback(event);
         flushTaps();
+      }
+
+      function showTapFeedback(event) {
+        const label = document.createElement("span");
+        label.className = "tap-float";
+        label.textContent = "+1";
+        const bounds = tapButton.getBoundingClientRect();
+        const x = Math.max(0, Math.min(bounds.width, event.clientX - bounds.left));
+        const y = Math.max(0, Math.min(bounds.height, event.clientY - bounds.top));
+        label.style.left = (x / bounds.width * 100) + "%";
+        label.style.top = (y / bounds.height * 100) + "%";
+        tapButton.append(label);
+        tapButton.classList.remove("tap-pulse");
+        void tapButton.offsetWidth;
+        tapButton.classList.add("tap-pulse");
+        window.setTimeout(() => label.remove(), 650);
+        window.setTimeout(() => tapButton.classList.remove("tap-pulse"), 180);
       }
 
       function selectTab(panelId) {
@@ -487,19 +1201,29 @@
           else button.removeAttribute("aria-current");
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
+        if (panelId === "missionsPanel") {
+          refreshMissions().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.", "error"));
+        } else if (panelId === "selfPanel") {
+          refreshSelf().catch((error) => {
+            selfApp.replaceChildren();
+            const card = selfCard("پنل سلف", error && error.message ? error.message : "وضعیت سلف دریافت نشد.");
+            selfApp.append(card);
+          });
+        }
       }
 
       tapButton.addEventListener("click", handleTap);
       exchangeButton.addEventListener("click", () => runAction("exchange", "تبدیل با موفقیت انجام شد."));
+      claimDailyButton.addEventListener("click", claimDailyMission);
       document.querySelectorAll(".tab-button").forEach((button) => {
         button.addEventListener("click", () => selectTab(button.dataset.tab));
       });
       connectButton.addEventListener("click", beginAccountLink);
       copyCodeButton.addEventListener("click", async () => {
         try {
-          await navigator.clipboard.writeText(pairingCode.textContent);
-          copyCodeButton.textContent = "کد کپی شد ✓";
-          window.setTimeout(() => { copyCodeButton.textContent = "کپی کد"; }, 1800);
+          await navigator.clipboard.writeText("/Code " + pairingCode.textContent);
+          copyCodeButton.textContent = "دستور کپی شد ✓";
+          window.setTimeout(() => { copyCodeButton.textContent = "کپی دستور اتصال"; }, 1800);
         } catch (_) {
           showStatus("کپی خودکار در دسترس نیست؛ کد را نگه‌دار و دستی بفرست.", "error");
         }
@@ -543,19 +1267,32 @@
           changeAccountButton.disabled = false;
         }
       });
+      $("closeMiniAppButton").addEventListener("click", () => {
+        if (tg && typeof tg.close === "function") tg.close();
+        else window.close();
+      });
+      $("closeMiniAppButton").style.display = "block";
 
       if (hasTelegramAuth()) {
-        renderConnection(true, tg.initDataUnsafe?.user?.id);
-        request("state").catch((error) => showStatus(error && error.message ? error.message : "دریافت موجودی ناموفق بود.", "error"));
+        request("state").then(() => Promise.all([refreshMissions(), refreshSelf()])).catch((error) => {
+          renderConnection(false);
+          showStatus(error && error.message ? error.message : "دریافت موجودی ناموفق بود.", "error");
+        });
       } else {
         renderConnection(false);
         updateButtons();
       }
       window.setInterval(() => {
-        if (!busy && (hasTelegramAuth() || accessToken)) {
+        if (!busy && !flushingTaps && queuedTaps === 0 && (hasTelegramAuth() || accessToken)) {
           request("state").catch((error) => {
             showStatus(error && error.message ? error.message : "به‌روزرسانی انرژی ناموفق بود.", "error");
           });
+          if (document.getElementById("missionsPanel").classList.contains("active")) {
+            refreshMissions().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.", "error"));
+          }
+          if (document.getElementById("selfPanel").classList.contains("active")) {
+            refreshSelf().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی سلف ناموفق بود.", "error"));
+          }
         }
       }, 30000);
     })();
