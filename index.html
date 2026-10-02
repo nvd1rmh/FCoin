@@ -238,7 +238,10 @@
           <label class="exchange-sub" for="exchangeAmount">مقدار F Coin برای تبدیل</label>
           <input id="exchangeAmount" class="self-input" type="number" min="1000" step="1" inputmode="numeric" placeholder="حداقل 1,000">
           <div class="bot-balance">دریافتی تخمینی: <b id="exchangePreview">—</b> سکه</div>
-          <button id="exchangeButton" class="exchange-button" type="button" disabled>تبدیل مقدار دلخواه</button>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button id="selectAllExchangeButton" class="exchange-button" type="button" style="flex:1;background:linear-gradient(100deg,#fff0a6,#ffd45a);">انتخاب همه F Coinها</button>
+            <button id="exchangeButton" class="exchange-button" type="button" disabled style="flex:1;">تبدیل مقدار دلخواه</button>
+          </div>
           <div class="bot-balance">موجودی سکه بات: <b id="botBalance">—</b></div>
         </div>
       </div>
@@ -388,8 +391,8 @@
           Number(exchangeAmount.value) > serverState.fcoin_balance;
         exchangeButton.textContent = busy ? "در حال پردازش…" : "تبدیل مقدار دلخواه";
         const amount = Number(exchangeAmount.value);
-        const estimate = Number.isSafeInteger(amount) && amount >= 10000
-          ? Math.floor(amount * 75 / 10000)
+        const estimate = Number.isSafeInteger(amount) && amount >= 1000
+          ? Math.floor(amount / 1000)
           : 0;
         exchangePreview.textContent = estimate
           ? estimate.toLocaleString("en-US")
