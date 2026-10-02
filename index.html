@@ -74,6 +74,13 @@
     .connect-heading { display:flex; align-items:center; gap:10px; font-weight:800; font-size:14px; }
     .connect-icon { width:36px; height:36px; display:grid; place-items:center; border-radius:12px; background:#8ef0c617; color:var(--mint); font-size:18px; }
     .connect-copy { color:var(--muted); font-size:11px; line-height:1.9; margin:10px 0 13px; }
+    .connection-error { margin-top:20px; padding:19px; border-radius:20px; border:1px solid #ff81705c; background:linear-gradient(135deg,#661f2aee,#351a2de8); box-shadow:0 12px 34px #e64b4b20; }
+    .connection-error[hidden] { display:none; }
+    .connection-error-title { display:flex; align-items:center; gap:10px; color:#ffe5df; font-size:17px; font-weight:900; }
+    .connection-error-icon { width:38px; height:38px; display:grid; place-items:center; border-radius:13px; background:#ff777728; font-size:20px; }
+    .connection-error p { margin:12px 0 0; color:#ffd5cd; font-size:13px; line-height:1.9; }
+    .connection-error strong { color:#fff; }
+    .connection-error small { display:block; margin-top:9px; color:#eebbb8; font-size:11px; line-height:1.8; }
     .connect-button,.telegram-link { display:flex; width:100%; align-items:center; justify-content:center; text-align:center; border:0; border-radius:13px; padding:13px 14px; font-weight:800; text-decoration:none; cursor:pointer; }
     .connect-button { background:linear-gradient(100deg,#9affd4,#54d9a5); color:#10291e; }
     .connect-button[hidden],.pairing-box[hidden] { display:none; }
@@ -97,6 +104,12 @@
       <div id="connectionBadge" class="live">آمادهٔ اتصال</div>
     </header>
 
+    <section id="connectionError" class="connection-error" role="alert" aria-live="assertive" hidden>
+      <div class="connection-error-title"><span class="connection-error-icon">⚠️</span><span>اتصال به سرور برقرار نشد</span></div>
+      <p>ممکن است دسترسی به سرور از اینترنت شما محدود باشد. <strong>VPN یا فیلترشکن را روشن کنید</strong> و دوباره دکمهٔ اتصال را بزنید.</p>
+      <small>تا وقتی اتصال برقرار نشود، کد ساخته نمی‌شود و موجودی قابل دریافت نیست.</small>
+    </section>
+
     <section class="intro">
       <div class="eyebrow">بازی کن، جمع کن، تبدیل کن</div>
       <h1>دنیای F Coin</h1>
@@ -114,9 +127,10 @@
         <p class="connect-copy">کد را در پیوی بات فرنو بفرست:<br><b dir="ltr">/fcoinlink 12345678</b></p>
         <div id="pairingProgress" class="connect-state">منتظر تأیید کد در بات…</div>
       </div>
-      <button id="disconnectButton" class="disconnect-button" type="button">قطع اتصال این مرورگر</button>
+      <button id="disconnectButton" class="disconnect-button" type="button">قطع اتصال این تب</button>
       <button id="changeAccountButton" class="change-account-button" type="button">اتصال حساب تلگرام دیگر</button>
       <div id="connectState" class="connect-state" role="status" aria-live="polite"></div>
+      <p class="connect-copy">اتصال فقط در همین تب ذخیره می‌شود؛ هر تب یا مرورگر دیگر باید جداگانه وصل شود.</p>
     </section>
 
     <section class="balance-card" aria-label="موجودی F Coin">
@@ -181,10 +195,11 @@
       const connectCopy = $("connectCopy");
       const connectState = $("connectState");
       const connectionBadge = $("connectionBadge");
+      const connectionError = $("connectionError");
       const SESSION_KEY = "ferno_fcoin_session";
       let serverState = null;
       let busy = false;
-      let accessToken = localStorage.getItem(SESSION_KEY) || "";
+      let accessToken = sessionStorage.getItem(SESSION_KEY) || "";
       let linking = false;
 
       function showStatus(message, type) {
@@ -290,6 +305,7 @@
       async function beginAccountLink() {
         if (linking) return;
         linking = true;
+        connectionError.hidden = true;
         connectButton.disabled = true;
         connectButton.textContent = "در حال ساخت کد اتصال…";
         connectCopy.textContent = "داریم یک کد یک‌بارمصرف امن برای اتصال سایت به حساب تلگرامت می‌سازیم.";
@@ -305,6 +321,7 @@
           const code = started.pairing_code;
           pairingCode.textContent = code;
           pairingBox.hidden = false;
+          connectionError.hidden = true;
           connectButton.textContent = "در انتظار تأیید در بات…";
           connectState.textContent = "کد را در پیوی بات بفرست؛ این صفحه خودش اتصال را بررسی می‌کند.";
           const deadline = Date.now() + Math.min(300, started.expires_in || 300) * 1000;
@@ -318,7 +335,7 @@
             }
             accessToken = result.data.access_token;
             linkedUserId = result.data.user_id;
-            localStorage.setItem(SESSION_KEY, accessToken);
+            sessionStorage.setItem(SESSION_KEY, accessToken);
           }
           if (!accessToken) throw new Error("مهلت کد تمام شد؛ برای اتصال دوباره کد تازه بساز.");
           pairingBox.hidden = true;
@@ -329,8 +346,10 @@
           showStatus("اتصال انجام شد! F Coinهای این مرورگر به حساب تلگرامت وصل شدند.", "info");
         } catch (error) {
           pairingProgress.textContent = "اتصال کامل نشد.";
-          pairingBox.hidden = !pairingCode.textContent.match(/^\d{8}$/);
-          showStatus(error && error.message ? error.message : "اتصال برقرار نشد؛ دوباره تلاش کن.", "error");
+          pairingBox.hidden = true;
+          pairingCode.textContent = "--------";
+          connectionError.hidden = false;
+          hideStatus();
           connectCopy.textContent = "برای شروع دوباره، کد تازه بساز و آن را در پیوی بات بفرست.";
           connectButton.textContent = "ساخت کد تازه";
           connectButton.disabled = false;
@@ -379,7 +398,7 @@
         disconnectButton.disabled = true;
         try {
           await apiRequest("disconnect", { token: accessToken });
-          localStorage.removeItem(SESSION_KEY);
+          sessionStorage.removeItem(SESSION_KEY);
           accessToken = "";
           serverState = null;
           $("fcoinBalance").replaceChildren(document.createTextNode("—"));
@@ -388,7 +407,7 @@
           $("botBalance").textContent = "—";
           renderConnection(false);
           updateButtons();
-          showStatus("اتصال این مرورگر قطع شد.", "info");
+          showStatus("اتصال این تب قطع شد.", "info");
         } catch (error) {
           showStatus(error && error.message ? error.message : "قطع اتصال انجام نشد.", "error");
         } finally {
@@ -399,7 +418,7 @@
         changeAccountButton.disabled = true;
         try {
           if (accessToken) await apiRequest("disconnect", { token: accessToken });
-          localStorage.removeItem(SESSION_KEY);
+          sessionStorage.removeItem(SESSION_KEY);
           accessToken = "";
           serverState = null;
           $("fcoinBalance").replaceChildren(document.createTextNode("—"));
@@ -422,7 +441,7 @@
       } else if (accessToken) {
         renderConnection(true);
         request("state").catch((error) => {
-          localStorage.removeItem(SESSION_KEY);
+          sessionStorage.removeItem(SESSION_KEY);
           accessToken = "";
           renderConnection(false);
           showStatus(error && error.message ? error.message : "نشست منقضی شده؛ دوباره حساب را وصل کن.", "error");
