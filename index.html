@@ -21,7 +21,7 @@
     body {
       margin: 0; min-height: 100vh; color: #fff;
       font-family: Tahoma, "Segoe UI", sans-serif;
-      background: radial-gradient(ellipse at 50% 33%, #2d2442 0, #191725 36%, var(--bg) 75%);
+      background: radial-gradient(ellipse at 50% 58%, #6574b9 0, #343b68 22%, #191725 57%, var(--bg) 86%);
       -webkit-tap-highlight-color: transparent;
     }
     button { font: inherit; color: inherit; }
@@ -29,10 +29,11 @@
     .app { padding-bottom:110px; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
-    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 24px), 500px); display:grid; grid-template-columns:repeat(5,1fr); gap:5px; padding:7px; border:1px solid var(--border); border-radius:19px; background:#171622ed; box-shadow:0 12px 36px #0008; backdrop-filter:blur(16px); }
-    .tab-button { min-width:0; border:0; border-radius:13px; padding:9px 4px 8px; background:transparent; color:var(--muted); font-size:10px; cursor:pointer; }
-    .tab-button span { display:block; font-size:18px; line-height:1.2; margin-bottom:3px; }
+    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 24px), 500px); display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:3px; padding:7px; border:1px solid var(--border); border-radius:19px; background:#171622ed; box-shadow:0 12px 36px #0008; backdrop-filter:blur(16px); }
+    .tab-button { min-width:0; border:0; border-radius:13px; padding:8px 1px 7px; background:transparent; color:var(--muted); font-size:9px; cursor:pointer; }
+    .tab-button span { display:block; font-size:16px; line-height:1.2; margin-bottom:3px; }
     .tab-button.active { color:#b8ffdf; background:#62e5aa1c; }
+    .tab-button[data-tab="missionsPanel"]{order:-1;}
     .placeholder-card { margin-top:22px; padding:26px 20px; text-align:center; border:1px solid var(--border); border-radius:22px; background:linear-gradient(145deg,#ffffff0d,#ffffff03); }
     .onboarding { display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-rows:auto auto; align-items:center; column-gap:12px; margin:4px 0 7px; padding:9px 12px; border:1px solid #8ef0c650; border-radius:17px; background:linear-gradient(105deg,#11251d,#171622); box-shadow:0 8px 24px #0004,inset 0 1px #fff2; text-align:right; }
     .onboarding[hidden] { display:none; }
@@ -166,6 +167,10 @@
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
     @media (max-width:360px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .coin-button{width:226px;} }
     @media (prefers-reduced-motion: reduce) { .coin-button:not(:disabled) { animation:none; } .tap-float { animation-duration:.01ms; } }
+
+    .rank-line{display:flex;justify-content:center;align-items:center;gap:8px;margin:9px 0 14px;color:#d9d7e5;font-size:13px}.rank-line b{color:#ffd45a}.rank-line .rank-dot{width:5px;height:5px;border-radius:50%;background:#ffd45a;box-shadow:0 0 10px #ffd45a}
+    .upgrade-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.upgrade-option{border:1px solid #ffd45a35;border-radius:16px;padding:13px 10px;background:linear-gradient(145deg,#ffffff12,#ffffff04);text-align:center}.upgrade-option strong{display:block;font-size:15px;color:#ffe18a}.upgrade-option small{display:block;color:var(--muted);font-size:10px;margin:6px 0 10px}.upgrade-option button{width:100%;border:0;border-radius:10px;padding:10px 5px;background:linear-gradient(100deg,#ffe278,#ffad32);color:#2a1b06;font-weight:900;font-size:11px}.upgrade-option button:disabled{opacity:.45}.invite-hero{margin-top:20px;padding:22px 18px;border:1px solid #8ef0c63a;border-radius:23px;background:radial-gradient(ellipse at 50% 0,#65e8b51e,transparent 65%),linear-gradient(145deg,#192b2b,#171622);text-align:center}.invite-number{font-size:34px;font-weight:900;color:#a4ffda}.invite-link{direction:ltr;text-align:left;word-break:break-all;padding:13px;border-radius:12px;background:#080a12;border:1px solid var(--border);font-size:11px;color:#d9e8e3;margin:13px 0}.invite-rewards{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}.invite-rewards>div{padding:13px 7px;border-radius:14px;background:#ffffff0a;border:1px solid var(--border);font-size:12px}.invite-rewards b{display:block;color:#ffdb76;font-size:17px;margin-top:5px}.gold-heading{font-size:17px;font-weight:900;margin:22px 0 5px}
+    @media(max-width:380px){.tab-button{font-size:8px}.tab-button span{font-size:14px}.upgrade-grid{gap:7px}.upgrade-option{padding:11px 7px}}
   </style>
 </head>
 <body>
@@ -184,10 +189,11 @@
     <section id="homePanel" class="tab-panel active" aria-label="خانه">
       <section class="balance-card" aria-label="موجودی F Coin">
         <div>
-          <div class="balance-label">موجودی F Coin شما</div>
+          <div class="balance-label">موجودی شما</div>
           <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
+          <div class="rank-line"><span class="rank-dot"></span><span>لول <b id="homeLevel">—</b></span><span>•</span><span id="homeXp">— XP</span></div>
         </div>
-        <div class="wallet-icon" aria-hidden="true">◈</div>
+        <div class="wallet-icon" aria-hidden="true">F</div>
       </section>
       <section id="onboarding" class="onboarding" aria-live="polite">
         <div class="onboarding-kicker">مرحلهٔ اول</div>
@@ -213,10 +219,10 @@
           </span>
           <span class="coin-glint" aria-hidden="true"></span>
         </button>
-        <div class="tap-hint">هر ضربه <strong>+1 F Coin</strong></div>
+        <div class="tap-hint">هر ضربه <strong id="tapPowerLabel">+1 F Coin</strong></div>
       </section>
       <section class="energy-card" aria-label="انرژی">
-        <div class="energy-top"><span>⚡ انرژی</span><span class="energy-count"><b id="energyValue">—</b> <em>/ 1000</em></span></div>
+        <div class="energy-top"><span>⚡ انرژی</span><span class="energy-count"><b id="energyValue">—</b> <em id="energyMax">/ 1000</em></span></div>
         <div class="bar"><div id="energyBar" class="bar-fill"></div></div>
         <div class="energy-note">هر ضربه ۱ انرژی مصرف می‌کند؛ ۱۰ انرژی در هر دقیقه شارژ می‌شود.</div>
       </section>
@@ -265,6 +271,37 @@
       </div>
       <button id="claimDailyButton" class="mission-claim" type="button" disabled>دریافت سکهٔ روزانه و +۵ XP</button>
     </section>
+    <section id="invitePanel" class="tab-panel" aria-label="دعوت دوستان">
+      <div class="invite-hero">
+        <div style="font-size:42px">🎁</div><h1 style="margin:8px 0">دعوت دوستان</h1>
+        <p>دوستات رو به فرنو دعوت کن و با هر ورود موفق، جایزه بگیر!</p>
+        <div class="invite-rewards"><div>🪙 سکهٔ ربات<b>+۲۵</b></div><div>🟡 اف‌کوین<b>+۵٬۰۰۰</b></div></div>
+        <div class="balance-label">تعداد دعوت‌های موفق</div><div class="invite-number" id="inviteCount">—</div>
+        <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:12px">لینک ورود به ربات</div>
+        <div class="invite-link" id="inviteLink">برای دریافت لینک، حسابت را وصل کن.</div>
+        <button class="exchange-button" id="copyInviteButton" type="button">کپی لینک ربات</button>
+        <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:14px">لینک ورود مستقیم به مینی‌اپ</div>
+        <div class="invite-link" id="inviteAppLink">پس از اتصال حساب نمایش داده می‌شود.</div>
+        <button class="self-action" id="copyInviteAppButton" type="button">کپی لینک مینی‌اپ</button>
+      </div>
+      <div class="mission-card" style="margin-top:13px"><b>چطور جایزه بگیرم؟</b><p class="exchange-sub">لینک اختصاصی‌ات را بفرست. وقتی دوستت برای اولین بار از طریق لینک وارد ربات یا مینی‌اپ شود، پاداش به‌صورت خودکار و فقط یک‌بار برایت ثبت می‌شود.</p></div>
+    </section>
+    <section id="upgradePanel" class="tab-panel" aria-label="ارتقا">
+      <div class="placeholder-card"><div class="placeholder-icon">🚀</div><h1>مرکز ارتقا</h1><p>با سکه‌های ربات، ظرفیت انرژی و قدرت هر ضربه را بیشتر کن.</p></div>
+      <h2 class="gold-heading">⚡ ارتقای انرژی</h2><div class="mission-card"><p class="exchange-sub">ظرفیت انرژی فعلی: <b id="upgradeEnergyCurrent">۱٬۰۰۰</b></p><div class="upgrade-grid">
+        <div class="upgrade-option"><strong>۲٬۰۰۰ انرژی</strong><small>هزینه: ۲٬۰۰۰ سکه</small><button data-upgrade="energy" data-target="2000">ارتقا</button></div>
+        <div class="upgrade-option"><strong>۳٬۰۰۰ انرژی</strong><small>هزینه: ۳٬۰۰۰ سکه</small><button data-upgrade="energy" data-target="3000">ارتقا</button></div>
+        <div class="upgrade-option"><strong>۴٬۰۰۰ انرژی</strong><small>هزینه: ۴٬۰۰۰ سکه</small><button data-upgrade="energy" data-target="4000">ارتقا</button></div>
+      </div></div>
+      <h2 class="gold-heading">👆 قدرت تپ کردن</h2><div class="mission-card"><p class="exchange-sub">قدرت فعلی هر ضربه: <b id="upgradeTapCurrent">+۱</b></p><div class="upgrade-grid">
+        <div class="upgrade-option"><strong>+۲</strong><small>هزینه: ۲٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="2">ارتقا</button></div>
+        <div class="upgrade-option"><strong>+۳</strong><small>هزینه: ۳٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="3">ارتقا</button></div>
+        <div class="upgrade-option"><strong>+۴</strong><small>هزینه: ۴٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="4">ارتقا</button></div>
+        <div class="upgrade-option"><strong>+۵</strong><small>هزینه: ۵٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="5">ارتقا</button></div>
+        <div class="upgrade-option"><strong>+۶</strong><small>هزینه: ۶٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="6">ارتقا</button></div>
+        <div class="upgrade-option"><strong>+۷</strong><small>هزینه: ۷٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="7">ارتقا</button></div>
+      </div></div>
+    </section>
     <section id="accountPanel" class="tab-panel" aria-label="حساب کاربری">
       <div class="placeholder-card profile-card"><div class="placeholder-icon">👤</div><h1>حساب کاربری</h1><p id="profileStatus">وضعیت اتصال حساب تلگرام در این بخش نمایش داده می‌شود.</p></div>
       <section class="connect-card">
@@ -281,7 +318,9 @@
       <button class="tab-button active" type="button" data-tab="homePanel" aria-current="page"><span>🏠</span>خانه</button>
       <button class="tab-button" type="button" data-tab="convertPanel"><span>🔄</span>تبدیل</button>
       <button class="tab-button" type="button" data-tab="selfPanel"><span>🛡️</span>سلف</button>
-      <button class="tab-button" type="button" data-tab="missionsPanel"><span>🎯</span>ماموریت‌ها</button>
+      <button class="tab-button" type="button" data-tab="invitePanel"><span>🎁</span>دعوت</button>
+      <button class="tab-button" type="button" data-tab="missionsPanel"><span>🎯</span>ماموریت</button>
+      <button class="tab-button" type="button" data-tab="upgradePanel"><span>🚀</span>ارتقا</button>
       <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب کاربری</button>
     </nav>
   </main>
@@ -354,15 +393,25 @@
       function updateWalletDisplay() {
         if (!serverState) return;
         $("fcoinBalance").replaceChildren(document.createTextNode(
-          (serverState.fcoin_balance + queuedTaps + inFlightTaps).toLocaleString("en-US")
+          (serverState.fcoin_balance + (queuedTaps + inFlightTaps) * Number(serverState.tap_power || 1)).toLocaleString("en-US")
         ));
         const unit = document.createElement("span");
         unit.className = "balance-unit";
         unit.textContent = "F";
         $("fcoinBalance").append(unit);
-        const energy = Math.max(0, Math.min(1000, serverState.energy - queuedTaps - inFlightTaps));
+        const maxEnergy = Number(serverState.max_energy || 1000);
+        const energy = Math.max(0, Math.min(maxEnergy, serverState.energy - queuedTaps - inFlightTaps));
         $("energyValue").textContent = energy.toLocaleString("en-US");
-        $("energyBar").style.width = (energy / 10) + "%";
+        $("energyMax").textContent = "/ " + maxEnergy.toLocaleString("en-US");
+        $("energyBar").style.width = (energy / maxEnergy * 100) + "%";
+        $("tapPowerLabel").textContent = "+" + Number(serverState.tap_power || 1) + " F Coin";
+        $("upgradeEnergyCurrent").textContent = maxEnergy.toLocaleString("fa-IR");
+        $("upgradeTapCurrent").textContent = "+" + Number(serverState.tap_power || 1);
+        document.querySelectorAll("[data-upgrade]").forEach((button) => {
+          const current = button.dataset.upgrade === "energy" ? maxEnergy : Number(serverState.tap_power || 1);
+          button.disabled = Number(button.dataset.target) <= current;
+          if (button.disabled) button.textContent = "فعال است ✓";
+        });
         $("botBalance").textContent = serverState.bot_coin_balance.toLocaleString("en-US");
       }
 
@@ -457,6 +506,8 @@
       function renderMissions(state) {
         $("missionLevel").textContent = state.level.toLocaleString("en-US");
         $("missionXpText").textContent = state.xp.toLocaleString("en-US") + " XP";
+        $("homeLevel").textContent = state.level.toLocaleString("en-US");
+        $("homeXp").textContent = state.xp.toLocaleString("en-US") + " XP";
         $("missionNext").textContent = "گام بعدی: " +
           Math.max(0, state.level_target - state.xp).toLocaleString("en-US") + " XP تا سطح بعدی";
         $("missionXpFill").style.width = Math.min(100, state.level_progress / state.level_target * 100) + "%";
@@ -1046,7 +1097,7 @@
       function showTapFeedback(event) {
         const label = document.createElement("span");
         label.className = "tap-float";
-        label.textContent = "+1";
+        label.textContent = "+" + Number(serverState && serverState.tap_power || 1);
         const bounds = tapButton.getBoundingClientRect();
         const x = Math.max(0, Math.min(bounds.width, event.clientX - bounds.left));
         const y = Math.max(0, Math.min(bounds.height, event.clientY - bounds.top));
@@ -1054,6 +1105,33 @@
         label.style.top = (y / bounds.height * 100) + "%";
         tapButton.append(label);
         window.setTimeout(() => label.remove(), 720);
+      }
+
+      async function refreshInvite() {
+        if (!hasUserAccount()) return;
+        const state = await userApiRequest("referral/state");
+        $("inviteCount").textContent = Number(state.invite_count || 0).toLocaleString("fa-IR");
+        $("inviteLink").textContent = state.invite_link;
+        $("inviteAppLink").textContent = state.miniapp_link || "لینک مینی‌اپ در دسترس نیست.";
+      }
+
+      async function syncStartAppReferral() {
+        if (!hasTelegramAuth()) return;
+        try { await userApiRequest("referral/attribute", { init_data: tg.initData }); }
+        catch (error) { console.warn("Referral attribution:", error); }
+      }
+
+      async function buyUpgrade(kind, target, button) {
+        if (!hasUserAccount() || !serverState) { showStatus("ابتدا حساب تلگرامت را وصل کن.", "error"); return; }
+        button.disabled = true;
+        try {
+          const result = await userApiRequest("upgrades/buy", { kind, target: Number(target) });
+          render(result);
+          showStatus("ارتقا با موفقیت فعال شد!", "info");
+        } catch (error) {
+          showStatus(error && error.message ? error.message : "خرید ارتقا ناموفق بود.", "error");
+          button.disabled = false;
+        }
       }
 
       function selectTab(panelId) {
@@ -1067,7 +1145,11 @@
           else button.removeAttribute("aria-current");
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
-        if (panelId === "missionsPanel") {
+        if (panelId === "invitePanel") {
+          refreshInvite().catch((error) => showStatus(error.message || "دریافت لینک دعوت ناموفق بود.", "error"));
+        } else if (panelId === "upgradePanel") {
+          if (serverState) render(serverState);
+        } else if (panelId === "missionsPanel") {
           refreshMissions().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.", "error"));
         } else if (panelId === "selfPanel") {
           refreshSelf().catch((error) => {
@@ -1086,6 +1168,17 @@
         { amount: Number(exchangeAmount.value) }
       ));
       claimDailyButton.addEventListener("click", claimDailyMission);
+      document.querySelectorAll("[data-upgrade]").forEach((button) => {
+        button.addEventListener("click", () => buyUpgrade(button.dataset.upgrade, button.dataset.target, button));
+      });
+      async function copyInviteLink(elementId, successText) {
+        const link = $(elementId).textContent;
+        if (!/^https:\/\/t\.me\//.test(link)) { showStatus("ابتدا حسابت را وصل کن تا لینک دعوت ساخته شود.", "error"); return; }
+        try { await navigator.clipboard.writeText(link); showStatus(successText, "info"); }
+        catch (_) { showStatus("کپی خودکار در دسترس نیست؛ لینک را دستی کپی کن.", "error"); }
+      }
+      $("copyInviteButton").addEventListener("click", () => copyInviteLink("inviteLink", "لینک ربات کپی شد؛ برای دوستانت بفرست!"));
+      $("copyInviteAppButton").addEventListener("click", () => copyInviteLink("inviteAppLink", "لینک مینی‌اپ کپی شد؛ برای دوستانت بفرست!"));
       document.querySelectorAll(".tab-button").forEach((button) => {
         button.addEventListener("click", () => selectTab(button.dataset.tab));
       });
@@ -1145,6 +1238,7 @@
       $("closeMiniAppButton").style.display = "block";
 
       if (hasTelegramAuth()) {
+        syncStartAppReferral();
         request("state").then(() => Promise.all([refreshMissions(), refreshSelf()])).catch((error) => {
           renderConnection(false);
           showStatus(error && error.message ? error.message : "دریافت موجودی ناموفق بود.", "error");
