@@ -9,7 +9,7 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #101018;
+      --bg: #100e12;
       --panel: rgba(255,255,255,.055);
       --muted: #9d9baa;
       --gold: #ffd45a;
@@ -21,11 +21,13 @@
     body {
       margin: 0; min-height: 100vh; color: #fff;
       font-family: Tahoma, "Segoe UI", sans-serif;
-      background: radial-gradient(ellipse at 50% 33%, #2d2442 0, #191725 36%, var(--bg) 75%);
+      background:
+        radial-gradient(ellipse at 50% 35%, #ff9d2626 0, transparent 37%),
+        radial-gradient(ellipse at 50% 12%, #352116 0, #1a1518 40%, var(--bg) 78%);
       -webkit-tap-highlight-color: transparent;
     }
     button { font: inherit; color: inherit; }
-    .app { width: min(100%, 520px); min-height: 100vh; margin: auto; padding: 22px 20px max(26px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; }
+    .app { width: min(100%, 520px); min-height: 100vh; margin: auto; padding: 16px 20px max(26px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; }
     .app { padding-bottom:110px; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
@@ -92,18 +94,18 @@
     .live { color:var(--mint); border:1px solid #8ef0c62e; background:#8ef0c610; border-radius:99px; padding:8px 11px; font-size:11px; }
     .live:before { content:""; display:inline-block; width:6px;height:6px; border-radius:50%; background:currentColor; margin-left:6px; vertical-align:1px; }
     h1 { font-size:26px; margin:8px 0 6px; }
-    .balance-card { position:relative; overflow:hidden; margin-top:8px; border:1px solid #ffe28d45; background:radial-gradient(ellipse at 15% 0,#ffd45a20,transparent 48%),linear-gradient(135deg,#ffffff12,#ffffff04); border-radius:22px; padding:12px 17px; display:flex; justify-content:space-between; align-items:center; box-shadow:inset 0 1px #fff3,0 12px 30px #0002; }
+    .balance-card { position:relative; overflow:hidden; margin-top:12px; border:1px solid #ffe28d20; background:radial-gradient(ellipse at 50% 0,#ffd45a12,transparent 70%); border-radius:22px; padding:10px 17px 12px; display:flex; justify-content:center; align-items:center; gap:11px; box-shadow:inset 0 1px #fff2; }
     .balance-card:after { content:""; position:absolute; width:145px; height:145px; left:-78px; top:-94px; border:1px solid #ffd45a16; border-radius:50%; box-shadow:0 0 0 13px #ffd45a08,0 0 0 27px #ffd45a05; pointer-events:none; }
-    .balance-label { color:var(--muted); font-size:12px; margin-bottom:7px; }
-    .balance-value { font-size:30px; font-weight:900; direction:ltr; text-align:right; letter-spacing:.4px; color:#fff7dc; text-shadow:0 2px 18px #ffd45a38; font-variant-numeric:tabular-nums; }
+    .balance-label { color:#c8ad83; font-size:11px; margin-bottom:3px; text-align:center; }
+    .balance-value { font-size:34px; font-weight:900; direction:ltr; text-align:center; white-space:nowrap; letter-spacing:.4px; color:#fff7dc; text-shadow:0 2px 18px #ffd45a55; font-variant-numeric:tabular-nums; }
     .balance-unit { font-size:13px; color:var(--gold); margin-right:6px; text-shadow:0 0 14px #ffd45a80; }
-    .wallet-icon { position:relative; width:53px; height:53px; border-radius:18px; display:grid; place-items:center; font-size:25px; color:#fff1b4; background:linear-gradient(145deg,#ffe990,#e79724 60%,#9b4d12); border:1px solid #fff4b878; box-shadow:inset 0 2px 3px #fff9, inset 0 -5px 9px #74370a8c,0 8px 18px #e99f2440; text-shadow:0 2px 3px #74400b; }
-    .coin-area { min-height:clamp(250px, 39vh, 345px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:1100px; }
-    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(72vw, 292px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#fff4bd 0%,#ffd734 19%,#ef9b0d 51%,#9f3214 100%); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff7c2410,0 0 62px #ffb51e55,0 22px 38px #0009,0 39px 64px #ec4c1c36,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #6f210b,inset 0 -18px 24px #9a3510; transform:rotateX(5deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:manipulation; -webkit-user-select:none; }
-    .coin-button:before { content:""; position:absolute; z-index:-1; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff3ae 0deg 1.2deg,#e5a321 1.2deg 2.8deg,#9d4217 2.8deg 3.5deg,#ffd957 3.5deg 5.3deg); box-shadow:inset 0 2px 3px #fff9,inset 0 -3px 5px #67200e; }
-    .coin-button:after { content:""; position:absolute; inset:9px; border-radius:50%; border:4px solid #ffea8e; background:radial-gradient(ellipse at 28% 14%,#fffdebe8,transparent 23%),radial-gradient(ellipse at 72% 83%,#9c351a40,transparent 46%),linear-gradient(145deg,#fff0a7 0%,#ffd53c 38%,#efa711 68%,#c84719 100%); box-shadow:inset 0 0 0 3px #9c431c63,inset 0 0 0 7px #fff4c28c,inset 0 2px 10px #fff9,0 1px 1px #8e321c; pointer-events:none; }
-    .coin-button:active { transform:rotateX(5deg); filter:brightness(1.03); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff7c2410,0 0 54px #ffb51e45,0 22px 38px #0009,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #6f210b,inset 0 -18px 24px #9a3510; }
-    .coin-button:disabled { cursor:wait; filter:saturate(.5) brightness(.82); }
+    .wallet-icon { position:relative; width:42px; height:42px; flex:none; border-radius:50%; display:grid; place-items:center; font-size:20px; color:#fff1b4; background:linear-gradient(145deg,#fff4a9,#f7b824 60%,#b45a12); border:1px solid #fff4b878; box-shadow:inset 0 2px 3px #fff9, inset 0 -4px 7px #74370a8c,0 5px 14px #e99f2440; text-shadow:0 2px 3px #74400b; }
+    .coin-area { min-height:clamp(270px, 42vh, 365px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:1100px; }
+    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(76vw, 310px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#fff8c9 0%,#ffdf52 18%,#f4a913 53%,#c66b13 100%); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff9b2110,0 0 68px #ffb51e66,0 22px 38px #0009,0 39px 64px #ec8d1c30,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #74400c,inset 0 -18px 24px #9a5710; transform:rotateX(5deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:none; -webkit-user-select:none; }
+    .coin-button:before { content:""; position:absolute; z-index:-1; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff3ae 0deg 1.2deg,#e5a321 1.2deg 2.8deg,#a86a16 2.8deg 3.5deg,#ffd957 3.5deg 5.3deg); box-shadow:inset 0 2px 3px #fff9,inset 0 -3px 5px #67200e; }
+    .coin-button:after { content:""; position:absolute; inset:9px; border-radius:50%; border:4px solid #ffea8e; background:radial-gradient(ellipse at 28% 14%,#fffdebe8,transparent 23%),radial-gradient(ellipse at 72% 83%,#9c6a1a40,transparent 46%),linear-gradient(145deg,#fff4b1 0%,#ffd53c 38%,#efa711 68%,#ce7918 100%); box-shadow:inset 0 0 0 3px #9c6a1c63,inset 0 0 0 7px #fff4c28c,inset 0 2px 10px #fff9,0 1px 1px #8e5d1c; pointer-events:none; }
+    .coin-button:active { transform:rotateX(5deg) scale(.985); filter:brightness(1.03); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff9b2110,0 0 58px #ffb51e55,0 22px 38px #0009,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #74400c,inset 0 -18px 24px #9a5710; }
+    .coin-button:disabled { cursor:wait; filter:saturate(.9) brightness(.94); }
     .coin-face { position:absolute; z-index:1; inset:11px; border-radius:50%; pointer-events:none; }
     .coin-engraving { position:absolute; inset:17%; border:1px solid #fff4bf8c; border-radius:50%; box-shadow:inset 0 0 0 3px #9b431b2b,inset 0 0 0 5px #fff2a35c,0 1px 1px #fff9; }
     .coin-letter { position:absolute; left:50%; top:50%; display:grid; place-items:center; width:52%; height:52%; border-radius:50%; transform:translate(-50%,-50%) rotate(-7deg); font-size:clamp(96px,29vw,134px); line-height:.8; font-weight:1000; color:#fff1a0; -webkit-text-fill-color:#fff1a0; -webkit-text-stroke:1.5px #a83d13; text-shadow:0 2px 0 #fffbd0,0 5px 0 #f7b91e,0 8px 0 #c45414,0 11px 2px #76230e,0 15px 12px #5d1c0da8; font-family:Arial Black,Arial,sans-serif; }
@@ -112,7 +114,7 @@
     .coin-stars { position:absolute; left:50%; top:50%; width:68%; height:68%; border:1px solid #fff4b979; border-radius:50%; transform:translate(-50%,-50%); box-shadow:0 0 0 3px #a3451b28,inset 0 0 0 3px #fff1a448; }
     .coin-glint { position:absolute; z-index:2; width:27%; height:11%; top:16%; left:18%; border-radius:50%; background:#fffde5e8; filter:blur(11px); transform:rotate(-38deg); pointer-events:none; }
     .coin-button:not(:disabled) { animation:none; }
-    .coin-button:not(:disabled):active { animation:none; transform:rotateX(5deg); filter:brightness(1.03); }
+    .coin-button:not(:disabled):active { animation:none; transform:rotateX(5deg) scale(.985); filter:brightness(1.03); }
     .coin-button.tap-pulse { animation:none; }
     @keyframes coin-float { 0%,100% { translate:0 0; } 50% { translate:0 -5px; } }
     .tap-hint { margin-top:22px; color:#c5c2d0; font-size:13px; }
@@ -124,7 +126,7 @@
     .energy-count { direction:ltr; color:var(--mint); font-weight:700; }
     .energy-count em { color:#aaa8b5; font-style:normal; font-weight:400; }
     .bar { margin-top:12px; height:8px; background:#ffffff12; border-radius:99px; overflow:hidden; }
-    .bar-fill { width:0%; height:100%; border-radius:inherit; background:linear-gradient(90deg,#70e5b1,#c4ffd8); transition:width .3s; }
+    .bar-fill { width:0%; height:100%; border-radius:inherit; background:linear-gradient(90deg,#ff9627,#ffe36a); box-shadow:0 0 10px #ffb73b80; transition:width .3s; }
     .energy-note { color:#898795; font-size:10px; margin-top:9px; }
     .exchange-card { margin-top:14px; padding:17px; border-radius:20px; border:1px solid #ffd45a27; background:linear-gradient(135deg,#ffd45a0c,#ffffff04); }
     .exchange-heading { display:flex; align-items:stretch; justify-content:space-between; flex-direction:column; gap:10px; text-align:right; }
@@ -163,8 +165,40 @@
     .change-account-button { display:none; width:100%; margin-top:9px; border:1px solid var(--border); border-radius:12px; padding:10px; color:#e9e7f0; background:#ffffff09; cursor:pointer; }
     .connect-button:disabled,.disconnect-button:disabled,.change-account-button:disabled,.copy-code-button:disabled { opacity:.55; cursor:wait; }
     .connect-state { color:var(--mint); font-size:11px; margin-top:10px; text-align:center; }
+    .home-level { margin-top:1px; padding:8px 14px; border:1px solid #ffd45a20; border-radius:15px; background:linear-gradient(105deg,#ffd45a0b,#ffffff04); }
+    .home-level-top { display:flex; justify-content:space-between; align-items:center; color:#f3d99b; font-size:11px; font-weight:800; }
+    .home-level-top span:last-child { color:#d7b979; direction:ltr; }
+    .home-xp-bar { height:6px; margin-top:8px; overflow:hidden; border-radius:99px; background:#ffffff14; }
+    .home-xp-fill { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#f39b22,#ffe477); box-shadow:0 0 12px #ffb33888; transition:width .35s ease; }
+    .tab-bar { grid-template-columns:repeat(7,minmax(0,1fr)); gap:3px; padding:6px; }
+    .tab-button { padding:8px 1px 7px; font-size:9px; white-space:nowrap; }
+    .tab-button span { font-size:17px; }
+    .tab-button.active { color:#ffe8a0; background:linear-gradient(145deg,#ffc74628,#ff9d1410); box-shadow:inset 0 1px #fff2; }
+    .invite-hero { border-color:#8ef0c62b; background:radial-gradient(ellipse at 50% 0,#53e0ac1c,transparent 65%),linear-gradient(145deg,#171f27,#171622); }
+    .invite-reward { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:18px; padding:12px; border:1px solid #8ef0c626; border-radius:13px; background:#8ef0c60b; color:var(--muted); font-size:11px; }
+    .invite-reward b { color:var(--mint); font-size:12px; }
+    .invite-card,.upgrade-card { margin-top:13px; padding:16px; border:1px solid var(--border); border-radius:19px; background:linear-gradient(145deg,#ffffff0c,#ffffff04); box-shadow:0 12px 26px #0002; }
+    .invite-card-title { font-size:13px; font-weight:800; }
+    .invite-link { overflow-wrap:anywhere; margin-top:12px; padding:12px; border:1px solid #8ef0c622; border-radius:12px; background:#070d12; color:#b7ffdf; font:12px/1.7 ui-monospace,Consolas,monospace; text-align:left; }
+    .invite-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:11px; }
+    .invite-actions .exchange-button { padding:12px 8px; }
+    .exchange-button.secondary { color:#e5e1ef; background:#ffffff10; border:1px solid var(--border); box-shadow:none; }
+    .invite-card .exchange-sub { margin-bottom:0; }
+    .upgrade-card { position:relative; overflow:hidden; }
+    .upgrade-card:after { position:absolute; top:-38px; left:-26px; width:110px; height:110px; border-radius:50%; background:#ffcf4510; content:""; pointer-events:none; }
+    .upgrade-heading { display:flex; align-items:center; gap:11px; }
+    .upgrade-heading h2 { margin:0; font-size:14px; }
+    .upgrade-heading p { margin:4px 0 0; color:var(--muted); font-size:10px; }
+    .upgrade-icon { display:grid; flex:none; width:40px; height:40px; place-items:center; border:1px solid #ffda6d50; border-radius:14px; background:linear-gradient(145deg,#ffe89c,#f2a926); color:#382105; font-size:20px; box-shadow:0 5px 18px #ffbf3633; }
+    .upgrade-icon.tap-icon { color:#261741; border-color:#c5a0ff55; background:linear-gradient(145deg,#e1c5ff,#9874ea); }
+    .upgrade-status { margin:15px 0 10px; color:#e8e5ef; font-size:12px; }
+    .upgrade-button { width:100%; border:1px solid #ffdf7850; border-radius:13px; padding:12px; color:#271b08; background:linear-gradient(100deg,#ffe58b,#ffb933); box-shadow:0 7px 18px #ffbc3925; font-weight:900; cursor:pointer; }
+    .upgrade-button:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
+    .upgrade-footnote { color:var(--muted); font-size:10px; line-height:1.8; text-align:center; }
+    .tab-button:focus-visible,.upgrade-button:focus-visible,.invite-actions button:focus-visible { outline:2px solid #ffe28b; outline-offset:2px; }
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
-    @media (max-width:360px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .coin-button{width:226px;} }
+    @media (max-width:360px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .tab-bar{gap:1px;padding:5px;} .tab-button{font-size:8px;} }
+    @media (max-width:360px), (max-height:700px) { .coin-area{min-height:220px;padding:0;} .coin-button{width:min(68vw,235px);} .tap-hint{margin-top:12px;} }
     @media (prefers-reduced-motion: reduce) { .coin-button:not(:disabled) { animation:none; } .tap-float { animation-duration:.01ms; } }
   </style>
 </head>
@@ -176,9 +210,9 @@
     </header>
 
     <section id="connectionError" class="connection-error" role="alert" aria-live="assertive" hidden>
-      <div class="connection-error-title"><span class="connection-error-icon">⚠️</span><span>اتصال به سرور برقرار نشد</span></div>
-      <p>ممکن است دسترسی به سرور از اینترنت شما محدود باشد. <strong>VPN یا فیلترشکن را روشن کنید</strong> و دوباره دکمهٔ اتصال را بزنید.</p>
-      <small>تا وقتی اتصال برقرار نشود، کد ساخته نمی‌شود و موجودی قابل دریافت نیست.</small>
+      <div class="connection-error-title"><span class="connection-error-icon">⚠️</span><span id="connectionErrorTitle">اتصال حساب کامل نشد</span></div>
+      <p id="connectionErrorMessage">خطای اتصال نمایش داده می‌شود.</p>
+      <small>اگر اتصال اینترنت برقرار است، متن خطا کمک می‌کند مشخص شود مرحلهٔ اتصال در کجا متوقف شده.</small>
     </section>
 
     <section id="homePanel" class="tab-panel active" aria-label="خانه">
@@ -187,7 +221,14 @@
           <div class="balance-label">موجودی F Coin شما</div>
           <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
         </div>
-        <div class="wallet-icon" aria-hidden="true">◈</div>
+        <div class="wallet-icon" aria-hidden="true">F</div>
+      </section>
+      <section class="home-level" aria-label="سطح و تجربه">
+        <div class="home-level-top">
+          <span>⭐ لول <b id="homeLevel">—</b></span>
+          <span id="homeXpText">— XP</span>
+        </div>
+        <div class="home-xp-bar"><div id="homeXpFill" class="home-xp-fill"></div></div>
       </section>
       <section id="onboarding" class="onboarding" aria-live="polite">
         <div class="onboarding-kicker">مرحلهٔ اول</div>
@@ -213,10 +254,10 @@
           </span>
           <span class="coin-glint" aria-hidden="true"></span>
         </button>
-        <div class="tap-hint">هر ضربه <strong>+1 F Coin</strong></div>
+        <div class="tap-hint">هر ضربه <strong id="tapPowerHint">+1 F Coin</strong></div>
       </section>
       <section class="energy-card" aria-label="انرژی">
-        <div class="energy-top"><span>⚡ انرژی</span><span class="energy-count"><b id="energyValue">—</b> <em>/ 1000</em></span></div>
+        <div class="energy-top"><span>⚡ انرژی</span><span class="energy-count"><b id="energyValue">—</b> <em>/ <span id="energyMax">1000</span></em></span></div>
         <div class="bar"><div id="energyBar" class="bar-fill"></div></div>
         <div class="energy-note">هر ضربه ۱ انرژی مصرف می‌کند؛ ۱۰ انرژی در هر دقیقه شارژ می‌شود.</div>
       </section>
@@ -230,13 +271,13 @@
         <div class="exchange-card">
           <div class="exchange-heading">
             <strong>نرخ تبدیل شفاف</strong>
-            <div class="rate" aria-label="هر ۱٬۰۰۰ اف کوین برابر ۱ سکه است">
-              <span class="rate-amount">1,000 F</span><span>=</span><span class="rate-amount" dir="rtl">1 سکه</span>
+              <div class="rate" aria-label="هر ۵۰۰ اف کوین برابر ۱ سکه است">
+                <span class="rate-amount">500 F</span><span>=</span><span class="rate-amount" dir="rtl">1 سکه</span>
             </div>
           </div>
-          <p class="exchange-sub">مقدار دلخواهت را وارد کن؛ حداقل ۱٬۰۰۰ F Coin. هر ۱٬۰۰۰ F برابر ۱ سکهٔ ربات است و محاسبه به‌صورت نسبتی و رو به پایین انجام می‌شود.</p>
+            <p class="exchange-sub">هر ۵۰۰ F Coin را به ۱ سکهٔ ربات تبدیل کن. مقدار دلخواهت را وارد کن؛ محاسبه رو به پایین انجام می‌شود.</p>
           <label class="exchange-sub" for="exchangeAmount">مقدار F Coin برای تبدیل</label>
-          <input id="exchangeAmount" class="self-input" type="number" min="1000" step="1" inputmode="numeric" placeholder="حداقل 1,000">
+            <input id="exchangeAmount" class="self-input" type="number" min="500" step="1" inputmode="numeric" placeholder="حداقل 500">
           <div class="bot-balance">دریافتی تخمینی: <b id="exchangePreview">—</b> سکه</div>
           <div style="display:flex;gap:8px;margin-top:8px;">
             <button id="selectAllExchangeButton" class="exchange-button" type="button" style="flex:1;background:linear-gradient(100deg,#fff0a6,#ffd45a);">انتخاب همه F Coinها</button>
@@ -245,6 +286,41 @@
           <div class="bot-balance">موجودی سکه بات: <b id="botBalance">—</b></div>
         </div>
       </div>
+    </section>
+    <section id="invitePanel" class="tab-panel" aria-label="دعوت">
+      <div class="placeholder-card invite-hero">
+        <div class="placeholder-icon">✉️</div>
+        <h1>دعوت دوستان</h1>
+        <p>لینک اختصاصی‌ات را بفرست؛ با پیوستن هر دوست، پاداش دعوت را دریافت می‌کنی.</p>
+        <div class="invite-reward"><span>پاداش هر دعوت موفق</span><b>۲۵ سکه + ۵٬۰۰۰ F</b></div>
+      </div>
+      <section class="invite-card">
+        <div class="invite-card-title">🔗 لینک اختصاصی شما</div>
+        <div id="inviteLink" class="invite-link" dir="ltr">برای دریافت لینک، حساب را وصل کن.</div>
+        <div class="invite-actions">
+          <button id="copyInviteButton" class="exchange-button" type="button" disabled>کپی لینک</button>
+          <button id="shareInviteButton" class="exchange-button secondary" type="button" disabled>اشتراک‌گذاری</button>
+        </div>
+        <p id="inviteNote" class="exchange-sub">پاداش پس از اولین ورود دوست از لینک دعوت ثبت می‌شود.</p>
+      </section>
+    </section>
+    <section id="upgradePanel" class="tab-panel" aria-label="ارتقا">
+      <div class="placeholder-card">
+        <div class="placeholder-icon">⚡</div>
+        <h1>ارتقا</h1>
+        <p>با ارتقای مرحله‌ای، ظرفیت انرژی و قدرت هر ضربه‌ات را بیشتر کن.</p>
+      </div>
+      <section class="upgrade-card">
+        <div class="upgrade-heading"><span class="upgrade-icon">⚡</span><div><h2>ظرفیت انرژی</h2><p>افزایش ظرفیت ذخیرهٔ انرژی</p></div></div>
+        <div id="energyUpgradeStatus" class="upgrade-status">ظرفیت فعلی: ۱٬۰۰۰</div>
+        <button id="energyUpgradeButton" class="upgrade-button" type="button" disabled>ارتقای بعدی</button>
+      </section>
+      <section class="upgrade-card">
+        <div class="upgrade-heading"><span class="upgrade-icon tap-icon">✦</span><div><h2>قدرت تپ</h2><p>دریافت F Coin بیشتر با هر ضربه</p></div></div>
+        <div id="tapUpgradeStatus" class="upgrade-status">قدرت فعلی: +۱</div>
+        <button id="tapUpgradeButton" class="upgrade-button" type="button" disabled>ارتقای بعدی</button>
+      </section>
+      <p class="upgrade-footnote">ارتقاها به‌ترتیب فعال می‌شوند و هزینه از موجودی F Coin کسر می‌شود.</p>
     </section>
     <section id="selfPanel" class="tab-panel" aria-label="سلف">
       <div class="placeholder-card"><div class="placeholder-icon">🛡️</div><h1>پنل سلف</h1><p>تنظیمات اکانت Business و قابلیت‌های خودت را از اینجا مدیریت کن.</p></div>
@@ -278,11 +354,13 @@
     </section>
     <div id="status" class="status" role="status" aria-live="polite"></div>
     <nav class="tab-bar" aria-label="ناوبری اصلی">
-      <button class="tab-button active" type="button" data-tab="homePanel" aria-current="page"><span>🏠</span>خانه</button>
+      <button class="tab-button" type="button" data-tab="upgradePanel"><span>⚡</span>ارتقا</button>
+      <button class="tab-button" type="button" data-tab="missionsPanel"><span>🎯</span>ماموریت</button>
       <button class="tab-button" type="button" data-tab="convertPanel"><span>🔄</span>تبدیل</button>
+      <button class="tab-button active" type="button" data-tab="homePanel" aria-current="page"><span>🏠</span>خانه</button>
       <button class="tab-button" type="button" data-tab="selfPanel"><span>🛡️</span>سلف</button>
-      <button class="tab-button" type="button" data-tab="missionsPanel"><span>🎯</span>ماموریت‌ها</button>
-      <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب کاربری</button>
+      <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب</button>
+      <button class="tab-button" type="button" data-tab="invitePanel"><span>👥</span>دعوت</button>
     </nav>
   </main>
 
@@ -317,6 +395,9 @@
       const selfApp = $("selfApp");
       const missionList = $("missionList");
       const claimDailyButton = $("claimDailyButton");
+      const inviteLink = $("inviteLink");
+      const copyInviteButton = $("copyInviteButton");
+      const shareInviteButton = $("shareInviteButton");
       const SESSION_KEY = "ferno_fcoin_session";
       sessionStorage.removeItem(SESSION_KEY);
       localStorage.removeItem(SESSION_KEY);
@@ -327,6 +408,9 @@
       let queuedTaps = 0;
       let inFlightTaps = 0;
       let flushingTaps = false;
+      let tapFlushTimer = 0;
+      let tapDisplayFrame = 0;
+      const tapLabels = new Set();
 
       function showStatus(message, type) {
         statusBox.textContent = message;
@@ -343,7 +427,10 @@
             !Number.isInteger(state.fcoin_balance) ||
             !Number.isInteger(state.energy) ||
             !Number.isInteger(state.energy_updated_at) ||
-            !Number.isInteger(state.bot_coin_balance)) {
+            !Number.isInteger(state.bot_coin_balance) ||
+            !Number.isInteger(state.max_energy) ||
+            !Number.isInteger(state.energy_level) ||
+            !Number.isInteger(state.tap_power)) {
           throw new Error("پاسخ دریافتی از سرور معتبر نیست.");
         }
         serverState = state;
@@ -354,16 +441,19 @@
       function updateWalletDisplay() {
         if (!serverState) return;
         $("fcoinBalance").replaceChildren(document.createTextNode(
-          (serverState.fcoin_balance + queuedTaps + inFlightTaps).toLocaleString("en-US")
+          (serverState.fcoin_balance + (queuedTaps + inFlightTaps) * serverState.tap_power).toLocaleString("en-US")
         ));
         const unit = document.createElement("span");
         unit.className = "balance-unit";
         unit.textContent = "F";
         $("fcoinBalance").append(unit);
-        const energy = Math.max(0, Math.min(1000, serverState.energy - queuedTaps - inFlightTaps));
+        const energy = Math.max(0, Math.min(serverState.max_energy, serverState.energy - queuedTaps - inFlightTaps));
         $("energyValue").textContent = energy.toLocaleString("en-US");
-        $("energyBar").style.width = (energy / 10) + "%";
+        $("energyMax").textContent = serverState.max_energy.toLocaleString("en-US");
+        $("energyBar").style.width = (energy / serverState.max_energy * 100) + "%";
         $("botBalance").textContent = serverState.bot_coin_balance.toLocaleString("en-US");
+        $("tapPowerHint").textContent = "+" + serverState.tap_power + " F Coin";
+        tapButton.setAttribute("aria-label", "جمع کردن " + serverState.tap_power + " F Coin");
       }
 
       function renderConnection(connected, userId) {
@@ -385,18 +475,58 @@
       function updateButtons() {
         const canAct = !!serverState;
         tapButton.disabled = busy || !canAct || serverState.energy - queuedTaps - inFlightTaps <= 0;
-        exchangeButton.disabled = busy || queuedTaps > 0 || inFlightTaps > 0 ||
+        $("selectAllExchangeButton").disabled = busy || flushingTaps || queuedTaps > 0 ||
+          inFlightTaps > 0 || !canAct;
+        exchangeButton.disabled = busy || flushingTaps || queuedTaps > 0 || inFlightTaps > 0 ||
           !canAct || !Number.isInteger(Number(exchangeAmount.value)) ||
-          Number(exchangeAmount.value) < 1000 ||
+          Number(exchangeAmount.value) < 500 ||
           Number(exchangeAmount.value) > serverState.fcoin_balance;
         exchangeButton.textContent = busy ? "در حال پردازش…" : "تبدیل مقدار دلخواه";
         const amount = Number(exchangeAmount.value);
-        const estimate = Number.isSafeInteger(amount) && amount >= 1000
-          ? Math.floor(amount / 1000)
+        const estimate = Number.isSafeInteger(amount) && amount >= 500
+          ? Math.floor(amount / 500)
           : 0;
         exchangePreview.textContent = estimate
           ? estimate.toLocaleString("en-US")
           : "—";
+        updateUpgradeControls();
+      }
+
+      function updateUpgradeControls() {
+        const energyButton = $("energyUpgradeButton");
+        const tapButtonUpgrade = $("tapUpgradeButton");
+        if (!serverState) {
+          energyButton.disabled = true;
+          tapButtonUpgrade.disabled = true;
+          return;
+        }
+        const energyCosts = [2000, 3000, 4000];
+        const energyTargets = [2000, 3000, 4000];
+        const level = serverState.energy_level;
+        if (level >= energyCosts.length) {
+          $("energyUpgradeStatus").textContent = "ظرفیت فعلی: " + serverState.max_energy.toLocaleString("en-US") + " · حداکثر";
+          energyButton.textContent = "ظرفیت کامل شد ✓";
+          energyButton.disabled = true;
+        } else {
+          const cost = energyCosts[level];
+          $("energyUpgradeStatus").textContent = "ظرفیت فعلی: " + serverState.max_energy.toLocaleString("en-US") +
+            " ← " + energyTargets[level].toLocaleString("en-US");
+          energyButton.textContent = "ارتقا · " + cost.toLocaleString("en-US") + " F Coin";
+          energyButton.disabled = busy || flushingTaps || queuedTaps > 0 || inFlightTaps > 0 ||
+            serverState.fcoin_balance < cost;
+        }
+        const nextPower = serverState.tap_power + 1;
+        if (nextPower > 7) {
+          $("tapUpgradeStatus").textContent = "قدرت فعلی: +" + serverState.tap_power + " · حداکثر";
+          tapButtonUpgrade.textContent = "قدرت تپ کامل شد ✓";
+          tapButtonUpgrade.disabled = true;
+        } else {
+          const cost = nextPower * 1000;
+          $("tapUpgradeStatus").textContent = "قدرت فعلی: +" + serverState.tap_power + " ← +" + nextPower;
+          tapButtonUpgrade.textContent = "ارتقا · " + cost.toLocaleString("en-US") + " F Coin";
+          tapButtonUpgrade.disabled = busy || flushingTaps || queuedTaps > 0 || inFlightTaps > 0 ||
+            serverState.fcoin_balance < cost;
+        }
       }
 
       async function apiRequest(endpoint, { body = {}, token = "", allowErrorStatus = false } = {}) {
@@ -416,7 +546,8 @@
           if (error && error.name === "AbortError") {
             throw new Error("سرور دیر پاسخ داد. اتصال اینترنت را بررسی کن و دوباره بزن.");
           }
-          throw new Error("ارتباط با سرور برقرار نشد. نسخهٔ جدید بات باید روی میزبان بارگذاری و Reload شود.");
+          const detail = error instanceof Error ? error.message : String(error);
+          throw new Error("ارتباط با سرور برقرار نشد: " + detail);
         } finally {
           window.clearTimeout(timeout);
         }
@@ -457,9 +588,13 @@
       function renderMissions(state) {
         $("missionLevel").textContent = state.level.toLocaleString("en-US");
         $("missionXpText").textContent = state.xp.toLocaleString("en-US") + " XP";
+        $("homeLevel").textContent = state.level.toLocaleString("en-US");
+        $("homeXpText").textContent = state.xp.toLocaleString("en-US") + " XP";
         $("missionNext").textContent = "گام بعدی: " +
           Math.max(0, state.level_target - state.xp).toLocaleString("en-US") + " XP تا سطح بعدی";
-        $("missionXpFill").style.width = Math.min(100, state.level_progress / state.level_target * 100) + "%";
+        const progress = Math.min(100, state.level_progress / state.level_target * 100);
+        $("missionXpFill").style.width = progress + "%";
+        $("homeXpFill").style.width = progress + "%";
         missionList.replaceChildren();
         state.missions.forEach((mission) => {
           const card = document.createElement("article");
@@ -523,6 +658,28 @@
         if (!hasUserAccount()) return;
         const state = await userApiRequest("missions/state");
         renderMissions(state);
+      }
+
+      async function refreshInviteLink() {
+        const note = $("inviteNote");
+        if (!hasUserAccount()) {
+          inviteLink.textContent = "برای ساخت لینک، ابتدا حساب تلگرام را وصل کن.";
+          delete inviteLink.dataset.link;
+          copyInviteButton.disabled = true;
+          shareInviteButton.disabled = true;
+          note.textContent = "بعد از اتصال حساب، لینک دعوت اختصاصی اینجا نمایش داده می‌شود.";
+          return;
+        }
+        note.textContent = "در حال دریافت لینک دعوت اختصاصی…";
+        const result = await userApiRequest("referral/link");
+        if (!result || typeof result.link !== "string" || !/^https:\/\/t\.me\/[^/]+\?start=ref_\d+$/.test(result.link)) {
+          throw new Error("سرور لینک دعوت معتبر برنگرداند.");
+        }
+        inviteLink.textContent = result.link;
+        inviteLink.dataset.link = result.link;
+        copyInviteButton.disabled = false;
+        shareInviteButton.disabled = false;
+        note.textContent = "پاداش پس از اولین ورود دوست از لینک دعوت ثبت می‌شود.";
       }
 
       async function claimDailyMission() {
@@ -969,6 +1126,12 @@
           pairingProgress.textContent = "اتصال کامل نشد.";
           pairingBox.hidden = true;
           pairingCode.textContent = "--------";
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          $("connectionErrorTitle").textContent = errorMessage.includes("ارتباط با سرور") ||
+            errorMessage.includes("سرور دیر پاسخ داد")
+            ? "ارتباط با سرور برقرار نشد"
+            : "اتصال حساب کامل نشد";
+          $("connectionErrorMessage").textContent = errorMessage;
           connectionError.hidden = false;
           hideStatus();
           connectCopy.textContent = "برای شروع دوباره، کد تازه بساز و آن را در پیوی بات بفرست.";
@@ -991,6 +1154,12 @@
             const amount = Number.isInteger(result.exchanged_fcoin) ? result.exchanged_fcoin.toLocaleString("en-US") : "";
             const credited = Number.isInteger(result.credited_coins) ? result.credited_coins.toLocaleString("en-US") : "";
             showStatus(amount && credited ? amount + " F Coin به " + credited + " سکه بات تبدیل شد." : successMessage, "info");
+          } else if (endpoint === "upgrade") {
+            const title = result.upgraded === "energy" ? "ظرفیت انرژی" : "قدرت تپ";
+            const cost = Number.isInteger(result.upgrade_cost)
+              ? result.upgrade_cost.toLocaleString("en-US")
+              : "";
+            showStatus(cost ? title + " ارتقا یافت؛ " + cost + " F Coin پرداخت شد." : successMessage, "info");
           } else {
             showStatus(successMessage, "info");
           }
@@ -1035,25 +1204,53 @@
       }
 
       function handleTap(event) {
+        if (event.type === "pointerdown") {
+          if (event.pointerType === "mouse" && event.button !== 0) return;
+          event.preventDefault();
+        }
         if (!serverState || serverState.energy - queuedTaps - inFlightTaps <= 0) return;
         queuedTaps += 1;
-        updateWalletDisplay();
-        updateButtons();
+        if (!tapDisplayFrame) {
+          tapDisplayFrame = window.requestAnimationFrame(() => {
+            tapDisplayFrame = 0;
+            updateWalletDisplay();
+            updateButtons();
+          });
+        }
         showTapFeedback(event);
-        flushTaps();
+        if (!tapFlushTimer) {
+          tapFlushTimer = window.setTimeout(() => {
+            tapFlushTimer = 0;
+            flushTaps();
+          }, 70);
+        }
       }
 
       function showTapFeedback(event) {
+        if (tapLabels.size >= 10) {
+          const oldest = tapLabels.values().next().value;
+          if (oldest) {
+            oldest.remove();
+            tapLabels.delete(oldest);
+          }
+        }
         const label = document.createElement("span");
         label.className = "tap-float";
-        label.textContent = "+1";
+        label.textContent = "+" + serverState.tap_power;
         const bounds = tapButton.getBoundingClientRect();
-        const x = Math.max(0, Math.min(bounds.width, event.clientX - bounds.left));
-        const y = Math.max(0, Math.min(bounds.height, event.clientY - bounds.top));
+        const keyboardTap = event.type === "click" && event.detail === 0;
+        const x = keyboardTap ? bounds.width / 2 :
+          Math.max(0, Math.min(bounds.width, event.clientX - bounds.left));
+        const y = keyboardTap ? bounds.height / 2 :
+          Math.max(0, Math.min(bounds.height, event.clientY - bounds.top));
         label.style.left = (x / bounds.width * 100) + "%";
         label.style.top = (y / bounds.height * 100) + "%";
         tapButton.append(label);
-        window.setTimeout(() => label.remove(), 720);
+        tapLabels.add(label);
+        window.setTimeout(() => {
+          label.remove();
+          tapLabels.delete(label);
+        }, 720);
       }
 
       function selectTab(panelId) {
@@ -1075,16 +1272,66 @@
             const card = selfCard("پنل سلف", error && error.message ? error.message : "وضعیت سلف دریافت نشد.");
             selfApp.append(card);
           });
+        } else if (panelId === "invitePanel") {
+          refreshInviteLink().catch((error) => {
+            $("inviteNote").textContent = error && error.message ? error.message : "دریافت لینک دعوت ناموفق بود.";
+            showStatus($("inviteNote").textContent, "error");
+          });
         }
       }
 
-      tapButton.addEventListener("click", handleTap);
+      tapButton.addEventListener("pointerdown", handleTap);
+      tapButton.addEventListener("click", (event) => {
+        if (event.detail === 0) handleTap(event);
+      });
       exchangeAmount.addEventListener("input", updateButtons);
+      $("selectAllExchangeButton").addEventListener("click", () => {
+        if (!serverState) return;
+        exchangeAmount.value = String(serverState.fcoin_balance);
+        updateButtons();
+      });
       exchangeButton.addEventListener("click", () => runAction(
         "exchange",
         "تبدیل با موفقیت انجام شد.",
         { amount: Number(exchangeAmount.value) }
       ));
+      $("energyUpgradeButton").addEventListener("click", () => runAction(
+        "upgrade",
+        "ظرفیت انرژی با موفقیت ارتقا یافت.",
+        { kind: "energy" }
+      ));
+      $("tapUpgradeButton").addEventListener("click", () => runAction(
+        "upgrade",
+        "قدرت تپ با موفقیت ارتقا یافت.",
+        { kind: "tap" }
+      ));
+      copyInviteButton.addEventListener("click", async () => {
+        if (!inviteLink.dataset.link) return;
+        try {
+          await navigator.clipboard.writeText(inviteLink.dataset.link);
+          showStatus("لینک دعوت کپی شد.", "info");
+        } catch (error) {
+          showStatus("کپی لینک در دسترس نیست؛ لینک را انتخاب و دستی کپی کن.", "error");
+        }
+      });
+      shareInviteButton.addEventListener("click", async () => {
+        const link = inviteLink.dataset.link;
+        if (!link) return;
+        const text = "با لینک من وارد شو و F Coin جمع کن!";
+        try {
+          if (tg && typeof tg.openTelegramLink === "function") {
+            tg.openTelegramLink("https://t.me/share/url?url=" + encodeURIComponent(link) +
+              "&text=" + encodeURIComponent(text));
+          } else if (typeof navigator.share === "function") {
+            await navigator.share({ title: "دعوت به فرنو", text, url: link });
+          } else {
+            await navigator.clipboard.writeText(link);
+            showStatus("لینک دعوت کپی شد؛ برای دوستت بفرست.", "info");
+          }
+        } catch (error) {
+          showStatus(error && error.message ? error.message : "اشتراک‌گذاری لینک انجام نشد.", "error");
+        }
+      });
       claimDailyButton.addEventListener("click", claimDailyMission);
       document.querySelectorAll(".tab-button").forEach((button) => {
         button.addEventListener("click", () => selectTab(button.dataset.tab));
