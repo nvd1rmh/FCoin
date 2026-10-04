@@ -275,12 +275,12 @@
                 <span class="rate-amount">500 F</span><span>=</span><span class="rate-amount" dir="rtl">1 سکه</span>
             </div>
           </div>
-            <p class="exchange-sub">هر ۵۰۰ F Coin را به ۱ سکهٔ ربات تبدیل کن. مقدار دلخواهت را وارد کن؛ محاسبه رو به پایین انجام می‌شود.</p>
+            <p class="exchange-sub">هر ۵۰۰ F Coin را به ۱ سکهٔ ربات تبدیل کن. مقدار تبدیل باید مضربی از ۵۰۰ باشد.</p>
           <label class="exchange-sub" for="exchangeAmount">مقدار F Coin برای تبدیل</label>
-            <input id="exchangeAmount" class="self-input" type="number" min="500" step="1" inputmode="numeric" placeholder="حداقل 500">
+            <input id="exchangeAmount" class="self-input" type="number" min="500" step="500" inputmode="numeric" placeholder="حداقل 500">
           <div class="bot-balance">دریافتی تخمینی: <b id="exchangePreview">—</b> سکه</div>
           <div style="display:flex;gap:8px;margin-top:8px;">
-            <button id="selectAllExchangeButton" class="exchange-button" type="button" style="flex:1;background:linear-gradient(100deg,#fff0a6,#ffd45a);">انتخاب همه F Coinها</button>
+            <button id="selectAllExchangeButton" class="exchange-button" type="button" style="flex:1;background:linear-gradient(100deg,#fff0a6,#ffd45a);">انتخاب همه کوین‌ها</button>
             <button id="exchangeButton" class="exchange-button" type="button" disabled style="flex:1;">تبدیل مقدار دلخواه</button>
           </div>
           <div class="bot-balance">موجودی سکه بات: <b id="botBalance">—</b></div>
@@ -476,7 +476,8 @@
         unit.className = "balance-unit";
         unit.textContent = "F";
         $("fcoinBalance").append(unit);
-        const energy = Math.max(0, Math.min(serverState.max_energy, serverState.energy - queuedTaps - inFlightTaps));
+        const queuedEnergy = (queuedTaps + inFlightTaps) * serverState.tap_power;
+        const energy = Math.max(0, Math.min(serverState.max_energy, serverState.energy - queuedEnergy));
         $("energyValue").textContent = energy.toLocaleString("en-US");
         $("energyMax").textContent = serverState.max_energy.toLocaleString("en-US");
         $("energyBar").style.width = (energy / serverState.max_energy * 100) + "%";
@@ -503,12 +504,14 @@
 
       function updateButtons() {
         const canAct = !!serverState;
-        tapButton.disabled = busy || !canAct || serverState.energy - queuedTaps - inFlightTaps <= 0;
+        tapButton.disabled = busy || !canAct ||
+          serverState.energy - (queuedTaps + inFlightTaps) * serverState.tap_power < serverState.tap_power;
         $("selectAllExchangeButton").disabled = busy || flushingTaps || queuedTaps > 0 ||
-          inFlightTaps > 0 || !canAct;
+          inFlightTaps > 0 || !canAct || serverState.fcoin_balance < 500;
         exchangeButton.disabled = busy || flushingTaps || queuedTaps > 0 || inFlightTaps > 0 ||
           !canAct || !Number.isInteger(Number(exchangeAmount.value)) ||
           Number(exchangeAmount.value) < 500 ||
+          Number(exchangeAmount.value) % 500 !== 0 ||
           Number(exchangeAmount.value) > serverState.fcoin_balance;
         exchangeButton.textContent = busy ? "در حال پردازش…" : "تبدیل مقدار دلخواه";
         const amount = Number(exchangeAmount.value);
@@ -1285,7 +1288,8 @@
           if (event.pointerType === "mouse" && event.button !== 0) return;
           event.preventDefault();
         }
-        if (!serverState || serverState.energy - queuedTaps - inFlightTaps <= 0) return;
+        if (!serverState ||
+            serverState.energy - (queuedTaps + inFlightTaps) * serverState.tap_power < serverState.tap_power) return;
         queuedTaps += 1;
         if (!tapDisplayFrame) {
           tapDisplayFrame = window.requestAnimationFrame(() => {
@@ -1364,7 +1368,7 @@
       exchangeAmount.addEventListener("input", updateButtons);
       $("selectAllExchangeButton").addEventListener("click", () => {
         if (!serverState) return;
-        exchangeAmount.value = String(serverState.fcoin_balance);
+        exchangeAmount.value = String(Math.floor(serverState.fcoin_balance / 500) * 500);
         updateButtons();
       });
       exchangeButton.addEventListener("click", () => runAction(
