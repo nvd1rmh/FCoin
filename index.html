@@ -101,14 +101,14 @@
     .balance-unit { font-size:13px; color:var(--gold); margin-right:6px; text-shadow:0 0 14px #ffd45a80; }
     .wallet-icon { position:relative; width:42px; height:42px; flex:none; border-radius:50%; display:grid; place-items:center; font-size:20px; color:#fff1b4; background:linear-gradient(145deg,#fff4a9,#f7b824 60%,#b45a12); border:1px solid #fff4b878; box-shadow:inset 0 2px 3px #fff9, inset 0 -4px 7px #74370a8c,0 5px 14px #e99f2440; text-shadow:0 2px 3px #74400b; }
     .coin-area { min-height:clamp(270px, 42vh, 365px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:1100px; }
-    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(62vw, 250px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#fff8c9 0%,#ffdf52 18%,#f4a913 53%,#c66b13 100%); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff9b2110,0 0 68px #ffb51e66,0 22px 38px #0009,0 39px 64px #ec8d1c30,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #74400c,inset 0 -18px 24px #9a5710; transform:rotateX(5deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:none; -webkit-user-select:none; }
+    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(58vw, 235px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#fff8c9 0%,#ffdf52 18%,#f4a913 53%,#c66b13 100%); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff9b2110,0 0 68px #ffb51e66,0 22px 38px #0009,0 39px 64px #ec8d1c30,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #74400c,inset 0 -18px 24px #9a5710; transform:rotateX(5deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:none; -webkit-user-select:none; }
     .coin-button:before { content:""; position:absolute; z-index:-1; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff3ae 0deg 1.2deg,#e5a321 1.2deg 2.8deg,#a86a16 2.8deg 3.5deg,#ffd957 3.5deg 5.3deg); box-shadow:inset 0 2px 3px #fff9,inset 0 -3px 5px #67200e; }
     .coin-button:after { content:""; position:absolute; inset:9px; border-radius:50%; border:4px solid #ffea8e; background:radial-gradient(ellipse at 28% 14%,#fffdebe8,transparent 23%),radial-gradient(ellipse at 72% 83%,#9c6a1a40,transparent 46%),linear-gradient(145deg,#fff4b1 0%,#ffd53c 38%,#efa711 68%,#ce7918 100%); box-shadow:inset 0 0 0 3px #9c6a1c63,inset 0 0 0 7px #fff4c28c,inset 0 2px 10px #fff9,0 1px 1px #8e5d1c; pointer-events:none; }
     .coin-button:active { transform:rotateX(5deg) scale(.985); filter:brightness(1.03); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff9b2110,0 0 58px #ffb51e55,0 22px 38px #0009,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #74400c,inset 0 -18px 24px #9a5710; }
     .coin-button:disabled { cursor:wait; filter:saturate(.9) brightness(.94); }
     .coin-face { position:absolute; z-index:1; inset:11px; border-radius:50%; pointer-events:none; }
     .coin-engraving { position:absolute; inset:17%; border:1px solid #fff4bf8c; border-radius:50%; box-shadow:inset 0 0 0 3px #9b431b2b,inset 0 0 0 5px #fff2a35c,0 1px 1px #fff9; }
-    .coin-letter { position:absolute; left:50%; top:50%; display:grid; place-items:center; width:52%; height:52%; border-radius:50%; transform:translate(-50%,-50%) rotate(-7deg); font-size:clamp(72px,22vw,108px); line-height:.8; font-weight:1000; color:#fff1a0; -webkit-text-fill-color:#fff1a0; -webkit-text-stroke:1.5px #a83d13; text-shadow:0 2px 0 #fffbd0,0 5px 0 #f7b91e,0 8px 0 #c45414,0 11px 2px #76230e,0 15px 12px #5d1c0da8; font-family:Arial Black,Arial,sans-serif; }
+    .coin-letter { position:absolute; left:50%; top:50%; display:grid; place-items:center; width:52%; height:52%; border-radius:50%; transform:translate(-50%,-50%) rotate(-7deg); font-size:clamp(68px,20vw,96px); line-height:.8; font-weight:1000; color:#fff1a0; -webkit-text-fill-color:#fff1a0; -webkit-text-stroke:1.5px #a83d13; text-shadow:0 2px 0 #fffbd0,0 5px 0 #f7b91e,0 8px 0 #c45414,0 11px 2px #76230e,0 15px 12px #5d1c0da8; font-family:Arial Black,Arial,sans-serif; }
     .tap-float { position:absolute; z-index:4; top:38%; left:50%; color:#fff8dc; font-size:40px; font-weight:1000; text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0; pointer-events:none; white-space:nowrap; animation:tap-rise .72s cubic-bezier(.2,.75,.3,1) forwards; will-change:transform,opacity; }
     @keyframes tap-rise { 0% { opacity:0; transform:translate(-50%,5px) scale(.9); } 20% { opacity:1; transform:translate(-50%,0) scale(1); } 100% { opacity:0; transform:translate(-50%,-50px) scale(1); } }
     .coin-stars { position:absolute; left:50%; top:50%; width:68%; height:68%; border:1px solid #fff4b979; border-radius:50%; transform:translate(-50%,-50%); box-shadow:0 0 0 3px #a3451b28,inset 0 0 0 3px #fff1a448; }
@@ -423,17 +423,46 @@
       }
 
       function render(state) {
-        const requiredFields = [
-          "fcoin_balance", "energy", "bot_coin_balance", "max_energy", "energy_level", "tap_power"
-        ];
-        const invalidFields = requiredFields.filter((field) =>
-          !Number.isInteger(state && state[field])
-        );
-        if (!state || state.ok !== true || invalidFields.length > 0) {
-          const details = invalidFields.length ? " (" + invalidFields.join("، ") + ")" : "";
-          throw new Error("پاسخ دریافتی از سرور معتبر نیست" + details + ".");
+        if (!state || state.ok !== true) {
+          throw new Error("پاسخ دریافتی از سرور معتبر نیست.");
         }
-        serverState = state;
+        const readInteger = (keys) => {
+          for (const key of keys) {
+            if (Number.isInteger(state[key])) return state[key];
+          }
+          return null;
+        };
+        const balance = readInteger(["fcoin_balance", "fcoinBalance"]);
+        const energy = readInteger(["energy"]);
+        const botBalance = readInteger(["bot_coin_balance", "botCoinBalance"]);
+        if (balance === null || energy === null || botBalance === null) {
+          const missing = [
+            balance === null ? "fcoin_balance" : "",
+            energy === null ? "energy" : "",
+            botBalance === null ? "bot_coin_balance" : ""
+          ].filter(Boolean);
+          throw new Error("پاسخ سرور با نسخهٔ مینی‌اپ سازگار نیست؛ فیلدهای ضروری پیدا نشد: " + missing.join("، ") + ".");
+        }
+        const reportedMaxEnergy = readInteger(["max_energy", "maxEnergy"]);
+        const energyLevel = readInteger(["energy_level", "energyLevel"]);
+        const tapPower = readInteger(["tap_power", "tapPower"]);
+        const maxEnergy = reportedMaxEnergy !== null && reportedMaxEnergy > 0
+          ? reportedMaxEnergy
+          : Math.max(1000, energy);
+        const inferredEnergyLevel = energyLevel !== null
+          ? energyLevel
+          : ({ 1000: 0, 2000: 1, 3000: 2, 4000: 3 }[maxEnergy] || 0);
+        serverState = {
+          ...state,
+          fcoin_balance: balance,
+          energy,
+          bot_coin_balance: botBalance,
+          max_energy: maxEnergy,
+          energy_level: inferredEnergyLevel,
+          tap_power: tapPower !== null && tapPower > 0 ? tapPower : 1,
+          upgrades_supported: tapPower !== null &&
+            (reportedMaxEnergy !== null || energyLevel !== null)
+        };
         updateWalletDisplay();
         updateButtons();
       }
@@ -496,6 +525,15 @@
         const energyButton = $("energyUpgradeButton");
         const tapButtonUpgrade = $("tapUpgradeButton");
         if (!serverState) {
+          energyButton.disabled = true;
+          tapButtonUpgrade.disabled = true;
+          return;
+        }
+        if (!serverState.upgrades_supported) {
+          $("energyUpgradeStatus").textContent = "ظرفیت فعلی: " + serverState.max_energy.toLocaleString("en-US");
+          $("tapUpgradeStatus").textContent = "قدرت فعلی: +" + serverState.tap_power;
+          energyButton.textContent = "با نسخهٔ فعلی ربات در دسترس نیست";
+          tapButtonUpgrade.textContent = "با نسخهٔ فعلی ربات در دسترس نیست";
           energyButton.disabled = true;
           tapButtonUpgrade.disabled = true;
           return;
