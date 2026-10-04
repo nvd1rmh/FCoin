@@ -259,7 +259,7 @@
       <section class="energy-card" aria-label="انرژی">
         <div class="energy-top"><span>⚡ انرژی</span><span class="energy-count"><b id="energyValue">—</b> <em>/ <span id="energyMax">1000</span></em></span></div>
         <div class="bar"><div id="energyBar" class="bar-fill"></div></div>
-        <div class="energy-note">هر ضربه ۱ انرژی مصرف می‌کند؛ ۱۰ انرژی در هر دقیقه شارژ می‌شود.</div>
+        <div class="energy-note">در هر ۱ دقیقه، ۱۰ انرژی شارژ می‌شود.</div>
       </section>
       <footer>موجودی شما از سرور دریافت و تأیید می‌شود.</footer>
     </section>
@@ -476,14 +476,24 @@
         unit.className = "balance-unit";
         unit.textContent = "F";
         $("fcoinBalance").append(unit);
-        const queuedEnergy = (queuedTaps + inFlightTaps) * serverState.tap_power;
-        const energy = Math.max(0, Math.min(serverState.max_energy, serverState.energy - queuedEnergy));
-        $("energyValue").textContent = energy.toLocaleString("en-US");
+        const energy = availableEnergy();
+        $("energyValue").textContent = Math.floor(energy + 1e-9).toLocaleString("en-US");
         $("energyMax").textContent = serverState.max_energy.toLocaleString("en-US");
         $("energyBar").style.width = (energy / serverState.max_energy * 100) + "%";
         $("botBalance").textContent = serverState.bot_coin_balance.toLocaleString("en-US");
         $("tapPowerHint").textContent = "+" + serverState.tap_power + " F Coin";
         tapButton.setAttribute("aria-label", "جمع کردن " + serverState.tap_power + " F Coin");
+      }
+
+      function availableEnergy() {
+        if (!serverState) return 0;
+        const updatedAt = Number(serverState.energy_updated_at);
+        const elapsed = Number.isFinite(updatedAt)
+          ? Math.max(0, Date.now() / 1000 - updatedAt)
+          : 0;
+        const regenerated = elapsed * 10 / 60;
+        const energy = Math.min(serverState.max_energy, serverState.energy + regenerated);
+        return Math.max(0, energy - (queuedTaps + inFlightTaps) * serverState.tap_power);
       }
 
       function renderConnection(connected, userId) {
@@ -505,7 +515,7 @@
       function updateButtons() {
         const canAct = !!serverState;
         tapButton.disabled = busy || !canAct ||
-          serverState.energy - (queuedTaps + inFlightTaps) * serverState.tap_power < serverState.tap_power;
+          Math.floor(availableEnergy() + 1e-9) < serverState.tap_power;
         $("selectAllExchangeButton").disabled = busy || flushingTaps || queuedTaps > 0 ||
           inFlightTaps > 0 || !canAct || serverState.fcoin_balance < 500;
         exchangeButton.disabled = busy || flushingTaps || queuedTaps > 0 || inFlightTaps > 0 ||
@@ -1289,7 +1299,7 @@
           event.preventDefault();
         }
         if (!serverState ||
-            serverState.energy - (queuedTaps + inFlightTaps) * serverState.tap_power < serverState.tap_power) return;
+            Math.floor(availableEnergy() + 1e-9) < serverState.tap_power) return;
         queuedTaps += 1;
         if (!tapDisplayFrame) {
           tapDisplayFrame = window.requestAnimationFrame(() => {
@@ -1481,6 +1491,12 @@
         renderConnection(false);
         updateButtons();
       }
+      window.setInterval(() => {
+        if (serverState) {
+          updateWalletDisplay();
+          updateButtons();
+        }
+      }, 1000);
       window.setInterval(() => {
         if (!busy && !flushingTaps && queuedTaps === 0 && (hasTelegramAuth() || accessToken)) {
           request("state").catch((error) => {
