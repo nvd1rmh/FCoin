@@ -171,13 +171,66 @@
     .rank-line{display:flex;justify-content:center;align-items:center;gap:8px;margin:9px 0 14px;color:#d9d7e5;font-size:13px}.rank-line b{color:#ffd45a}.rank-line .rank-dot{width:5px;height:5px;border-radius:50%;background:#ffd45a;box-shadow:0 0 10px #ffd45a}
     .upgrade-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.upgrade-option{border:1px solid #ffd45a35;border-radius:16px;padding:13px 10px;background:linear-gradient(145deg,#ffffff12,#ffffff04);text-align:center}.upgrade-option strong{display:block;font-size:15px;color:#ffe18a}.upgrade-option small{display:block;color:var(--muted);font-size:10px;margin:6px 0 10px}.upgrade-option button{width:100%;border:0;border-radius:10px;padding:10px 5px;background:linear-gradient(100deg,#ffe278,#ffad32);color:#2a1b06;font-weight:900;font-size:11px}.upgrade-option button:disabled{opacity:.45}.invite-hero{margin-top:20px;padding:22px 18px;border:1px solid #8ef0c63a;border-radius:23px;background:radial-gradient(ellipse at 50% 0,#65e8b51e,transparent 65%),linear-gradient(145deg,#192b2b,#171622);text-align:center}.invite-number{font-size:34px;font-weight:900;color:#a4ffda}.invite-link{direction:ltr;text-align:left;word-break:break-all;padding:13px;border-radius:12px;background:#080a12;border:1px solid var(--border);font-size:11px;color:#d9e8e3;margin:13px 0}.invite-rewards{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}.invite-rewards>div{padding:13px 7px;border-radius:14px;background:#ffffff0a;border:1px solid var(--border);font-size:12px}.invite-rewards b{display:block;color:#ffdb76;font-size:17px;margin-top:5px}.gold-heading{font-size:17px;font-weight:900;margin:22px 0 5px}
     @media(max-width:380px){.tab-button{font-size:8px}.tab-button span{font-size:14px}.upgrade-grid{gap:7px}.upgrade-option{padding:11px 7px}}
+
+    /* Notcoin-inspired F Coin skin: same simple tap-to-earn hierarchy, original F branding. */
+    body{background:radial-gradient(ellipse at 50% 48%,#5969ad 0,#31395f 25%,#181824 58%,#090910 90%);overflow-x:hidden}
+    .app{width:min(100%,520px);padding:10px 18px max(92px,env(safe-area-inset-bottom));}
+    .nc-header{position:relative;display:grid;grid-template-columns:42px 1fr 42px;align-items:center;height:48px;margin-bottom:2px}
+    .nc-title{text-align:center;font-size:18px;font-weight:900;letter-spacing:-.3px}
+    .nc-icon-btn{width:40px;height:40px;border:0;background:transparent;color:#fff;font-size:31px;line-height:1;border-radius:12px;cursor:pointer}
+    .nc-icon-btn:active{background:#fff1}
+    .nc-icon-btn:last-of-type{font-size:27px}
+    .nc-balance{display:block;text-align:center;margin:0;padding:7px 0 0;border:0;background:transparent;box-shadow:none;overflow:visible}
+    .nc-balance:after,.nc-balance .wallet-icon{display:none}
+    .balance-label{font-size:12px;color:#c9c8d4;margin:0 0 1px}
+    .balance-value{font-size:39px;line-height:1.05;letter-spacing:.3px;color:#fff;text-shadow:0 2px 20px #ffd45a38}
+    .balance-unit{font-size:15px;margin-right:6px}
+    .rank-line{margin:7px 0 0;font-size:12px;color:#d5d3df}
+    .rank-line .rank-dot{display:none}
+    .coin-area{min-height:clamp(315px,47vh,430px);padding:0;position:relative}
+    .coin-button{width:min(74vw,320px);box-shadow:0 0 0 7px #ffd45a10,0 0 0 18px #ff7c2409,0 0 72px #ffb51e52,0 26px 50px #000b,inset 0 4px 3px #fffbd0,inset 0 -12px 13px #6f210b,inset 0 -20px 28px #9a3510;}
+    .coin-letter{font-size:clamp(105px,31vw,150px);font-family:Arial Black,Arial,sans-serif}
+    .tap-hint{margin-top:8px;color:#c9c7d4;font-size:12px}
+    .tap-hint strong{background:transparent;border:0;box-shadow:none;padding:0;color:#fff}
+    .energy-card{margin:0 4px;padding:8px 2px 3px;background:transparent;border:0;border-radius:0}
+    .energy-top{font-size:13px;padding:0 7px}
+    .energy-top span:first-child{color:#f3f2f7;font-size:14px}
+    .energy-count{color:#fff}
+    .bar{height:8px;margin-top:8px;background:#ffffff24}
+    .bar-fill{background:linear-gradient(90deg,#ffffff,#f7f7ff);box-shadow:0 0 10px #fff6}
+    .energy-note{display:none}
+    footer{display:none}
+    .onboarding.nc-hidden-on-telegram{display:none}
+    .connection-error{display:none!important}
+    .nc-tabs{direction:ltr;grid-template-columns:repeat(3,1fr);width:min(calc(100% - 20px),500px);bottom:max(8px,env(safe-area-inset-bottom));padding:7px;border-radius:22px;background:#1a1a25f0;border:1px solid #ffffff12;box-shadow:0 14px 45px #000b, inset 0 1px #fff2}
+    .nc-tabs .tab-button{direction:rtl;padding:8px 4px 7px;border-radius:15px;font-size:10px;color:#a9a7b4}
+    .nc-tabs .tab-button span{font-size:20px;margin-bottom:3px}
+    .nc-tabs .tab-button.active{color:#fff;background:#ffffff0b}
+    .nc-tabs .tab-button[data-tab="invitePanel"]{order:initial}
+    .boost-head{display:flex;align-items:center;gap:13px;margin:14px 0 16px;padding:17px;border-radius:22px;background:linear-gradient(135deg,#ffffff0d,#ffffff03);border:1px solid #ffffff10}
+    .boost-head h1{margin:0;font-size:23px}.boost-head p{margin:3px 0 0;color:#9997a6;font-size:11px}
+    .boost-orb{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:24px;background:linear-gradient(145deg,#ffe67a,#f39b18);box-shadow:0 7px 25px #ffb41e33;color:#271a08}
+    .boost-section{margin-top:13px;padding:15px;border-radius:21px;background:linear-gradient(145deg,#ffffff0b,#ffffff03);border:1px solid #ffffff0e}
+    .boost-section-title{display:flex;align-items:center;gap:11px;margin-bottom:10px}.boost-section-title>span{font-size:24px}.boost-section-title b{display:block;font-size:15px}.boost-section-title small{display:block;color:#9997a6;font-size:10px;margin-top:3px}.boost-section-title strong{color:#ffd75e}
+    .upgrade-list{display:grid;gap:8px}
+    .upgrade-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 11px;border-radius:15px;background:#ffffff07;border:1px solid #ffffff0a;text-align:right}
+    .upgrade-option strong{display:block;color:#fff;font-size:15px}.upgrade-option small{display:block;margin-top:4px;color:#92909d;font-size:10px}
+    .upgrade-option button{min-width:82px;width:auto;padding:9px 13px;border-radius:11px;background:linear-gradient(100deg,#ffe278,#ffad32);color:#251805;font-size:11px;box-shadow:0 6px 18px #ffb52925}
+    .upgrade-option button:disabled{background:#ffffff0c;color:#777583;opacity:1;border:1px solid #ffffff0b;box-shadow:none}
+    .mission-hero{margin-top:12px;border-radius:22px;background:linear-gradient(145deg,#ffffff0b,#ffffff03);border:1px solid #ffffff0e}
+    .invite-hero{margin-top:12px;background:linear-gradient(145deg,#ffffff0b,#ffffff03);border:1px solid #ffffff0e}
+    #homePanel.active{display:block}
+    #convertPanel,#selfPanel,#accountPanel{display:none}
+    @media(max-width:380px){.coin-button{width:250px}.balance-value{font-size:35px}.nc-tabs .tab-button span{font-size:18px}}
   </style>
 </head>
 <body>
   <main class="app">
-    <header>
-      <div class="brand"><span class="brand-mark">F</span><span>فرنوسلف</span></div>
-      <div id="connectionBadge" class="live">آمادهٔ اتصال</div>
+    <header class="nc-header">
+      <button id="miniCloseTop" class="nc-icon-btn" type="button" aria-label="بستن">×</button>
+      <div class="nc-title">F Coin</div>
+      <button id="miniMoreTop" class="nc-icon-btn" type="button" aria-label="اطلاعات">⋮</button>
+      <div id="connectionBadge" class="live" hidden>آمادهٔ اتصال</div>
     </header>
 
     <section id="connectionError" class="connection-error" role="alert" aria-live="assertive" hidden>
@@ -187,15 +240,12 @@
     </section>
 
     <section id="homePanel" class="tab-panel active" aria-label="خانه">
-      <section class="balance-card" aria-label="موجودی F Coin">
-        <div>
-          <div class="balance-label">موجودی شما</div>
-          <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
-          <div class="rank-line"><span class="rank-dot"></span><span>لول <b id="homeLevel">—</b></span><span>•</span><span id="homeXp">— XP</span></div>
-        </div>
-        <div class="wallet-icon" aria-hidden="true">F</div>
+      <section class="balance-card nc-balance" aria-label="موجودی F Coin">
+        <div class="balance-label">موجودی</div>
+        <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
+        <div class="rank-line"><span class="rank-dot"></span><span>سطح <b id="homeLevel">—</b></span><span>•</span><span id="homeXp">— XP</span></div>
       </section>
-      <section id="onboarding" class="onboarding" aria-live="polite">
+      <section id="onboarding" class="onboarding nc-hidden-on-telegram" aria-live="polite">
         <div class="onboarding-kicker">مرحلهٔ اول</div>
         <h2>برای شروع، حسابت رو وصل کن</h2>
         <p>اتصال امن را انجام بده تا موجودی مخصوص حساب خودت ذخیره شود.</p>
@@ -287,20 +337,29 @@
       <div class="mission-card" style="margin-top:13px"><b>چطور جایزه بگیرم؟</b><p class="exchange-sub">لینک اختصاصی‌ات را بفرست. وقتی دوستت برای اولین بار از طریق لینک وارد ربات یا مینی‌اپ شود، پاداش به‌صورت خودکار و فقط یک‌بار برایت ثبت می‌شود.</p></div>
     </section>
     <section id="upgradePanel" class="tab-panel" aria-label="ارتقا">
-      <div class="placeholder-card"><div class="placeholder-icon">🚀</div><h1>مرکز ارتقا</h1><p>با سکه‌های ربات، ظرفیت انرژی و قدرت هر ضربه را بیشتر کن.</p></div>
-      <h2 class="gold-heading">⚡ ارتقای انرژی</h2><div class="mission-card"><p class="exchange-sub">ظرفیت انرژی فعلی: <b id="upgradeEnergyCurrent">۱٬۰۰۰</b></p><div class="upgrade-grid">
-        <div class="upgrade-option"><strong>۲٬۰۰۰ انرژی</strong><small>هزینه: ۲٬۰۰۰ سکه</small><button data-upgrade="energy" data-target="2000">ارتقا</button></div>
-        <div class="upgrade-option"><strong>۳٬۰۰۰ انرژی</strong><small>هزینه: ۳٬۰۰۰ سکه</small><button data-upgrade="energy" data-target="3000">ارتقا</button></div>
-        <div class="upgrade-option"><strong>۴٬۰۰۰ انرژی</strong><small>هزینه: ۴٬۰۰۰ سکه</small><button data-upgrade="energy" data-target="4000">ارتقا</button></div>
-      </div></div>
-      <h2 class="gold-heading">👆 قدرت تپ کردن</h2><div class="mission-card"><p class="exchange-sub">قدرت فعلی هر ضربه: <b id="upgradeTapCurrent">+۱</b></p><div class="upgrade-grid">
-        <div class="upgrade-option"><strong>+۲</strong><small>هزینه: ۲٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="2">ارتقا</button></div>
-        <div class="upgrade-option"><strong>+۳</strong><small>هزینه: ۳٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="3">ارتقا</button></div>
-        <div class="upgrade-option"><strong>+۴</strong><small>هزینه: ۴٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="4">ارتقا</button></div>
-        <div class="upgrade-option"><strong>+۵</strong><small>هزینه: ۵٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="5">ارتقا</button></div>
-        <div class="upgrade-option"><strong>+۶</strong><small>هزینه: ۶٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="6">ارتقا</button></div>
-        <div class="upgrade-option"><strong>+۷</strong><small>هزینه: ۷٬۰۰۰ سکه</small><button data-upgrade="tap" data-target="7">ارتقا</button></div>
-      </div></div>
+      <div class="boost-head">
+        <div class="boost-orb">⚡</div>
+        <div><h1>ارتقا</h1><p>هر ارتقا باید مرحله‌به‌مرحله خریداری شود.</p></div>
+      </div>
+      <section class="boost-section">
+        <div class="boost-section-title"><span>⚡</span><div><b>انرژی</b><small>ظرفیت فعلی: <strong id="upgradeEnergyCurrent">۱٬۰۰۰</strong></small></div></div>
+        <div class="upgrade-list">
+          <div class="upgrade-option"><div><strong>۲٬۰۰۰</strong><small>هزینه ۲٬۰۰۰ سکه</small></div><button data-upgrade="energy" data-target="2000">ارتقا</button></div>
+          <div class="upgrade-option"><div><strong>۳٬۰۰۰</strong><small>هزینه ۳٬۰۰۰ سکه</small></div><button data-upgrade="energy" data-target="3000">قفل</button></div>
+          <div class="upgrade-option"><div><strong>۴٬۰۰۰</strong><small>هزینه ۴٬۰۰۰ سکه</small></div><button data-upgrade="energy" data-target="4000">قفل</button></div>
+        </div>
+      </section>
+      <section class="boost-section">
+        <div class="boost-section-title"><span>👆</span><div><b>تپ کردن</b><small>قدرت فعلی: <strong id="upgradeTapCurrent">+۱</strong></small></div></div>
+        <div class="upgrade-list">
+          <div class="upgrade-option"><div><strong>+۲</strong><small>هزینه ۲٬۰۰۰ سکه</small></div><button data-upgrade="tap" data-target="2">ارتقا</button></div>
+          <div class="upgrade-option"><div><strong>+۳</strong><small>هزینه ۳٬۰۰۰ سکه</small></div><button data-upgrade="tap" data-target="3">قفل</button></div>
+          <div class="upgrade-option"><div><strong>+۴</strong><small>هزینه ۴٬۰۰۰ سکه</small></div><button data-upgrade="tap" data-target="4">قفل</button></div>
+          <div class="upgrade-option"><div><strong>+۵</strong><small>هزینه ۵٬۰۰۰ سکه</small></div><button data-upgrade="tap" data-target="5">قفل</button></div>
+          <div class="upgrade-option"><div><strong>+۶</strong><small>هزینه ۶٬۰۰۰ سکه</small></div><button data-upgrade="tap" data-target="6">قفل</button></div>
+          <div class="upgrade-option"><div><strong>+۷</strong><small>هزینه ۷٬۰۰۰ سکه</small></div><button data-upgrade="tap" data-target="7">قفل</button></div>
+        </div>
+      </section>
     </section>
     <section id="accountPanel" class="tab-panel" aria-label="حساب کاربری">
       <div class="placeholder-card profile-card"><div class="placeholder-icon">👤</div><h1>حساب کاربری</h1><p id="profileStatus">وضعیت اتصال حساب تلگرام در این بخش نمایش داده می‌شود.</p></div>
@@ -314,14 +373,10 @@
       </section>
     </section>
     <div id="status" class="status" role="status" aria-live="polite"></div>
-    <nav class="tab-bar" aria-label="ناوبری اصلی">
-      <button class="tab-button active" type="button" data-tab="homePanel" aria-current="page"><span>🏠</span>خانه</button>
-      <button class="tab-button" type="button" data-tab="convertPanel"><span>🔄</span>تبدیل</button>
-      <button class="tab-button" type="button" data-tab="selfPanel"><span>🛡️</span>سلف</button>
-      <button class="tab-button" type="button" data-tab="invitePanel"><span>🎁</span>دعوت</button>
+    <nav class="tab-bar nc-tabs" aria-label="ناوبری اصلی">
+      <button class="tab-button" type="button" data-tab="invitePanel"><span>👥</span>دعوت</button>
       <button class="tab-button" type="button" data-tab="missionsPanel"><span>🎯</span>ماموریت</button>
       <button class="tab-button" type="button" data-tab="upgradePanel"><span>🚀</span>ارتقا</button>
-      <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب کاربری</button>
     </nav>
   </main>
 
@@ -409,8 +464,12 @@
         $("upgradeTapCurrent").textContent = "+" + Number(serverState.tap_power || 1);
         document.querySelectorAll("[data-upgrade]").forEach((button) => {
           const current = button.dataset.upgrade === "energy" ? maxEnergy : Number(serverState.tap_power || 1);
-          button.disabled = Number(button.dataset.target) <= current;
-          if (button.disabled) button.textContent = "فعال است ✓";
+          const target = Number(button.dataset.target);
+          const next = current + (button.dataset.upgrade === "energy" ? 1000 : 1);
+          button.disabled = target !== next;
+          if (target === current) button.textContent = "فعال ✓";
+          else if (target === next) button.textContent = "ارتقا";
+          else button.textContent = "قفل";
         });
         $("botBalance").textContent = serverState.bot_coin_balance.toLocaleString("en-US");
       }
@@ -1231,6 +1290,15 @@
           changeAccountButton.disabled = false;
         }
       });
+      $("miniCloseTop").addEventListener("click", () => {
+        if (tg && typeof tg.close === "function") tg.close();
+        else window.close();
+      });
+      $("miniMoreTop").addEventListener("click", () => {
+        showStatus("برای بازی، سکه F را بزن. مأموریت‌ها، دعوت و ارتقا از نوار پایین در دسترس هستند.", "info");
+      });
+      $(".nc-title").addEventListener("click", () => selectTab("homePanel"));
+
       $("closeMiniAppButton").addEventListener("click", () => {
         if (tg && typeof tg.close === "function") tg.close();
         else window.close();
