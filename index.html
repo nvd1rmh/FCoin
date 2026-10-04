@@ -591,12 +591,15 @@
         }
         let data;
         try { data = await response.json(); } catch (_) {
-          throw new Error("پاسخ سرور قابل خواندن نیست (" + response.status + ").");
+          throw new Error("پاسخ سرور برای «" + endpoint + "» قابل خواندن نیست (HTTP " + response.status + ").");
         }
         if (allowErrorStatus) return { response, data };
         if (!response.ok || !data || data.ok !== true) {
           const detail = data && (data.error || data.message);
-          throw new Error(detail ? String(detail) : "درخواست ناموفق بود (" + response.status + ").");
+          throw new Error(
+            (detail ? String(detail) : "درخواست ناموفق بود") +
+            " [" + endpoint + "، HTTP " + response.status + "]"
+          );
         }
         return data;
       }
@@ -1111,6 +1114,28 @@
       async function beginAccountLink() {
         if (linking) return;
         linking = true;
+        if (accessToken && !serverState) {
+          connectionError.hidden = true;
+          connectButton.disabled = true;
+          connectButton.textContent = "در حال دریافت دوبارهٔ موجودی…";
+          try {
+            await request("state");
+            showStatus("حساب متصل شد و اطلاعات با موفقیت دریافت شد.", "info");
+            Promise.all([refreshMissions(), refreshSelf()]).catch((error) => {
+              showStatus(error && error.message ? error.message : "بعضی پنل‌ها به‌روزرسانی نشدند.", "error");
+            });
+          } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            connectionError.hidden = false;
+            $("connectionErrorTitle").textContent = "حساب وصل است، اما دریافت اطلاعات ناموفق بود";
+            $("connectionErrorMessage").textContent = message;
+            connectButton.textContent = "تلاش دوباره برای دریافت اطلاعات";
+          } finally {
+            linking = false;
+            connectButton.disabled = false;
+          }
+          return;
+        }
         onboarding.classList.remove("is-pairing");
         connectionError.hidden = true;
         connectButton.disabled = true;
@@ -1120,8 +1145,9 @@
         pairingBox.hidden = true;
         pairingCode.textContent = "--------";
         pairingProgress.textContent = "منتظر تأیید کد در بات…";
+        let linkedUserId = 0;
         try {
-          const started = await apiRequest("connect/start");
+        const started = await apiRequest("connect/start");
           if (!started || !/^\d{4}$/.test(started.pairing_code || "")) {
             throw new Error("سرور کد اتصال معتبر برنگرداند؛ نسخهٔ جدید بات را روی میزبان Reload کن.");
           }
@@ -1134,13 +1160,15 @@
           connectButton.textContent = "در انتظار تأیید در بات…";
           connectState.textContent = "کد را در پیوی بات بفرست؛ این صفحه خودش اتصال را بررسی می‌کند.";
           const deadline = Date.now() + Math.min(300, started.expires_in || 300) * 1000;
-          let linkedUserId = 0;
           while (Date.now() < deadline && !accessToken) {
             await new Promise((resolve) => window.setTimeout(resolve, 1800));
             const result = await apiRequest("connect/finish", { body: { code }, allowErrorStatus: true });
             if (result.response.status === 202 && result.data && result.data.ok) continue;
             if (!result.response.ok || !result.data || result.data.ok !== true || !result.data.access_token) {
-              throw new Error(result.data && result.data.error ? result.data.error : "تأیید اتصال انجام نشد.");
+              throw new Error(
+                (result.data && result.data.error ? result.data.error : "تأیید اتصال انجام نشد.") +
+                " [connect/finish، HTTP " + result.response.status + "]"
+              );
             }
             accessToken = result.data.access_token;
             linkedUserId = result.data.user_id;
@@ -1157,23 +1185,34 @@
             showStatus(error && error.message ? error.message : "بعضی پنل‌ها به‌روزرسانی نشدند.", "error");
           });
         } catch (error) {
-          accessToken = "";
           serverState = null;
-          onboarding.classList.remove("is-pairing");
-          renderConnection(false);
-          pairingProgress.textContent = "اتصال کامل نشد.";
           pairingBox.hidden = true;
           pairingCode.textContent = "--------";
           const errorMessage = error instanceof Error ? error.message : String(error);
-          $("connectionErrorTitle").textContent = errorMessage.includes("ارتباط با سرور") ||
-            errorMessage.includes("سرور دیر پاسخ داد")
-            ? "ارتباط با سرور برقرار نشد"
-            : "اتصال حساب کامل نشد";
-          $("connectionErrorMessage").textContent = errorMessage;
-          connectionError.hidden = false;
-          hideStatus();
-          connectCopy.textContent = "برای شروع دوباره، کد تازه بساز و آن را در پیوی بات بفرست.";
-          connectButton.textContent = "ساخت کد تازه";
+          if (accessToken) {
+            renderConnection(true, linkedUserId);
+            onboarding.hidden = false;
+            connectionError.hidden = false;
+            $("connectionErrorTitle").textContent = "حساب وصل است، اما دریافت اطلاعات ناموفق بود";
+            $("connectionErrorMessage").textContent = errorMessage;
+            connectCopy.textContent = "اتصال حساب انجام شده است. برای دریافت دوبارهٔ موجودی، دکمهٔ زیر را بزن.";
+            connectButton.hidden = false;
+            connectButton.textContent = "تلاش دوباره برای دریافت اطلاعات";
+            hideStatus();
+          } else {
+            onboarding.classList.remove("is-pairing");
+            renderConnection(false);
+            pairingProgress.textContent = "اتصال کامل نشد.";
+            $("connectionErrorTitle").textContent = errorMessage.includes("ارتباط با سرور") ||
+              errorMessage.includes("سرور دیر پاسخ داد")
+              ? "ارتباط با سرور برقرار نشد"
+              : "اتصال حساب کامل نشد";
+            $("connectionErrorMessage").textContent = errorMessage;
+            connectionError.hidden = false;
+            hideStatus();
+            connectCopy.textContent = "برای شروع دوباره، کد تازه بساز و آن را در پیوی بات بفرست.";
+            connectButton.textContent = "ساخت کد تازه";
+          }
           connectButton.disabled = false;
         } finally {
           linking = false;
