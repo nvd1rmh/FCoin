@@ -101,14 +101,14 @@
     .balance-unit { font-size:13px; color:var(--gold); margin-right:6px; text-shadow:0 0 14px #ffd45a80; }
     .wallet-icon { position:relative; width:42px; height:42px; flex:none; border-radius:50%; display:grid; place-items:center; font-size:20px; color:#fff1b4; background:linear-gradient(145deg,#fff4a9,#f7b824 60%,#b45a12); border:1px solid #fff4b878; box-shadow:inset 0 2px 3px #fff9, inset 0 -4px 7px #74370a8c,0 5px 14px #e99f2440; text-shadow:0 2px 3px #74400b; }
     .coin-area { min-height:clamp(270px, 42vh, 365px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:1100px; }
-    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(76vw, 310px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#fff8c9 0%,#ffdf52 18%,#f4a913 53%,#c66b13 100%); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff9b2110,0 0 68px #ffb51e66,0 22px 38px #0009,0 39px 64px #ec8d1c30,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #74400c,inset 0 -18px 24px #9a5710; transform:rotateX(5deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:none; -webkit-user-select:none; }
+    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(62vw, 250px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:linear-gradient(145deg,#fff8c9 0%,#ffdf52 18%,#f4a913 53%,#c66b13 100%); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff9b2110,0 0 68px #ffb51e66,0 22px 38px #0009,0 39px 64px #ec8d1c30,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #74400c,inset 0 -18px 24px #9a5710; transform:rotateX(5deg); transition:transform .12s cubic-bezier(.2,.8,.2,1),filter .15s ease; user-select:none; touch-action:none; -webkit-user-select:none; }
     .coin-button:before { content:""; position:absolute; z-index:-1; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff3ae 0deg 1.2deg,#e5a321 1.2deg 2.8deg,#a86a16 2.8deg 3.5deg,#ffd957 3.5deg 5.3deg); box-shadow:inset 0 2px 3px #fff9,inset 0 -3px 5px #67200e; }
     .coin-button:after { content:""; position:absolute; inset:9px; border-radius:50%; border:4px solid #ffea8e; background:radial-gradient(ellipse at 28% 14%,#fffdebe8,transparent 23%),radial-gradient(ellipse at 72% 83%,#9c6a1a40,transparent 46%),linear-gradient(145deg,#fff4b1 0%,#ffd53c 38%,#efa711 68%,#ce7918 100%); box-shadow:inset 0 0 0 3px #9c6a1c63,inset 0 0 0 7px #fff4c28c,inset 0 2px 10px #fff9,0 1px 1px #8e5d1c; pointer-events:none; }
     .coin-button:active { transform:rotateX(5deg) scale(.985); filter:brightness(1.03); box-shadow:0 0 0 7px #ffd45a12,0 0 0 17px #ff9b2110,0 0 58px #ffb51e55,0 22px 38px #0009,inset 0 4px 3px #fffbd0,inset 0 -9px 10px #74400c,inset 0 -18px 24px #9a5710; }
     .coin-button:disabled { cursor:wait; filter:saturate(.9) brightness(.94); }
     .coin-face { position:absolute; z-index:1; inset:11px; border-radius:50%; pointer-events:none; }
     .coin-engraving { position:absolute; inset:17%; border:1px solid #fff4bf8c; border-radius:50%; box-shadow:inset 0 0 0 3px #9b431b2b,inset 0 0 0 5px #fff2a35c,0 1px 1px #fff9; }
-    .coin-letter { position:absolute; left:50%; top:50%; display:grid; place-items:center; width:52%; height:52%; border-radius:50%; transform:translate(-50%,-50%) rotate(-7deg); font-size:clamp(96px,29vw,134px); line-height:.8; font-weight:1000; color:#fff1a0; -webkit-text-fill-color:#fff1a0; -webkit-text-stroke:1.5px #a83d13; text-shadow:0 2px 0 #fffbd0,0 5px 0 #f7b91e,0 8px 0 #c45414,0 11px 2px #76230e,0 15px 12px #5d1c0da8; font-family:Arial Black,Arial,sans-serif; }
+    .coin-letter { position:absolute; left:50%; top:50%; display:grid; place-items:center; width:52%; height:52%; border-radius:50%; transform:translate(-50%,-50%) rotate(-7deg); font-size:clamp(72px,22vw,108px); line-height:.8; font-weight:1000; color:#fff1a0; -webkit-text-fill-color:#fff1a0; -webkit-text-stroke:1.5px #a83d13; text-shadow:0 2px 0 #fffbd0,0 5px 0 #f7b91e,0 8px 0 #c45414,0 11px 2px #76230e,0 15px 12px #5d1c0da8; font-family:Arial Black,Arial,sans-serif; }
     .tap-float { position:absolute; z-index:4; top:38%; left:50%; color:#fff8dc; font-size:40px; font-weight:1000; text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0; pointer-events:none; white-space:nowrap; animation:tap-rise .72s cubic-bezier(.2,.75,.3,1) forwards; will-change:transform,opacity; }
     @keyframes tap-rise { 0% { opacity:0; transform:translate(-50%,5px) scale(.9); } 20% { opacity:1; transform:translate(-50%,0) scale(1); } 100% { opacity:0; transform:translate(-50%,-50px) scale(1); } }
     .coin-stars { position:absolute; left:50%; top:50%; width:68%; height:68%; border:1px solid #fff4b979; border-radius:50%; transform:translate(-50%,-50%); box-shadow:0 0 0 3px #a3451b28,inset 0 0 0 3px #fff1a448; }
@@ -198,7 +198,7 @@
     .tab-button:focus-visible,.upgrade-button:focus-visible,.invite-actions button:focus-visible { outline:2px solid #ffe28b; outline-offset:2px; }
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
     @media (max-width:360px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .tab-bar{gap:1px;padding:5px;} .tab-button{font-size:8px;} }
-    @media (max-width:360px), (max-height:700px) { .coin-area{min-height:220px;padding:0;} .coin-button{width:min(68vw,235px);} .tap-hint{margin-top:12px;} }
+    @media (max-width:360px), (max-height:700px) { .coin-area{min-height:220px;padding:0;} .coin-button{width:min(58vw,220px);} .tap-hint{margin-top:12px;} }
     @media (prefers-reduced-motion: reduce) { .coin-button:not(:disabled) { animation:none; } .tap-float { animation-duration:.01ms; } }
   </style>
 </head>
@@ -423,15 +423,15 @@
       }
 
       function render(state) {
-        if (!state || state.ok !== true ||
-            !Number.isInteger(state.fcoin_balance) ||
-            !Number.isInteger(state.energy) ||
-            !Number.isInteger(state.energy_updated_at) ||
-            !Number.isInteger(state.bot_coin_balance) ||
-            !Number.isInteger(state.max_energy) ||
-            !Number.isInteger(state.energy_level) ||
-            !Number.isInteger(state.tap_power)) {
-          throw new Error("پاسخ دریافتی از سرور معتبر نیست.");
+        const requiredFields = [
+          "fcoin_balance", "energy", "bot_coin_balance", "max_energy", "energy_level", "tap_power"
+        ];
+        const invalidFields = requiredFields.filter((field) =>
+          !Number.isInteger(state && state[field])
+        );
+        if (!state || state.ok !== true || invalidFields.length > 0) {
+          const details = invalidFields.length ? " (" + invalidFields.join("، ") + ")" : "";
+          throw new Error("پاسخ دریافتی از سرور معتبر نیست" + details + ".");
         }
         serverState = state;
         updateWalletDisplay();
