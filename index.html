@@ -87,10 +87,10 @@
     .balance-value { font-size:34px; font-weight:900; direction:ltr; text-align:center; white-space:nowrap; letter-spacing:.4px; color:#fff7dc; text-shadow:0 2px 18px #ffd45a55; font-variant-numeric:tabular-nums; }
     .balance-unit { font-size:13px; color:var(--gold); margin-right:6px; text-shadow:0 0 14px #ffd45a80; }
     .wallet-icon { position:relative; width:42px; height:42px; flex:none; border-radius:50%; display:grid; place-items:center; font-size:20px; color:#fff1b4; background:linear-gradient(145deg,#fff4a9,#f7b824 60%,#b45a12); border:1px solid #fff4b878; box-shadow:inset 0 2px 3px #fff9, inset 0 -4px 7px #74370a8c,0 5px 14px #e99f2440; text-shadow:0 2px 3px #74400b; }
-    .coin-area { min-height:clamp(270px, 42vh, 365px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:1100px; }
-    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(66vw, 270px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:transparent; filter:drop-shadow(0 21px 20px #0009) drop-shadow(0 0 20px #ffb51e55); transform:perspective(900px) rotateX(4deg) rotateY(0deg); transform-origin:center; transition:transform .32s cubic-bezier(.2,.72,.25,1),filter .15s ease; backface-visibility:hidden; user-select:none; touch-action:none; -webkit-user-select:none; }
+    .coin-area { min-height:clamp(330px, 49vh, 440px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:850px; }
+    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(82vw, 350px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:transparent; filter:drop-shadow(0 21px 20px #0009) drop-shadow(0 0 20px #ffb51e55); transform:perspective(850px) rotateX(4deg) rotateY(0deg); transform-origin:center; transition:transform .42s cubic-bezier(.2,.72,.25,1),filter .3s ease; backface-visibility:hidden; user-select:none; touch-action:none; -webkit-user-select:none; }
     .coin-button:before,.coin-button:after { content:none; }
-    .coin-button.is-pressed { transform:perspective(900px) rotateX(calc(4deg + var(--tap-rot-x,0deg))) rotateY(var(--tap-rot-y,0deg)) translateZ(9px) scale(.97); transition-duration:.13s; }
+    .coin-button.is-pressed { transform:perspective(850px) rotateX(calc(4deg + var(--tap-rot-x,0deg))) rotateY(var(--tap-rot-y,0deg)) translateZ(-28px) scale(.88); filter:drop-shadow(0 7px 6px #000d) drop-shadow(0 0 9px #ffb51e25) brightness(.86); transition-duration:.16s; }
     .coin-button:disabled { cursor:wait; filter:saturate(.9) brightness(.94); }
     .coin-face { position:absolute; z-index:1; inset:0; width:100%; height:100%; border-radius:50%; pointer-events:none; object-fit:contain; }
     .coin-engraving,.coin-letter,.coin-glint { display:none; }
@@ -196,7 +196,7 @@
     .tab-button:focus-visible,.upgrade-button:focus-visible,.invite-actions button:focus-visible { outline:2px solid #ffe28b; outline-offset:2px; }
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
     @media (max-width:380px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .tab-bar{gap:2px;padding:5px;} .tab-button{font-size:9px;padding:8px 2px;} .tab-button span{font-size:16px;} }
-    @media (max-width:360px), (max-height:700px) { .coin-area{min-height:220px;padding:0;} .coin-button{width:min(58vw,220px);} .tap-hint{margin-top:12px;} }
+    @media (max-width:360px), (max-height:700px) { .coin-area{min-height:clamp(280px,42vh,340px);padding:0;} .coin-button{width:min(76vw,270px);} .tap-hint{margin-top:12px;} }
     @media (prefers-reduced-motion: reduce) { .coin-button { transition-duration:.01ms !important; } .tap-float { animation-duration:.01ms; } }
   </style>
 </head>
@@ -1543,6 +1543,26 @@
         });
 
         const featureTitle = (item) => item.card.querySelector("h2")?.textContent || "";
+        featureCards
+          .filter((item) => !featureTitle(item).includes("ساعت و پروفایل"))
+          .forEach(({ card }) => {
+            const heading = card.querySelector("h2");
+            const notice = document.createElement("p");
+            notice.textContent = "برای تنظیم و استفاده از این قابلیت، از پنل سلف داخل ربات اقدام کن. این بخش در مینی‌اپ اجرا نمی‌شود.";
+            const openBot = document.createElement("button");
+            openBot.type = "button";
+            openBot.className = "self-action";
+            openBot.textContent = "باز کردن پنل سلف ربات";
+            openBot.addEventListener("click", () => {
+              if (tg && typeof tg.openTelegramLink === "function") {
+                tg.openTelegramLink("https://t.me/FarnoSelfBot");
+              } else {
+                showStatus("این قابلیت را از پنل سلف داخل تلگرام باز کن.", "error");
+              }
+            });
+            card.replaceChildren(heading, notice, openBot);
+            delete card.dataset.personalTool;
+          });
         const findFeatures = (needles) => needles.map((needle) =>
           featureCards.find((item) => featureTitle(item).includes(needle))
         ).filter(Boolean);
@@ -1596,9 +1616,6 @@
               detail.replaceChildren(back, card);
               detail.hidden = false;
               featureList.hidden = true;
-              if (card.dataset.personalTool) {
-                refreshPersonalTool(card, card.dataset.personalTool);
-              }
               window.scrollTo({ top: 0, behavior: "smooth" });
             });
             grid.append(button);
@@ -1787,14 +1804,14 @@
           Math.max(0, Math.min(1, event.offsetX / tapButton.clientWidth));
         const normalizedY = keyboardTap ? 0.5 :
           Math.max(0, Math.min(1, event.offsetY / tapButton.clientHeight));
-        tapButton.style.setProperty("--tap-rot-y", ((normalizedX - 0.5) * 22).toFixed(2) + "deg");
-        tapButton.style.setProperty("--tap-rot-x", ((0.5 - normalizedY) * 22).toFixed(2) + "deg");
+        tapButton.style.setProperty("--tap-rot-y", ((normalizedX - 0.5) * 42).toFixed(2) + "deg");
+        tapButton.style.setProperty("--tap-rot-x", ((0.5 - normalizedY) * 42).toFixed(2) + "deg");
         tapButton.classList.add("is-pressed");
         window.clearTimeout(tapReleaseTimer);
         tapReleaseTimer = window.setTimeout(() => {
           tapButton.classList.remove("is-pressed");
           tapReleaseTimer = 0;
-        }, 130);
+        }, 180);
         if (!tapDisplayFrame) {
           tapDisplayFrame = window.requestAnimationFrame(() => {
             tapDisplayFrame = 0;
