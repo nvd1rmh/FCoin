@@ -489,6 +489,9 @@
           tap_power: tapPower !== null && tapPower > 0 ? tapPower : 1,
           boost_uses: Number.isInteger(state.boost_uses) ? state.boost_uses : 0,
           boost_limit: Number.isInteger(state.boost_limit) ? state.boost_limit : 3,
+          boost_multiplier: Number.isInteger(state.boost_multiplier) && state.boost_multiplier > 0
+            ? state.boost_multiplier
+            : 2,
           boost_until: Number.isFinite(Number(state.boost_until)) ? Number(state.boost_until) : 0,
           upgrades_supported: tapPower !== null &&
             (reportedMaxEnergy !== null || energyLevel !== null)
@@ -565,7 +568,7 @@
 
       function effectiveTapPower() {
         return serverState
-          ? serverState.tap_power * (isBoostActive() ? 2 : 1)
+          ? serverState.tap_power * (isBoostActive() ? serverState.boost_multiplier : 1)
           : 1;
       }
 
