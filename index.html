@@ -279,7 +279,7 @@
       <div class="boost-dialog-content">
         <div class="boost-dialog-icon" aria-hidden="true">⚡</div>
         <h2 id="boostDialogTitle">تقویت ویژه</h2>
-        <p>با فعال‌سازی، قدرت هر ضربه‌ات ۵ برابر می‌شود و به‌مدت ۱۰ ثانیه بدون مصرف انرژی می‌توانی ضربه بزنی؛ حتی اگر انرژی‌ات صفر باشد. این قابلیت روزانه ۳ بار قابل استفاده است.<br><br>الان فعالش می‌کنی؟</p>
+        <p>با فعال‌سازی، قدرت هر ضربه‌ات ۲ برابر می‌شود و به‌مدت ۱۰ ثانیه بدون مصرف انرژی می‌توانی ضربه بزنی؛ حتی اگر انرژی‌ات صفر باشد. این قابلیت روزانه ۳ بار قابل استفاده است.<br><br>الان فعالش می‌کنی؟</p>
         <div class="boost-dialog-actions">
           <button id="boostCancelButton" type="button">فعلاً نه</button>
           <button id="boostConfirmButton" class="boost-confirm" type="button">بله، فعال کن</button>
@@ -565,7 +565,7 @@
 
       function effectiveTapPower() {
         return serverState
-          ? serverState.tap_power * (isBoostActive() ? 5 : 1)
+          ? serverState.tap_power * (isBoostActive() ? 2 : 1)
           : 1;
       }
 
