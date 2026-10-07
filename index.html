@@ -428,11 +428,7 @@
       let boostTicker = 0;
       let selfFeaturePage = 0;
       let selfLockChatId = "";
-      let sessionPollTimer = 0;
-      let autoActivateAfterSession =
-        new URLSearchParams(window.location.search).get("activate_self") === "1";
       const tapLabels = new Set();
-      const accountChats = (state) => state.account_chats || state.business_chats || [];
 
       function showStatus(message, type) {
         if (type === "error") {
@@ -722,10 +718,10 @@
         boostConfirmButton.disabled = busy || !serverState || active || uses >= limit;
       }
 
-      async function apiRequest(endpoint, body = {}, timeoutMs = 12000) {
+      async function apiRequest(endpoint, body = {}) {
         const headers = { "Content-Type": "application/json" };
         const controller = new AbortController();
-        const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+        const timeout = window.setTimeout(() => controller.abort(), 12000);
         let response;
         try {
           response = await fetch(API_BASE.replace(/\/$/, "") + "/api/fcoin/" + endpoint, {
@@ -761,11 +757,11 @@
         return !!(tg && typeof tg.initData === "string" && tg.initData);
       }
 
-      async function userApiRequest(endpoint, body = {}, timeoutMs = 12000) {
+      async function userApiRequest(endpoint, body = {}) {
         if (!hasTelegramAuth()) {
           throw new Error("مینی‌اپ را از داخل تلگرام باز کن تا اطلاعات حسابت دریافت شود.");
         }
-        return apiRequest(endpoint, { ...body, init_data: tg.initData }, timeoutMs);
+        return apiRequest(endpoint, { ...body, init_data: tg.initData });
       }
 
       async function request(endpoint, body = {}, beforeRender = null) {
@@ -1027,143 +1023,11 @@
         parent.append(row);
       }
 
-      function sessionStateLabel(status) {
-        return ({
-          connected: "متصل",
-          connecting: "در حال اتصال",
-          reconnecting: "در حال اتصال مجدد",
-          idle: "متصل · آماده",
-          authorization_required: "نیازمند احراز هویت",
-          invalid_session: "نشست نامعتبر",
-          disconnected: "قطع",
-        })[status] || "نامشخص";
-      }
-
-      function renderSessionCard(session) {
-        const card = selfCard(
-          "🔐 نشست حساب تلگرام",
-          "اتصال با QR رسمی انجام می‌شود. QR را فقط با اپ رسمی تلگرام حساب خودت اسکن کن؛ کد ورود و رمز دومرحله‌ای از تو پرسیده نمی‌شود."
-        );
-        card.classList.add("session-card");
-        const details = document.createElement("div");
-        details.className = "account-info";
-        const rows = [
-          ["وضعیت اتصال", sessionStateLabel(session.status)],
-          ["شناسه حساب", session.telegram_user_id || session.id || "—"],
-          ["نام کاربری", session.username ? "@" + session.username.replace(/^@/, "") : "—"],
-          ["وضعیت فعال‌سازی", session.activation_state === "active" ? "فعال" : "غیرفعال"],
-        ];
-        rows.forEach(([label, value]) => {
-          const row = document.createElement("div");
-          row.className = "account-info-row";
-          const name = document.createElement("span");
-          name.textContent = label;
-          const content = document.createElement("strong");
-          content.textContent = String(value);
-          row.append(name, content);
-          details.append(row);
-        });
-        card.append(details);
-
-        if (session.qr_image) {
-          const qr = document.createElement("img");
-          qr.src = session.qr_image;
-          qr.alt = "QR ورود امن به حساب تلگرام";
-          qr.style.cssText = "display:block;width:min(100%,280px);margin:10px auto;background:#fff;border-radius:12px;padding:8px";
-          card.append(qr);
-        }
-        if (session.last_error) {
-          const error = document.createElement("div");
-          error.className = "self-listrow";
-          error.style.color = "#ffb5b5";
-          error.textContent = session.last_error;
-          card.append(error);
-        }
-        const action = document.createElement("button");
-        action.type = "button";
-        action.className = "self-action" + (session.connected ? " danger" : "");
-        action.textContent = session.connected
-          ? "قطع اتصال حساب"
-          : session.status === "connecting" ? "تازه‌سازی QR" : "اتصال امن با QR";
-        action.addEventListener("click", async () => {
-          action.disabled = true;
-          try {
-            const operation = session.connected ? "logout" : "qr";
-            const result = await userApiRequest("self/session/" + operation);
-            if (operation === "logout") {
-              if (sessionPollTimer) window.clearTimeout(sessionPollTimer);
-              sessionPollTimer = 0;
-              showStatus("نشست حساب قطع شد و فایل نشست حذف شد.", "info");
-              await refreshSelf();
-              return;
-            }
-            renderSessionCardInto(card, result.session);
-            if (result.session.status === "connecting") pollSessionStatus();
-          } catch (error) {
-            showStatus(error && error.message ? error.message : "اتصال حساب انجام نشد.", "error");
-          } finally {
-            action.disabled = false;
-          }
-        });
-        card.append(action);
-        if (session.status === "connecting") pollSessionStatus();
-        return card;
-      }
-
-      function renderSessionCardInto(card, session) {
-        const replacement = renderSessionCard(session);
-        card.replaceWith(replacement);
-      }
-
-      function pollSessionStatus() {
-        if (sessionPollTimer) window.clearTimeout(sessionPollTimer);
-        sessionPollTimer = window.setTimeout(async () => {
-          try {
-            const result = await userApiRequest("self/session/status");
-            const session = result.session || {};
-            const current = selfApp.querySelector(".session-card");
-            if (current) renderSessionCardInto(current, session);
-            if (session.status === "connected" || session.status === "idle") {
-              sessionPollTimer = 0;
-              await refreshSelf();
-              if (autoActivateAfterSession) {
-                autoActivateAfterSession = false;
-                window.history.replaceState({}, "", window.location.pathname);
-                try {
-                  const activated = await userApiRequest("self/action", { action: "activate" });
-                  renderSelf(activated);
-                  showStatus("حساب متصل شد و سلف فعال شد.", "info");
-                } catch (error) {
-                  showStatus(error && error.message ? error.message : "حساب وصل شد، اما فعال‌سازی سلف انجام نشد.", "error");
-                }
-              }
-              return;
-            }
-            if (["disconnected", "invalid_session", "authorization_required"].includes(session.status)) {
-              sessionPollTimer = 0;
-              await refreshSelf();
-              return;
-            }
-            pollSessionStatus();
-          } catch (error) {
-            sessionPollTimer = 0;
-            showStatus(error && error.message ? error.message : "وضعیت اتصال دریافت نشد.", "error");
-          }
-        }, 1800);
-      }
-
       function renderSelf(state) {
         selfApp.replaceChildren();
-        const session = state.session || {
-          status: state.connected ? "connected" : "disconnected",
-          connected: !!state.connected,
-          activation_state: state.self_active ? "active" : "inactive"
-        };
-        const accountCard = renderSessionCard(session);
-        selfApp.append(accountCard);
         const summary = selfCard("وضعیت سلف", state.connected
-          ? "نشست حساب تلگرام آماده است. برای اجرای قابلیت‌ها، سلف و موجودی سکهٔ کافی لازم است."
-          : "برای استفاده از قابلیت‌های سلف، ابتدا نشست اختصاصی حساب تلگرامت را با QR وصل کن.");
+          ? "حساب Business به ربات متصل است. برای فعال بودن قابلیت‌ها، سلف باید روشن و موجودی سکه کافی باشد."
+          : "برای دسترسی به قابلیت‌های سلف، در تلگرام از مسیر Profile → Chat Automation ربات را اضافه کن و دسترسی‌های Manage Messages و Edit Profile را فعال کن.");
         const status = document.createElement("div");
         status.className = "self-row";
         status.textContent = (state.self_active ? "🟢 سلف فعال" : "⚪ سلف غیرفعال") +
@@ -1191,7 +1055,7 @@
             reminder ? "⏰ یادآور هوشمند" : "💬 پیام خودکار",
             reminder
               ? "محتوا، تاریخ شمسی و ساعت را ثبت کن؛ یادآوری در زمان انتخابی به پیوی خود ربات فرستاده می‌شود."
-              : "مخاطب را از فهرست گفت‌وگوهای شناسایی‌شده انتخاب کن؛ متن، دوره و ساعت را تعیین کن تا پیام از حساب تلگرامت ارسال شود."
+              : "مخاطب را از فهرست گفت‌وگوهای شناسایی‌شده انتخاب کن؛ متن، دوره و ساعت را تعیین کن تا پیام از اکانت Business خودت ارسال شود."
           );
           card.dataset.personalTool = kind;
           const form = document.createElement("div");
@@ -1201,7 +1065,7 @@
             selfInput(form, "تاریخ شمسی (سال/ماه/روز)", "", "reminder_date", { placeholder: "۱۴۰۵/۰۷/۱۳" });
             selfInput(form, "ساعت تهران", "", "reminder_time", { placeholder: "09:30" });
           } else {
-            const chatOptions = accountChats(state).map((chat) => [
+            const chatOptions = (state.business_chats || []).map((chat) => [
               String(chat.chat_id),
               chat.display_name || "گفت‌وگوی خصوصی"
             ]);
@@ -1297,7 +1161,7 @@
             label.textContent = kind === "reminder"
               ? entry.due_at + " · " + entry.text
               : entry.send_time + " · " +
-                (accountChats(state).find((chat) => String(chat.chat_id) === String(entry.target_chat_id))?.display_name || "گفت‌وگوی خصوصی") +
+                ((state.business_chats || []).find((chat) => String(chat.chat_id) === String(entry.target_chat_id))?.display_name || "گفت‌وگوی خصوصی") +
                 " · " + entry.text;
             const cancel = document.createElement("button");
             cancel.type = "button";
@@ -1484,7 +1348,7 @@
         clock.append(clockForm);
         addFeature(clock, "⏰");
 
-        const format = selfCard("✍️ سبک پیام‌ها", "قالب‌بندی روی متن پیام‌های خروجی حساب تلگرامت اعمال می‌شود.");
+        const format = selfCard("✍️ سبک پیام‌ها", "قالب‌بندی روی متن پیام‌های خروجی حساب Business اعمال می‌شود.");
         const styleOptions = [
           ["none", "بدون قالب"], ["bold", "بولد"], ["italic", "ایتالیک"],
           ["underline", "زیرخط"], ["strike", "خط‌خورده"], ["spoiler", "اسپویلر"], ["quote", "نقل‌قول"],
@@ -1576,7 +1440,7 @@
         const preparedCard = selfCard("📝 متن آماده", "عبارت تکی را در گفت‌وگو بفرست تا پاسخ آماده ارسال شود.");
         appendResponseEditor(preparedCard, state.prepared || [], "prepared");
         addFeature(preparedCard, "📝");
-        const autoCard = selfCard("🔁 پاسخ‌های خودکار", "پاسخ به عبارت‌های تعریف‌شده در گفت‌وگوهای خصوصی حساب تلگرامت.");
+        const autoCard = selfCard("🔁 پاسخ‌های خودکار", "پاسخ به عبارت‌های تعریف‌شده در پیوی Business.");
         appendResponseEditor(autoCard, state.auto_responses || [], "auto");
         autoCard.append(timedCard);
         addFeature(autoCard, "🔁");
@@ -1590,9 +1454,9 @@
 
         const lockCard = selfCard(
           "🔒 قفل‌ها",
-          "قفل‌ها برای هر گفت‌وگوی خصوصی حساب جدا ذخیره می‌شوند. فقط گفت‌وگوهایی نمایش داده می‌شوند که حساب متصل در آن‌ها فعالیت داشته است."
+          "قفل‌ها برای هر گفت‌وگوی خصوصی Business جدا ذخیره می‌شوند. فقط گفت‌وگوهایی نمایش داده می‌شوند که اکانت متصل قبلاً در آن‌ها فعالیت داشته است."
         );
-        const lockChats = accountChats(state);
+        const lockChats = Array.isArray(state.business_chats) ? state.business_chats : [];
         const lockChatSelect = document.createElement("select");
         lockChatSelect.className = "self-select";
         lockChatSelect.setAttribute("aria-label", "انتخاب گفت‌وگو برای تنظیم قفل‌ها");
@@ -1640,11 +1504,11 @@
             hint.className = "self-listrow";
             hint.textContent = lockChats.length
               ? "برای دیدن و تغییر قفل‌ها، یک گفت‌وگو انتخاب کن."
-              : "ابتدا از طریق حساب متصل با یک گفت‌وگوی خصوصی تعامل کن، سپس این بخش را تازه‌سازی کن.";
+              : "ابتدا از طریق اکانت Business با یک گفت‌وگوی خصوصی تعامل کن، سپس این بخش را تازه‌سازی کن.";
             lockControls.append(hint);
             return;
           }
-          const currentChat = accountChats(lockState).find(
+          const currentChat = (lockState.business_chats || []).find(
             (chat) => String(chat.chat_id) === selfLockChatId
           ) || selectedChat;
           const appendLockControl = (lockType, label, checked) => {
@@ -1693,9 +1557,9 @@
         addFeature(makePersonalToolCard("schedule"), "💬");
         addFeature(makePersonalToolCard("reminder"), "⏰");
         addFeature(makeQrToolCard(), "📷");
-        const accountChatOptions = [
+        const businessChatOptions = [
           ["", "یک گفت‌وگو را انتخاب کن"],
-          ...accountChats(state).map((chat) => [
+          ...(state.business_chats || []).map((chat) => [
             String(chat.chat_id),
             chat.display_name || "گفت‌وگوی خصوصی"
           ])
@@ -1708,7 +1572,7 @@
           let textInput = null;
           let fileInput = null;
           if (["stats", "sticker", "gif", "video_note"].includes(tool)) {
-            chatSelect = selfInput(form, "گفت‌وگوی مقصد", "", "tool_chat", { select: accountChatOptions });
+            chatSelect = selfInput(form, "گفت‌وگوی مقصد", "", "tool_chat", { select: businessChatOptions });
           }
           if (tool === "translate") {
             textInput = document.createElement("textarea");
@@ -1759,7 +1623,7 @@
                   reader.readAsDataURL(file);
                 });
               }
-              const result = await userApiRequest("self/tools", payload, 240000);
+              const result = await userApiRequest("self/tools", payload);
               output.textContent = result.text || result.message || "عملیات با موفقیت انجام شد.";
               output.hidden = false;
               showStatus(result.message || "ابزار با موفقیت اجرا شد.", "info");
@@ -1782,9 +1646,9 @@
           addFeature(makeSelfToolCard(tool, title, description), title.slice(0, 2));
         });
         [
-          ["video_note", "🎥 ساخت ویدیو مسیج", "یک ویدیو انتخاب کن تا نسخهٔ ویدیو مسیج آن از حساب تلگرامت به گفت‌وگوی انتخابی ارسال شود."],
-          ["sticker", "🧩 ساخت استیکر", "از عکس یا ویدیو استیکر بساز و آن را از حساب تلگرامت به گفت‌وگوی انتخابی بفرست."],
-          ["gif", "🎞 ساخت گیف", "از عکس یا ویدیو GIF بساز و آن را از حساب تلگرامت به گفت‌وگوی انتخابی بفرست."]
+          ["video_note", "🎥 ساخت ویدیو مسیج", "یک ویدیو انتخاب کن تا نسخهٔ ویدیو مسیج آن از اکانت Business خودت به گفت‌وگوی انتخابی ارسال شود."],
+          ["sticker", "🧩 ساخت استیکر", "از عکس یا ویدیو استیکر بساز و آن را از اکانت Business خودت به گفت‌وگوی انتخابی بفرست."],
+          ["gif", "🎞 ساخت گیف", "از عکس یا ویدیو GIF بساز و آن را از اکانت Business خودت به گفت‌وگوی انتخابی بفرست."]
         ].forEach(([tool, title, description]) => {
           addFeature(makeSelfToolCard(tool, title, description), title.slice(0, 2));
         });
