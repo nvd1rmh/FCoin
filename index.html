@@ -22,6 +22,8 @@
       margin: 0; min-height: 100vh; color: #fff;
       font-family: Tahoma, "Segoe UI", sans-serif;
       background:
+        linear-gradient(180deg, #0b090bd1, #100e12d9),
+        url("back.png") center / cover fixed,
         radial-gradient(ellipse at 50% 35%, #ff9d2626 0, transparent 37%),
         radial-gradient(ellipse at 50% 12%, #352116 0, #1a1518 40%, var(--bg) 78%);
       -webkit-tap-highlight-color: transparent;
@@ -88,7 +90,7 @@
     .balance-unit { font-size:13px; color:var(--gold); margin-right:6px; text-shadow:0 0 14px #ffd45a80; }
     .wallet-icon { position:relative; width:42px; height:42px; flex:none; border-radius:50%; display:grid; place-items:center; font-size:20px; color:#fff1b4; background:linear-gradient(145deg,#fff4a9,#f7b824 60%,#b45a12); border:1px solid #fff4b878; box-shadow:inset 0 2px 3px #fff9, inset 0 -4px 7px #74370a8c,0 5px 14px #e99f2440; text-shadow:0 2px 3px #74400b; }
     .coin-area { min-height:clamp(300px, 45vh, 390px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:1100px; }
-    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(75vw, 326px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:transparent; filter:drop-shadow(0 21px 20px #0009) drop-shadow(0 0 20px #ffb51e55); transform:perspective(900px) rotateX(4deg) rotateY(0deg); transform-origin:center; transition:transform .15s cubic-bezier(.22,.7,.25,1),filter .15s ease; backface-visibility:hidden; user-select:none; touch-action:none; -webkit-user-select:none; }
+    .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(64vw, 270px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:transparent; filter:drop-shadow(0 21px 20px #0009) drop-shadow(0 0 20px #ffb51e55); transform:perspective(900px) rotateX(4deg) rotateY(0deg); transform-origin:center; transition:transform .15s cubic-bezier(.22,.7,.25,1),filter .15s ease; backface-visibility:hidden; user-select:none; touch-action:none; -webkit-user-select:none; }
     .coin-button:before,.coin-button:after { content:none; }
     .coin-button.is-pressed { transform:perspective(900px) rotateX(calc(4deg + var(--tap-rot-x,0deg))) rotateY(var(--tap-rot-y,0deg)) translateZ(-4px) scale(.99); filter:drop-shadow(0 12px 10px #000b) drop-shadow(0 0 13px #ffb51e35) brightness(.92); transition-duration:.07s; }
     .coin-button.is-boosted { filter:drop-shadow(0 21px 20px #0009) drop-shadow(0 0 24px #a442ffb5); }
@@ -103,7 +105,6 @@
     .tap-hint strong { color:var(--gold); }
     .tap-hint strong { display:inline-block; padding:5px 10px; margin-right:3px; border:1px solid #ffd45a28; border-radius:999px; background:linear-gradient(135deg,#ffd45a16,#ffad3208); box-shadow:inset 0 1px #fff2,0 4px 14px #0002; }
     .tap-actions { display:flex; direction:ltr; align-items:center; justify-content:center; gap:10px; margin-top:15px; }
-    .tap-actions .tap-hint { direction:rtl; margin:0; }
     .boost-control { display:flex; align-items:center; gap:6px; }
     .boost-button { position:relative; overflow:hidden; min-width:108px; border:1px solid #dd9dff70; border-radius:13px; padding:10px 15px; color:#fff; background:linear-gradient(120deg,#8e2de2,#4a00e0 55%,#b64cff); box-shadow:0 0 18px #9d45ff55,inset 0 1px #fff6; font-size:13px; font-weight:900; cursor:pointer; transition:transform .12s ease,filter .15s ease; }
     .boost-button:before { content:""; position:absolute; inset:-50% auto -50% -35%; width:22px; transform:rotate(25deg); background:#ffffff50; filter:blur(6px); animation:boost-shine 2.8s ease-in-out infinite; pointer-events:none; }
@@ -119,6 +120,9 @@
       .boost-count { min-width:35px; padding:6px 5px; }
       .tap-hint { font-size:11px; }
       .tap-hint strong { padding:5px 7px; }
+      .home-shortcut { width:56px; height:56px; border-radius:14px; }
+      .home-shortcut .shortcut-icon { font-size:20px; }
+      .home-shortcut .shortcut-label { font-size:8px; }
     }
     .boost-dialog { width:min(calc(100% - 36px),420px); padding:0; border:1px solid #d39aff88; border-radius:22px; color:#fff; background:radial-gradient(ellipse at 50% 0,#8b35dc35,transparent 65%),#171420; box-shadow:0 22px 80px #000b,0 0 32px #a744ff2c; }
     .boost-dialog::backdrop { background:#08060dcc; backdrop-filter:blur(5px); }
@@ -165,6 +169,80 @@
     .home-level-top span:last-child { color:#d7b979; direction:ltr; }
     .home-xp-bar { height:6px; margin-top:8px; overflow:hidden; border-radius:99px; background:#ffffff14; }
     .home-xp-fill { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#f39b22,#ffe477); box-shadow:0 0 12px #ffb33888; transition:width .35s ease; }
+    .season-chip { margin-left:auto; padding:7px 10px; border:1px solid #ffc94c55; border-radius:999px; color:#ffe39a; background:linear-gradient(110deg,#e8901833,#261b16db); box-shadow:0 0 15px #ffae2738,inset 0 1px #fff3; direction:ltr; font-size:10px; font-weight:900; letter-spacing:.4px; white-space:nowrap; }
+    .coin-area { position:relative; }
+    .home-shortcuts { position:absolute; z-index:4; inset:0; pointer-events:none; }
+    .home-shortcut { position:absolute; isolation:isolate; display:flex; width:62px; height:62px; flex-direction:column; align-items:center; justify-content:center; gap:4px; overflow:hidden; border:1px solid #ffd45a36; border-radius:15px; color:#fff5d4; background:linear-gradient(135deg,#231a16f2,#12111adf); box-shadow:0 7px 18px #0005,inset 0 1px #fff2; cursor:pointer; pointer-events:auto; transition:transform .15s ease,filter .15s ease; }
+    .home-shortcut:nth-child(1),.home-shortcut:nth-child(2) { left:0; }
+    .home-shortcut:nth-child(3),.home-shortcut:nth-child(4) { right:0; }
+    .home-shortcut:nth-child(1),.home-shortcut:nth-child(3) { top:3%; }
+    .home-shortcut:nth-child(2),.home-shortcut:nth-child(4) { top:calc(3% + 72px); }
+    .home-shortcut:before { position:absolute; z-index:-1; inset:-40% auto -40% -35%; width:28px; content:""; transform:rotate(24deg); background:#fff6; filter:blur(9px); animation:shortcut-shine 4s ease-in-out infinite; }
+    .home-shortcut:active { transform:scale(.97); }
+    .home-shortcut:disabled { opacity:.5; cursor:not-allowed; }
+    .home-shortcut .shortcut-icon { font-size:22px; line-height:1; }
+    .home-shortcut .shortcut-label { font-size:9px; font-weight:900; line-height:1.2; white-space:nowrap; }
+    .home-shortcut.daily { border-color:#ffcb5a4f; color:#ffe9ae; }
+    .home-shortcut.leaderboard { border-color:#9edfff3d; color:#d8f1ff; }
+    .home-shortcut.season { border-color:#c78aff70; color:#f0d7ff; background:linear-gradient(130deg,#542384d9,#211626ed 68%,#13111b); box-shadow:0 0 18px #b34cff45,0 7px 20px #0008,inset 0 1px #fff4; }
+    .home-shortcut.season:after { position:absolute; z-index:-1; inset:0; border:1px solid #e6b5ff55; border-radius:inherit; content:""; animation:season-glow 1.8s ease-in-out infinite alternate; }
+    .home-shortcut.wheel { border-color:#62e5b555; color:#baffdf; background:linear-gradient(130deg,#126d50d9,#152520ec 68%,#11151b); box-shadow:0 0 16px #32d89c3a,0 7px 20px #0008,inset 0 1px #fff3; }
+    @keyframes shortcut-shine { 0%,72% { left:-35%; } 100% { left:135%; } }
+    @keyframes season-glow { to { box-shadow:inset 0 0 13px #d890ff44,0 0 18px #b34cff77; } }
+    .feature-dialog,.connection-dialog { width:min(calc(100% - 28px),480px); max-height:min(86vh,760px); padding:0; overflow:hidden; border:1px solid #ffc85c4d; border-radius:23px; color:#fff; background:radial-gradient(ellipse at 50% 0,#ffaf3530,transparent 55%),linear-gradient(155deg,#19151df5,#0e1018f7); box-shadow:0 24px 90px #000c,0 0 32px #ffad3022; }
+    .feature-dialog::backdrop,.connection-dialog::backdrop { background:#050508d9; backdrop-filter:blur(7px); }
+    .feature-dialog-inner { max-height:min(86vh,760px); overflow:auto; padding:20px; }
+    .feature-dialog-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:15px; }
+    .feature-dialog-head h2 { margin:0; color:#ffe5a0; font-size:18px; }
+    .dialog-close { flex:none; width:32px; height:32px; border:1px solid #ffffff22; border-radius:10px; color:#e7e1ed; background:#ffffff0b; cursor:pointer; font-size:18px; }
+    .daily-streak-note,.season-countdown,.feature-empty { padding:10px 12px; border:1px solid #ffd45a24; border-radius:13px; color:#d7cba9; background:#ffd45a0b; font-size:11px; line-height:1.8; }
+    .daily-track { display:flex; direction:ltr; gap:7px; overflow-x:auto; padding:12px 2px 6px; scrollbar-width:thin; }
+    .daily-day { position:relative; flex:0 0 78px; min-height:84px; padding:11px 7px 9px; border:1px solid #ffffff18; border-radius:14px; text-align:center; color:#bdb8c7; background:linear-gradient(150deg,#ffffff0c,#ffffff04); }
+    .daily-day strong,.daily-day span { display:block; }
+    .daily-day strong { color:#d5d0df; font-size:11px; }
+    .daily-day span { margin-top:8px; color:#bfb7a5; font-size:10px; line-height:1.5; }
+    .daily-day.is-done { border-color:#55e2a578; color:#adffd9; background:linear-gradient(145deg,#23ad7540,#103323ad); box-shadow:0 0 13px #46e8a522; }
+    .daily-day.is-current { border-color:#ffd45a99; color:#fff0b4; background:linear-gradient(145deg,#ba781f5c,#2d2117dd); box-shadow:0 0 16px #ffb52f33; }
+    .feature-primary { width:100%; margin-top:13px; padding:13px; border:1px solid #ffe99c8a; border-radius:13px; color:#291b06; background:linear-gradient(105deg,#ffe88d,#ffb833); box-shadow:0 8px 20px #ffb52f24; font-weight:900; cursor:pointer; }
+    .feature-primary:disabled { opacity:.48; cursor:not-allowed; }
+    .leader-list,.season-list { display:grid; gap:9px; }
+    .leader-row { display:grid; grid-template-columns:38px minmax(0,1fr) auto; align-items:center; gap:10px; padding:12px; border:1px solid #ffffff17; border-radius:15px; background:linear-gradient(120deg,#ffffff0d,#ffffff04); }
+    .leader-medal { font-size:23px; text-align:center; }
+    .leader-name { min-width:0; overflow-wrap:anywhere; color:#f7f1e5; font-size:12px; font-weight:800; unicode-bidi:isolate; }
+    .leader-balance { direction:ltr; unicode-bidi:isolate; color:#ffdf7c; font-size:11px; font-weight:900; white-space:nowrap; }
+    .season-countdown { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; border-color:#f0867b4d; color:#ffccc7; background:linear-gradient(110deg,#ff63401d,#ff20200c); }
+    .season-countdown strong { direction:ltr; color:#ff8379; font-size:20px; text-shadow:0 0 14px #ff3d3999; }
+    .season-task { padding:12px; border:1px solid #ffffff18; border-radius:15px; background:linear-gradient(145deg,#ffffff0d,#ffffff04); }
+    .season-task.is-complete { border-color:#63e4a35c; background:linear-gradient(145deg,#2bc78017,#ffffff04); }
+    .season-task-top,.season-task-progress { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .season-task-title { font-size:12px; font-weight:800; line-height:1.7; }
+    .season-task-reward { flex:none; color:#ffdc78; font-size:10px; font-weight:900; direction:ltr; }
+    .season-task-progress { margin-top:9px; color:#b8b3c0; font-size:10px; }
+    .season-task-bar { height:6px; margin-top:7px; overflow:hidden; border-radius:99px; background:#ffffff15; }
+    .season-task-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,#9a57ff,#f0bdff); box-shadow:0 0 10px #ba6cff88; }
+    .season-task .feature-primary { margin-top:9px; padding:10px; }
+    .wheel-wrap { position:relative; width:min(76vw,310px); aspect-ratio:1; margin:18px auto; }
+    .wheel-disc { position:absolute; inset:0; overflow:hidden; border:7px solid #f7d47b; border-radius:50%; background:conic-gradient(#a04424 0deg 51.43deg,#17684f 51.43deg 102.86deg,#245596 102.86deg 154.29deg,#703c98 154.29deg 205.72deg,#247786 205.72deg 257.15deg,#ad6425 257.15deg 308.58deg,#6d3a7e 308.58deg 360deg); box-shadow:0 0 0 4px #3b2818,0 0 25px #ffbe4d66,inset 0 0 26px #0008; transition:transform 4.7s cubic-bezier(.11,.67,.08,1); }
+    .wheel-disc:before { position:absolute; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff5 0deg 1.2deg,transparent 1.2deg 51.43deg); content:""; }
+    .wheel-slot { position:absolute; z-index:1; width:74px; transform:translate(-50%,-50%); color:#fff7dd; text-align:center; text-shadow:0 1px 4px #000; font-size:9px; font-weight:900; line-height:1.4; }
+    .wheel-center { position:absolute; z-index:2; left:50%; top:50%; width:58px; height:58px; display:grid; place-items:center; transform:translate(-50%,-50%); border:4px solid #ffe3a0; border-radius:50%; color:#432509; background:radial-gradient(circle at 35% 25%,#fff3bd,#ffbf39 65%,#b65d13); box-shadow:0 0 17px #ffc24b99; font-size:20px; font-weight:1000; }
+    .wheel-pointer { position:absolute; z-index:3; top:-13px; left:50%; width:0; height:0; transform:translateX(-50%); border-right:13px solid transparent; border-left:13px solid transparent; border-top:27px solid #fff1bb; filter:drop-shadow(0 3px 4px #000); }
+    .wheel-result { min-height:24px; color:#ffe69d; text-align:center; font-size:12px; font-weight:900; }
+    .loading-screen { position:fixed; z-index:30; inset:0; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:18px; background:#070608; transition:opacity .4s ease,visibility .4s ease; }
+    .loading-screen.is-hidden { visibility:hidden; opacity:0; pointer-events:none; }
+    .loading-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .loading-shade { position:absolute; inset:0; background:linear-gradient(180deg,#0002 0%,#05040700 48%,#080609d9 100%); }
+    .loading-status { position:absolute; z-index:1; right:max(24px,env(safe-area-inset-right)); bottom:max(38px,calc(env(safe-area-inset-bottom) + 28px)); left:max(24px,env(safe-area-inset-left)); margin:auto; width:min(calc(100vw - 48px),420px); text-align:center; }
+    .loading-caption { margin-bottom:11px; color:#ffe2a0; font-size:12px; font-weight:900; letter-spacing:.3px; text-shadow:0 1px 10px #000; }
+    .loading-progress { height:9px; overflow:hidden; border:1px solid #ffdc8a77; border-radius:99px; background:#050505a8; box-shadow:0 0 18px #ffaa3866; }
+    .loading-progress-fill { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#ff8b21,#ffe184); box-shadow:0 0 13px #ffbe48; transition:width .18s ease; }
+    .loading-percent { margin-top:6px; color:#fff0c5; direction:ltr; font-size:10px; font-weight:800; }
+    .connection-dialog { border-color:#ff81705c; background:radial-gradient(ellipse at 50% 0,#ff554328,transparent 57%),linear-gradient(155deg,#24151cf5,#111018f7); }
+    .connection-dialog .feature-dialog-head h2 { color:#ffd5d2; }
+    .connection-copy { color:#e8dbe0; font-size:12px; line-height:2; }
+    .connection-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
+    .connection-actions button { padding:11px 8px; border:1px solid #ffffff24; border-radius:12px; color:#f4e9ed; background:#ffffff0b; font-size:11px; font-weight:900; cursor:pointer; }
+    .connection-actions .retry-button { color:#2b1b06; border-color:#ffe69b; background:linear-gradient(100deg,#ffe78f,#ffb73a); }
     .tab-bar { grid-template-columns:repeat(6,minmax(0,1fr)); gap:4px; padding:7px; }
     .tab-button { padding:9px 2px 8px; font-size:10px; white-space:nowrap; }
     .tab-button span { font-size:18px; }
@@ -225,14 +303,24 @@
     .tab-button:focus-visible,.upgrade-button:focus-visible,.invite-actions button:focus-visible { outline:2px solid #ffe28b; outline-offset:2px; }
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
     @media (max-width:380px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .tab-bar{gap:2px;padding:5px;} .tab-button{font-size:9px;padding:8px 2px;} .tab-button span{font-size:16px;} }
-    @media (max-width:360px), (max-height:700px) { .coin-area{min-height:265px;padding:0;} .coin-button{width:min(69vw,264px);} .tap-hint{margin-top:12px;} }
+    @media (max-width:360px), (max-height:700px) { .coin-area{min-height:265px;padding:0;} .coin-button{width:min(61vw,240px);} .tap-hint{margin-top:12px;} }
     @media (prefers-reduced-motion: reduce) { .coin-button { transition-duration:.01ms !important; } .tap-float { animation-duration:.01ms; } }
   </style>
 </head>
 <body>
+  <div id="loadingScreen" class="loading-screen" aria-live="polite">
+    <img class="loading-art" src="home.png" alt="">
+    <div class="loading-shade" aria-hidden="true"></div>
+    <div class="loading-status">
+      <div class="loading-caption">در حال بارگذاری اطلاعات حساب...</div>
+      <div class="loading-progress"><div id="loadingProgressFill" class="loading-progress-fill"></div></div>
+      <div id="loadingPercent" class="loading-percent">0%</div>
+    </div>
+  </div>
   <main class="app">
     <header>
       <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>F Coin</span></div>
+      <div id="seasonBadge" class="season-chip">Season 1 - Oct</div>
     </header>
 
     <section id="connectionError" class="connection-error" role="alert" aria-live="assertive" hidden>
@@ -257,6 +345,20 @@
         <div class="home-xp-bar"><div id="homeXpFill" class="home-xp-fill"></div></div>
       </section>
       <section class="coin-area">
+        <section class="home-shortcuts" aria-label="جایزه‌ها و امکانات فصل">
+          <button id="dailyRewardButton" class="home-shortcut daily" type="button" disabled>
+            <span class="shortcut-icon" aria-hidden="true">🎁</span><span class="shortcut-label">جایزه روزانه</span>
+          </button>
+          <button id="leaderboardButton" class="home-shortcut leaderboard" type="button" disabled>
+            <span class="shortcut-icon" aria-hidden="true">🏆</span><span class="shortcut-label">لیدربورد</span>
+          </button>
+          <button id="seasonButton" class="home-shortcut season" type="button" disabled>
+            <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ماموریت فصل</span>
+          </button>
+          <button id="wheelButton" class="home-shortcut wheel" type="button" disabled>
+            <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
+          </button>
+        </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
           <img id="coinImage" class="coin-face" src="FCoin.png" alt="" draggable="false">
         </button>
@@ -265,7 +367,6 @@
             <button id="boostButton" class="boost-button" type="button" disabled>تقویت</button>
             <span id="boostCount" class="boost-count">0/3</span>
           </div>
-          <div class="tap-hint">هر ضربه <strong id="tapPowerHint">+1 F Coin</strong></div>
         </div>
       </section>
       <section class="energy-card" aria-label="انرژی">
@@ -388,6 +489,26 @@
     </nav>
   </main>
 
+  <dialog id="featureDialog" class="feature-dialog" aria-labelledby="featureDialogTitle">
+    <div class="feature-dialog-inner">
+      <div class="feature-dialog-head">
+        <h2 id="featureDialogTitle"></h2>
+        <button class="dialog-close" type="button" data-close-dialog="featureDialog" aria-label="بستن">×</button>
+      </div>
+      <div id="featureDialogBody"></div>
+    </div>
+  </dialog>
+  <dialog id="connectionDialog" class="connection-dialog" aria-labelledby="connectionDialogTitle">
+    <div class="feature-dialog-inner">
+      <div class="feature-dialog-head"><h2 id="connectionDialogTitle">اتصال کامل نشد</h2></div>
+      <p id="connectionDialogMessage" class="connection-copy"></p>
+      <div class="connection-actions">
+        <button id="connectionCloseButton" type="button">فعلاً بستن</button>
+        <button id="connectionRetryButton" class="retry-button" type="button">تلاش دوباره</button>
+      </div>
+    </div>
+  </dialog>
+
   <script>
     (() => {
       "use strict";
@@ -415,6 +536,13 @@
       const inviteLink = $("inviteLink");
       const copyInviteButton = $("copyInviteButton");
       const shareInviteButton = $("shareInviteButton");
+      const featureDialog = $("featureDialog");
+      const featureDialogBody = $("featureDialogBody");
+      const loadingScreen = $("loadingScreen");
+      const featureButtons = [
+        $("dailyRewardButton"), $("seasonButton"),
+        $("leaderboardButton"), $("wheelButton")
+      ];
       let serverState = null;
       let busy = false;
       let queuedTaps = 0;
@@ -428,6 +556,9 @@
       let boostTicker = 0;
       let selfFeaturePage = 0;
       let selfLockChatId = "";
+      let loadingPercent = 0;
+      let loadingTimer = 0;
+      let initialLoadStarted = false;
       const tapLabels = new Set();
 
       function showStatus(message, type) {
@@ -496,6 +627,13 @@
           upgrades_supported: tapPower !== null &&
             (reportedMaxEnergy !== null || energyLevel !== null)
         };
+        if (Number.isInteger(state.season_number) && typeof state.season_month === "string") {
+          updateSeasonBadge({
+            season: state.season_number,
+            month: state.season_month,
+            days_remaining: Number(state.season_days_remaining)
+          });
+        }
         connectionError.hidden = true;
         syncBoostVisual();
         scheduleBoostTicker();
@@ -558,7 +696,6 @@
         $("energyMax").textContent = serverState.max_energy.toLocaleString("en-US");
         $("energyBar").style.width = (energy / serverState.max_energy * 100) + "%";
         $("botBalance").textContent = serverState.bot_coin_balance.toLocaleString("en-US");
-        $("tapPowerHint").textContent = "+" + tapPower + " F Coin";
         tapButton.setAttribute("aria-label", "جمع کردن " + tapPower + " F Coin");
       }
 
@@ -621,6 +758,9 @@
 
       function updateButtons() {
         const canAct = !!serverState;
+        featureButtons.forEach((button) => {
+          button.disabled = !hasUserAccount() || busy;
+        });
         tapButton.disabled = busy || !canAct ||
           (!isBoostActive() && Math.floor(availableEnergy() + 1e-9) < serverState.tap_power);
         updateBoostControls();
@@ -901,6 +1041,328 @@
         copyInviteButton.disabled = false;
         shareInviteButton.disabled = false;
         note.textContent = "پاداش پس از اولین ورود دوست از لینک دعوت ثبت می‌شود.";
+      }
+
+      function showDialog(dialog) {
+        if (typeof dialog.showModal === "function") dialog.showModal();
+        else dialog.setAttribute("open", "");
+      }
+
+      function closeDialog(dialog) {
+        if (typeof dialog.close === "function") dialog.close();
+        else dialog.removeAttribute("open");
+      }
+
+      function openFeatureDialog(title) {
+        $("featureDialogTitle").textContent = title;
+        featureDialogBody.replaceChildren();
+        showDialog(featureDialog);
+      }
+
+      function featureMessage(message, className = "feature-empty") {
+        const note = document.createElement("div");
+        note.className = className;
+        note.textContent = message;
+        return note;
+      }
+
+      function featureError(message, retry) {
+        featureDialogBody.replaceChildren(featureMessage(message));
+        if (retry) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "feature-primary";
+          button.textContent = "تلاش دوباره";
+          button.addEventListener("click", retry);
+          featureDialogBody.append(button);
+        }
+      }
+
+      function renderDailyReward(state) {
+        const note = document.createElement("div");
+        note.className = "daily-streak-note";
+        note.textContent = state.claimed_today
+          ? "جایزهٔ امروز دریافت شد؛ فردا برای روز بعدی برگرد."
+          : state.streak_reset
+            ? "یک روز از زنجیره جا افتاد؛ امروز دوباره از روز اول شروع می‌کنی."
+          : state.streak_day > 0
+            ? "زنجیرهٔ فعلی: " + state.streak_day + " روز. هر روز به وقت تهران بیا تا مسیر حفظ شود."
+            : "هر روز پیاپی جایزهٔ بزرگ‌تری می‌گیری؛ جا انداختن یک روز، زنجیره را از روز اول شروع می‌کند.";
+        const track = document.createElement("div");
+        track.className = "daily-track";
+        state.rewards.forEach((reward, index) => {
+          const day = index + 1;
+          const card = document.createElement("div");
+          const done = state.claimed_today
+            ? day <= state.streak_day
+            : day < state.next_day;
+          card.className = "daily-day" +
+            (done ? " is-done" : day === state.next_day ? " is-current" : "");
+          const dayTitle = document.createElement("strong");
+          dayTitle.textContent = "روز " + day;
+          const amount = document.createElement("span");
+          amount.textContent = Number(reward).toLocaleString("en-US") + " F Coin";
+          card.append(dayTitle, amount);
+          track.append(card);
+        });
+        const claim = document.createElement("button");
+        claim.type = "button";
+        claim.className = "feature-primary";
+        claim.disabled = state.claimed_today || !hasUserAccount();
+        claim.textContent = state.claimed_today
+          ? "جایزهٔ امروز دریافت شد ✓"
+          : "دریافت روز " + state.next_day + " · " +
+            Number(state.next_reward).toLocaleString("en-US") + " F Coin";
+        claim.addEventListener("click", claimStreakReward);
+        featureDialogBody.replaceChildren(note, track, claim);
+      }
+
+      async function openDailyReward() {
+        openFeatureDialog("🎁 جایزه روزانه");
+        featureDialogBody.append(featureMessage("در حال دریافت زنجیرهٔ جایزه..."));
+        try {
+          renderDailyReward(await userApiRequest("features/daily-state"));
+        } catch (error) {
+          featureError(error && error.message ? error.message : "وضعیت جایزه دریافت نشد.", openDailyReward);
+        }
+      }
+
+      async function claimStreakReward() {
+        const button = featureDialogBody.querySelector(".feature-primary");
+        if (button) button.disabled = true;
+        try {
+          const result = await userApiRequest("features/daily-claim");
+          renderDailyReward(result);
+          showStatus(
+            "🎉 روز " + result.claimed_day + " را گرفتی؛ +" +
+              Number(result.claimed_reward).toLocaleString("en-US") + " F Coin",
+            "info"
+          );
+          request("state").catch((error) =>
+            showStatus(error && error.message ? error.message : "به‌روزرسانی موجودی ناموفق بود.", "error")
+          );
+        } catch (error) {
+          featureError(error && error.message ? error.message : "ثبت جایزه انجام نشد.", openDailyReward);
+        }
+      }
+
+      async function openLeaderboard() {
+        openFeatureDialog("🏆 لیدربورد");
+        featureDialogBody.append(featureMessage("در حال دریافت رتبه‌بندی..."));
+        try {
+          const result = await userApiRequest("features/leaderboard");
+          if (!Array.isArray(result.leaders) || result.leaders.length === 0) {
+            featureDialogBody.replaceChildren(featureMessage("هنوز کاربری برای رتبه‌بندی ثبت نشده است."));
+            return;
+          }
+          const list = document.createElement("div");
+          list.className = "leader-list";
+          const medals = ["🥇", "🥈", "🥉"];
+          result.leaders.forEach((leader, index) => {
+            const row = document.createElement("div");
+            row.className = "leader-row";
+            const medal = document.createElement("div");
+            medal.className = "leader-medal";
+            medal.textContent = medals[index] || "🏅";
+            const name = document.createElement("div");
+            name.className = "leader-name";
+            name.dir = "auto";
+            const username = typeof leader.username === "string"
+              ? leader.username.trim().replace(/^@+/, "")
+              : "";
+            const firstName = typeof leader.first_name === "string"
+              ? leader.first_name.trim()
+              : "";
+            const validUsername = /^[A-Za-z0-9_]{5,32}$/.test(username);
+            name.textContent = validUsername
+              ? "@" + username
+              : firstName || "بازیکن " + (index + 1);
+            const balance = document.createElement("div");
+            balance.className = "leader-balance";
+            balance.textContent = Number(leader.balance).toLocaleString("en-US") + " F";
+            row.append(medal, name, balance);
+            list.append(row);
+          });
+          featureDialogBody.replaceChildren(list);
+        } catch (error) {
+          featureError(error && error.message ? error.message : "لیدربورد دریافت نشد.", openLeaderboard);
+        }
+      }
+
+      function updateSeasonBadge(state) {
+        $("seasonBadge").textContent =
+          "Season " + Number(state.season).toLocaleString("en-US") + " - " + state.month +
+          (Number.isFinite(state.days_remaining)
+            ? " · " + Number(state.days_remaining).toLocaleString("en-US") + "d"
+            : "");
+      }
+
+      function renderSeason(state) {
+        updateSeasonBadge(state);
+        const countdown = document.createElement("div");
+        countdown.className = "season-countdown";
+        const label = document.createElement("span");
+        label.textContent = "مانده تا پایان Season " + state.season;
+        const remaining = document.createElement("strong");
+        remaining.textContent = Number(state.days_remaining).toLocaleString("en-US") + "d";
+        countdown.append(label, remaining);
+        const list = document.createElement("div");
+        list.className = "season-list";
+        state.missions.forEach((mission) => {
+          const card = document.createElement("article");
+          card.className = "season-task" + (mission.completed ? " is-complete" : "");
+          const top = document.createElement("div");
+          top.className = "season-task-top";
+          const title = document.createElement("div");
+          title.className = "season-task-title";
+          title.textContent = (mission.claimed ? "✅ " : mission.completed ? "🏁 " : "✦ ") + mission.title;
+          const reward = document.createElement("div");
+          reward.className = "season-task-reward";
+          reward.textContent = "+" + Number(mission.reward).toLocaleString("en-US") + " F";
+          top.append(title, reward);
+          const progress = document.createElement("div");
+          progress.className = "season-task-progress";
+          const progressText = document.createElement("span");
+          progressText.textContent = "پیشرفت";
+          const progressValue = document.createElement("b");
+          progressValue.textContent =
+            Number(mission.progress).toLocaleString("en-US") + " / " +
+            Number(mission.target).toLocaleString("en-US");
+          progress.append(progressText, progressValue);
+          const bar = document.createElement("div");
+          bar.className = "season-task-bar";
+          const fill = document.createElement("div");
+          fill.className = "season-task-fill";
+          fill.style.width =
+            Math.min(100, Number(mission.progress) / Number(mission.target) * 100) + "%";
+          bar.append(fill);
+          card.append(top, progress, bar);
+          if (mission.completed && !mission.claimed) {
+            const claim = document.createElement("button");
+            claim.type = "button";
+            claim.className = "feature-primary";
+            claim.textContent = "دریافت +" + Number(mission.reward).toLocaleString("en-US") + " F Coin";
+            claim.addEventListener("click", () => claimSeasonMission(mission.id));
+            card.append(claim);
+          } else if (mission.claimed) {
+            const received = document.createElement("div");
+            received.className = "mission-status";
+            received.textContent = "جایزه دریافت شد.";
+            card.append(received);
+          }
+          list.append(card);
+        });
+        featureDialogBody.replaceChildren(countdown, list);
+      }
+
+      async function openSeason() {
+        openFeatureDialog("✦ Season " + $("seasonBadge").textContent.split(" ")[1] + " · ماموریت‌ها");
+        featureDialogBody.append(featureMessage("در حال دریافت ماموریت‌های فصل..."));
+        try {
+          renderSeason(await userApiRequest("features/season-state"));
+        } catch (error) {
+          featureError(error && error.message ? error.message : "ماموریت‌های فصل دریافت نشد.", openSeason);
+        }
+      }
+
+      async function claimSeasonMission(missionId) {
+        try {
+          const result = await userApiRequest("features/season-claim", { mission_id: missionId });
+          renderSeason(result);
+          const claimedMission = result.missions.find((mission) => mission.id === missionId);
+          showStatus(
+            "🎉 پاداش فصل دریافت شد: +" +
+              (claimedMission ? Number(claimedMission.reward).toLocaleString("en-US") : "") +
+              " F Coin",
+            "info"
+          );
+          request("state").catch((error) =>
+              showStatus(error && error.message ? error.message : "به‌روزرسانی موجودی ناموفق بود.", "error")
+          );
+        } catch (error) {
+          featureError(error && error.message ? error.message : "دریافت پاداش فصل ناموفق بود.", openSeason);
+        }
+      }
+
+      function renderWheel(state) {
+        const wheelOptions = [
+          "500 F Coin", "5 سکه", "شارژ تقویت", "شارژ دایموند",
+          "شارژ بریج", "1,000 F Coin", "10 سکه"
+        ];
+        const wrapper = document.createElement("div");
+        wrapper.className = "wheel-wrap";
+        const disc = document.createElement("div");
+        disc.className = "wheel-disc";
+        disc.id = "wheelDisc";
+        wheelOptions.forEach((label, index) => {
+          const slot = document.createElement("div");
+          slot.className = "wheel-slot";
+          slot.textContent = label;
+          slot.dir = "auto";
+          const angle = (index * 360 / wheelOptions.length + 180 / wheelOptions.length) *
+            Math.PI / 180;
+          slot.style.left = (50 + Math.sin(angle) * 34) + "%";
+          slot.style.top = (50 - Math.cos(angle) * 34) + "%";
+          disc.append(slot);
+        });
+        const center = document.createElement("div");
+        center.className = "wheel-center";
+        center.textContent = "F";
+        const pointer = document.createElement("div");
+        pointer.className = "wheel-pointer";
+        wrapper.append(disc, center, pointer);
+        const result = document.createElement("div");
+        result.className = "wheel-result";
+        result.id = "wheelResult";
+        result.textContent = state.spun_today
+          ? "امروز چرخاندی؛ فردا دوباره شانس داری."
+          : "هر روز یک چرخش رایگان";
+        const spin = document.createElement("button");
+        spin.type = "button";
+        spin.className = "feature-primary";
+        spin.disabled = state.spun_today || !hasUserAccount();
+        spin.textContent = state.spun_today ? "چرخش امروز استفاده شد ✓" : "چرخاندن گردونه";
+        spin.addEventListener("click", spinWheel);
+        featureDialogBody.replaceChildren(wrapper, result, spin);
+      }
+
+      async function openWheel() {
+        openFeatureDialog("☸ گردونه شانس");
+        featureDialogBody.append(featureMessage("در حال آماده‌سازی گردونه..."));
+        try {
+          renderWheel(await userApiRequest("features/wheel-state"));
+        } catch (error) {
+          featureError(error && error.message ? error.message : "وضعیت گردونه دریافت نشد.", openWheel);
+        }
+      }
+
+      async function spinWheel() {
+        const spin = featureDialogBody.querySelector(".feature-primary");
+        const disc = $("wheelDisc");
+        if (!spin || !disc) return;
+        spin.disabled = true;
+        $("wheelResult").textContent = "در حال چرخش...";
+        try {
+          const result = await userApiRequest("features/wheel-spin");
+          const centerAngle = result.prize_index * 360 / 7 + 180 / 7;
+          const targetRotation = 360 * 6 + (360 - centerAngle);
+          disc.style.transform = "rotate(" + targetRotation + "deg)";
+          window.setTimeout(async () => {
+            $("wheelResult").textContent = "🎉 جایزه: " + result.prize.label;
+            spin.textContent = "چرخش امروز استفاده شد ✓";
+            spin.disabled = true;
+            await request("state").catch((error) =>
+              showStatus(error && error.message ? error.message : "به‌روزرسانی موجودی ناموفق بود.", "error")
+            );
+            showStatus("🎉 گردونه برایت «" + result.prize.label + "» آورد!", "info");
+          }, 4800);
+        } catch (error) {
+          spin.disabled = false;
+          $("wheelResult").textContent = error && error.message
+            ? error.message
+            : "چرخش گردونه انجام نشد.";
+          showStatus($("wheelResult").textContent, "error");
+        }
       }
 
       async function claimDailyMission() {
@@ -2030,6 +2492,74 @@
         }
       }
 
+      function beginLoadingScreen() {
+        window.clearInterval(loadingTimer);
+        loadingPercent = 0;
+        loadingScreen.classList.remove("is-hidden");
+        $("loadingProgressFill").style.width = "0%";
+        $("loadingPercent").textContent = "0%";
+        loadingTimer = window.setInterval(() => {
+          loadingPercent = Math.min(92, loadingPercent + 3 + Math.floor(Math.random() * 5));
+          $("loadingProgressFill").style.width = loadingPercent + "%";
+          $("loadingPercent").textContent = loadingPercent + "%";
+        }, 110);
+      }
+
+      function finishLoadingScreen() {
+        window.clearInterval(loadingTimer);
+        loadingTimer = 0;
+        loadingPercent = 100;
+        $("loadingProgressFill").style.width = "100%";
+        $("loadingPercent").textContent = "100%";
+        window.setTimeout(() => loadingScreen.classList.add("is-hidden"), 260);
+      }
+
+      function showConnectionDialog(message) {
+        $("connectionDialogMessage").textContent = message;
+        showDialog($("connectionDialog"));
+      }
+
+      async function loadInitialData() {
+        if (initialLoadStarted) return;
+        initialLoadStarted = true;
+        beginLoadingScreen();
+        if (!hasTelegramAuth()) {
+          renderConnection(false);
+          updateButtons();
+          finishLoadingScreen();
+          window.setTimeout(() => showConnectionDialog(
+            "اطلاعات حساب فقط از Mini App تلگرام دریافت می‌شود. از دکمهٔ مینی‌اپ داخل ربات وارد شو و اتصال اینترنت و VPN را بررسی کن."
+          ), 520);
+          initialLoadStarted = false;
+          return;
+        }
+        try {
+          await request("state");
+          finishLoadingScreen();
+          const results = await Promise.allSettled([refreshMissions(), refreshSelf()]);
+          results.forEach((result) => {
+            if (result.status === "rejected") {
+              showStatus(
+                result.reason && result.reason.message
+                  ? result.reason.message
+                  : "دریافت بخشی از اطلاعات کامل نشد.",
+                "error"
+              );
+            }
+          });
+        } catch (error) {
+          renderConnection(false);
+          updateButtons();
+          finishLoadingScreen();
+          window.setTimeout(() => showConnectionDialog(
+            (error && error.message ? error.message : "اطلاعات حساب از سرور دریافت نشد.") +
+              " اتصال اینترنت و VPN را بررسی کن و دوباره تلاش کن."
+          ), 520);
+        } finally {
+          initialLoadStarted = false;
+        }
+      }
+
       tapButton.addEventListener("pointerdown", handleTap);
       removeCoinBackground();
       tapButton.addEventListener("click", (event) => {
@@ -2097,6 +2627,18 @@
         }
       });
       claimDailyButton.addEventListener("click", claimDailyMission);
+      $("dailyRewardButton").addEventListener("click", openDailyReward);
+      $("seasonButton").addEventListener("click", openSeason);
+      $("leaderboardButton").addEventListener("click", openLeaderboard);
+      $("wheelButton").addEventListener("click", openWheel);
+      document.querySelectorAll("[data-close-dialog]").forEach((button) => {
+        button.addEventListener("click", () => closeDialog($(button.dataset.closeDialog)));
+      });
+      $("connectionCloseButton").addEventListener("click", () => closeDialog($("connectionDialog")));
+      $("connectionRetryButton").addEventListener("click", () => {
+        closeDialog($("connectionDialog"));
+        loadInitialData();
+      });
       document.querySelectorAll(".tab-button").forEach((button) => {
         button.addEventListener("click", () => selectTab(button.dataset.tab));
       });
@@ -2118,18 +2660,7 @@
           }
         });
       });
-      if (hasTelegramAuth()) {
-        request("state").then(() => Promise.all([refreshMissions(), refreshSelf()])).catch((error) => {
-          renderConnection(false);
-          showStatus(error && error.message ? error.message : "دریافت موجودی ناموفق بود.", "error");
-        });
-      } else {
-        renderConnection(false);
-        updateButtons();
-        $("connectionErrorTitle").textContent = "مینی‌اپ باید از داخل تلگرام باز شود";
-        $("connectionErrorMessage").textContent = "اطلاعات حساب فقط هنگام اجرای مینی‌اپ داخل تلگرام دریافت می‌شود. از دکمهٔ «مینی اپ (F Coin)» در ربات وارد شو و اتصال VPN و اینترنت را بررسی کن.";
-        connectionError.hidden = false;
-      }
+      loadInitialData();
       window.setInterval(() => {
         if (serverState) {
           updateWalletDisplay();
