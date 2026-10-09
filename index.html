@@ -46,10 +46,10 @@
     .app { padding-bottom:110px; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
-    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(15px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 18px), 540px); display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:5px; padding:9px 8px; border:1px solid #ffffff55; border-radius:24px; background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.07) 42%,rgba(24,18,29,.64)); box-shadow:0 15px 42px #0007,inset 0 1px #ffffff75,inset 0 -1px #ffffff12; backdrop-filter:blur(26px) saturate(155%); -webkit-backdrop-filter:blur(26px) saturate(155%); }
+    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 18px), 540px); display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:5px; padding:7px; border:1px solid var(--border); border-radius:19px; background:#171622ed; box-shadow:0 12px 36px #0008; backdrop-filter:blur(16px); }
     .tab-button { min-width:0; border:0; border-radius:13px; padding:9px 4px 8px; background:transparent; color:var(--muted); font-size:11px; cursor:pointer; }
     .tab-button span { display:block; font-size:18px; line-height:1.2; margin-bottom:3px; }
-    .tab-button.active { color:#fff4ce; background:linear-gradient(145deg,#ffffff35,#ffcf7b1d); box-shadow:inset 0 1px #ffffff6b,0 3px 14px #ffb93c20; }
+    .tab-button.active { color:#b8ffdf; background:#62e5aa1c; }
     .placeholder-card { margin-top:22px; padding:26px 20px; text-align:center; border:1px solid var(--border); border-radius:22px; background:linear-gradient(145deg,#ffffff0d,#ffffff03); }
     .placeholder-icon { font-size:42px; }
     .placeholder-card h1 { margin:14px 0 8px; }
@@ -185,17 +185,15 @@
     .season-chip { margin-left:auto; padding:7px 10px; border:1px solid #ffc94c55; border-radius:999px; color:#ffe39a; background:linear-gradient(110deg,#e8901833,#261b16db); box-shadow:0 0 15px #ffae2738,inset 0 1px #fff3; direction:ltr; font-size:10px; font-weight:900; letter-spacing:.4px; white-space:nowrap; }
     .coin-area { position:relative; }
     .home-shortcuts { position:absolute; z-index:4; inset:0; pointer-events:none; }
-    .home-shortcut { position:absolute; isolation:isolate; display:flex; width:66px; height:66px; flex-direction:column; align-items:center; justify-content:center; gap:4px; overflow:hidden; border:1px solid #ffffff65; border-radius:18px; color:#fff8e8; background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.08) 42%,rgba(23,17,29,.74)); box-shadow:0 8px 24px #0005,inset 0 1px #ffffff70,inset 0 -1px #ffffff15; backdrop-filter:blur(16px) saturate(145%); -webkit-backdrop-filter:blur(16px) saturate(145%); cursor:pointer; pointer-events:auto; transition:transform .12s ease,filter .12s ease; }
+    .home-shortcut { position:absolute; isolation:isolate; display:flex; width:62px; height:62px; flex-direction:column; align-items:center; justify-content:center; gap:4px; overflow:hidden; border:1px solid #ffd45a36; border-radius:15px; color:#fff5d4; background:linear-gradient(135deg,#231a16f2,#12111adf); box-shadow:0 7px 18px #0005,inset 0 1px #fff2; cursor:pointer; pointer-events:auto; transition:transform .15s ease,filter .15s ease; }
     .home-shortcut:nth-child(1),.home-shortcut:nth-child(2) { left:0; }
     .home-shortcut:nth-child(3),.home-shortcut:nth-child(4) { right:0; }
     .home-shortcut:nth-child(1),.home-shortcut:nth-child(3) { top:3%; }
     .home-shortcut:nth-child(2),.home-shortcut:nth-child(4) { top:calc(3% + 72px); }
-    .home-shortcut:before { position:absolute; z-index:-1; inset:-40% auto -40% -35%; width:28px; content:""; transform:rotate(24deg); background:#fff6; filter:blur(5px); animation:shortcut-shine 6.5s ease-in-out infinite; }
+    .home-shortcut:before { position:absolute; z-index:-1; inset:-40% auto -40% -35%; width:28px; content:""; transform:rotate(24deg); background:#fff6; filter:blur(9px); animation:shortcut-shine 4s ease-in-out infinite; }
     .home-shortcut:active { transform:scale(.97); }
     .home-shortcut:disabled { opacity:.5; cursor:not-allowed; }
-    .home-shortcut .shortcut-icon { display:grid; place-items:center; width:30px; height:30px; border-radius:10px; font-size:22px; line-height:1; filter:drop-shadow(0 3px 5px #0005); }
-    .shortcut-icon svg { width:28px;height:28px;overflow:visible;filter:drop-shadow(0 2px 5px #0004); }
-    .home-shortcut:active { transform:scale(.94); filter:brightness(1.12); }
+    .home-shortcut .shortcut-icon { font-size:22px; line-height:1; }
     .home-shortcut .shortcut-label { font-size:9px; font-weight:900; line-height:1.2; white-space:nowrap; }
     .home-shortcut.daily { border-color:#ffcb5a4f; color:#ffe9ae; }
     .home-shortcut.leaderboard { border-color:#9edfff3d; color:#d8f1ff; }
@@ -204,8 +202,8 @@
     .home-shortcut.wheel { border-color:#62e5b555; color:#baffdf; background:linear-gradient(130deg,#126d50d9,#152520ec 68%,#11151b); box-shadow:0 0 16px #32d89c3a,0 7px 20px #0008,inset 0 1px #fff3; }
     @keyframes shortcut-shine { 0%,72% { left:-35%; } 100% { left:135%; } }
     @keyframes season-glow { to { box-shadow:inset 0 0 13px #d890ff44,0 0 18px #b34cff77; } }
-    .feature-dialog,.connection-dialog { width:min(calc(100% - 28px),480px); max-height:min(86vh,760px); padding:0; overflow:hidden; border:1px solid #ffffff52; border-radius:26px; color:#fff; background:radial-gradient(ellipse at 50% 0,#ffaf3535,transparent 55%),linear-gradient(145deg,rgba(38,31,43,.91),rgba(15,17,27,.88)); box-shadow:0 24px 90px #000b,0 0 32px #ffad3022,inset 0 1px #ffffff30; backdrop-filter:blur(24px) saturate(140%); -webkit-backdrop-filter:blur(24px) saturate(140%); }
-    .feature-dialog::backdrop,.connection-dialog::backdrop { background:#050508a8; backdrop-filter:blur(9px); }
+    .feature-dialog,.connection-dialog { width:min(calc(100% - 28px),480px); max-height:min(86vh,760px); padding:0; overflow:hidden; border:1px solid #ffc85c4d; border-radius:23px; color:#fff; background:radial-gradient(ellipse at 50% 0,#ffaf3530,transparent 55%),linear-gradient(155deg,#19151df5,#0e1018f7); box-shadow:0 24px 90px #000c,0 0 32px #ffad3022; }
+    .feature-dialog::backdrop,.connection-dialog::backdrop { background:#050508d9; backdrop-filter:blur(7px); }
     .feature-dialog-inner { max-height:min(86vh,760px); overflow:auto; padding:20px; }
     .feature-dialog-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:15px; }
     .feature-dialog-head h2 { margin:0; color:#ffe5a0; font-size:18px; }
@@ -236,23 +234,22 @@
     .season-task-bar { height:6px; margin-top:7px; overflow:hidden; border-radius:99px; background:#ffffff15; }
     .season-task-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,#9a57ff,#f0bdff); box-shadow:0 0 10px #ba6cff88; }
     .season-task .feature-primary { margin-top:9px; padding:10px; }
-    .wheel-wrap { position:relative; width:min(82vw,340px); aspect-ratio:1; margin:22px auto; filter:drop-shadow(0 14px 25px #0008); }
-    .wheel-disc { position:absolute; inset:0; overflow:hidden; border:9px solid #ffe7a0; border-radius:50%; background:conic-gradient(from -25.714deg,#ff814f 0deg 51.43deg,#28b98b 51.43deg 102.86deg,#4d8df7 102.86deg 154.29deg,#a46bfa 154.29deg 205.72deg,#32c5d5 205.72deg 257.15deg,#ffb347 257.15deg 308.58deg,#f06b9b 308.58deg 360deg); box-shadow:0 0 0 4px #633b20,0 0 0 8px #ffcf6a55,0 0 35px #ffbe4d80,inset 0 0 30px #0005; transition:transform 5.2s cubic-bezier(.08,.72,.08,1); will-change:transform; }
+    .wheel-wrap { position:relative; width:min(76vw,310px); aspect-ratio:1; margin:18px auto; }
+    .wheel-disc { position:absolute; inset:0; overflow:hidden; border:7px solid #f7d47b; border-radius:50%; background:conic-gradient(#a04424 0deg 51.43deg,#17684f 51.43deg 102.86deg,#245596 102.86deg 154.29deg,#703c98 154.29deg 205.72deg,#247786 205.72deg 257.15deg,#ad6425 257.15deg 308.58deg,#6d3a7e 308.58deg 360deg); box-shadow:0 0 0 4px #3b2818,0 0 25px #ffbe4d66,inset 0 0 26px #0008; transition:transform 4.7s cubic-bezier(.11,.67,.08,1); }
     .wheel-disc:before { position:absolute; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff5 0deg 1.2deg,transparent 1.2deg 51.43deg); content:""; }
-    .wheel-slot { position:absolute; z-index:1; width:82px; transform:translate(-50%,-50%); color:#fff; direction:rtl; unicode-bidi:isolate; text-align:center; text-shadow:0 2px 5px #000b; font-size:10px; font-weight:1000; line-height:1.45; padding:5px 3px; border-radius:10px; background:#090d1a30; }
-    .wheel-center { position:absolute; z-index:2; left:50%; top:50%; width:68px; height:68px; display:grid; place-items:center; transform:translate(-50%,-50%); border:4px solid #ffe3a0; border-radius:50%; color:#432509; background:radial-gradient(circle at 35% 25%,#fff3bd,#ffbf39 65%,#b65d13); box-shadow:0 0 17px #ffc24b99; font-size:22px; font-weight:1000; }
+    .wheel-slot { position:absolute; z-index:1; width:74px; transform:translate(-50%,-50%); color:#fff7dd; text-align:center; text-shadow:0 1px 4px #000; font-size:9px; font-weight:900; line-height:1.4; }
+    .wheel-center { position:absolute; z-index:2; left:50%; top:50%; width:58px; height:58px; display:grid; place-items:center; transform:translate(-50%,-50%); border:4px solid #ffe3a0; border-radius:50%; color:#432509; background:radial-gradient(circle at 35% 25%,#fff3bd,#ffbf39 65%,#b65d13); box-shadow:0 0 17px #ffc24b99; font-size:20px; font-weight:1000; }
     .wheel-pointer { position:absolute; z-index:3; top:-13px; left:50%; width:0; height:0; transform:translateX(-50%); border-right:13px solid transparent; border-left:13px solid transparent; border-top:27px solid #fff1bb; filter:drop-shadow(0 3px 4px #000); }
-    .wheel-result { min-height:34px; margin:8px 0; padding:10px 12px; border:1px solid #ffe3a04d; border-radius:14px; color:#fff0bd; text-align:center; direction:rtl; unicode-bidi:plaintext; background:linear-gradient(135deg,#ffffff1c,#ffffff08); box-shadow:inset 0 1px #ffffff25; font-size:13px; font-weight:900; line-height:1.8; }
+    .wheel-result { min-height:24px; color:#ffe69d; text-align:center; font-size:12px; font-weight:900; }
     .loading-screen { position:fixed; z-index:30; inset:0; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:18px; background:#070608; transition:opacity .4s ease,visibility .4s ease; }
     .loading-screen.is-hidden { visibility:hidden; opacity:0; pointer-events:none; }
-    .loading-art { position:absolute; z-index:0; inset:0; width:100%; height:100%; object-fit:cover; }
-    .loading-shade { position:absolute; z-index:1; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(5,4,7,.02) 55%,rgba(8,6,9,.48) 100%); }
-    #loadingParticles { position:absolute; z-index:2; inset:0; width:100%; height:100%; pointer-events:none; }
-    .loading-status { position:absolute; z-index:3; right:max(24px,env(safe-area-inset-right)); bottom:max(66px,calc(env(safe-area-inset-bottom) + 56px)); left:max(24px,env(safe-area-inset-left)); margin:auto; width:min(calc(100vw - 48px),420px); text-align:center; }
-    .loading-caption { margin-bottom:15px; color:#ffe2a0; font-size:12px; font-weight:900; letter-spacing:.3px; text-shadow:0 1px 10px #000; }
-    .loading-progress { height:15px; overflow:hidden; border:1px solid #ffdc8a77; border-radius:99px; background:#050505a8; box-shadow:0 0 18px #ffaa3866; }
+    .loading-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .loading-shade { position:absolute; inset:0; background:linear-gradient(180deg,#0002 0%,#05040700 48%,#080609d9 100%); }
+    .loading-status { position:absolute; z-index:1; right:max(24px,env(safe-area-inset-right)); bottom:max(38px,calc(env(safe-area-inset-bottom) + 28px)); left:max(24px,env(safe-area-inset-left)); margin:auto; width:min(calc(100vw - 48px),420px); text-align:center; }
+    .loading-caption { margin-bottom:11px; color:#ffe2a0; font-size:12px; font-weight:900; letter-spacing:.3px; text-shadow:0 1px 10px #000; }
+    .loading-progress { height:9px; overflow:hidden; border:1px solid #ffdc8a77; border-radius:99px; background:#050505a8; box-shadow:0 0 18px #ffaa3866; }
     .loading-progress-fill { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#ff8b21,#ffe184); box-shadow:0 0 13px #ffbe48; transition:width .18s ease; }
-    .loading-percent { margin-top:9px; color:#fff0c5; direction:ltr; font-size:10px; font-weight:800; }
+    .loading-percent { margin-top:6px; color:#fff0c5; direction:ltr; font-size:10px; font-weight:800; }
     .connection-dialog { border-color:#ff81705c; background:radial-gradient(ellipse at 50% 0,#ff554328,transparent 57%),linear-gradient(155deg,#24151cf5,#111018f7); }
     .connection-dialog .feature-dialog-head h2 { color:#ffd5d2; }
     .connection-copy { color:#e8dbe0; font-size:12px; line-height:2; }
@@ -320,37 +317,6 @@
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
     @media (max-width:380px) { .app { padding-left:15px;padding-right:15px; } h1{font-size:23px;} .tab-bar{gap:2px;padding:5px;} .tab-button{font-size:9px;padding:8px 2px;} .tab-button span{font-size:16px;} }
     @media (max-width:360px), (max-height:700px) { .coin-area{min-height:265px;padding:0;} .coin-button{width:min(61vw,240px);} .tap-hint{margin-top:12px;} }
-    /* Light, frosted liquid glass: translucent rather than black opaque panels. */
-    .balance-card,.mission-hero,.mission-card,.self-card,.placeholder-card,.invite-card,
-    .exchange-card,.upgrade-card,.feature-empty,.daily-streak-note,.season-task,
-    .leader-row,.qr-result-text,.mission-rules,.energy-card,.profile-card,
-    .home-level,.status.info,.daily-day,.boost-count,.invite-link,.qr-result,
-    .upgrade-card .upgrade-status {
-      background:linear-gradient(135deg,rgba(255,255,255,.27),rgba(255,255,255,.12) 48%,rgba(255,255,255,.19)) !important;
-      border-color:rgba(255,255,255,.38);
-      box-shadow:inset 0 1px rgba(255,255,255,.52),inset 0 -1px rgba(255,255,255,.10),0 9px 25px rgba(25,18,30,.10);
-      backdrop-filter:blur(22px) saturate(165%);
-      -webkit-backdrop-filter:blur(22px) saturate(165%);
-    }
-    .balance-card { border-color:rgba(255,226,141,.58); background:linear-gradient(135deg,rgba(255,255,255,.30),rgba(255,205,100,.15),rgba(255,255,255,.20)) !important; }
-    .mission-hero { background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,176,66,.14),rgba(255,255,255,.16)) !important; }
-    .balance-label { color:#fff4df; text-shadow:0 1px 5px rgba(45,25,8,.55); }
-    .balance-value { color:#fffdf7; text-shadow:0 2px 10px rgba(50,30,8,.48),0 0 18px rgba(255,205,91,.35); }
-    .balance-unit { color:#ffe7a0; }
-    .feature-dialog,.connection-dialog,.boost-dialog {
-      color:#fff; background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.13) 48%,rgba(255,255,255,.22)),rgba(68,55,75,.36) !important;
-      border:1px solid rgba(255,255,255,.48); box-shadow:0 24px 70px rgba(20,12,28,.20),inset 0 1px rgba(255,255,255,.56);
-      backdrop-filter:blur(30px) saturate(175%); -webkit-backdrop-filter:blur(30px) saturate(175%);
-    }
-    .feature-dialog::backdrop,.connection-dialog::backdrop,.boost-dialog::backdrop { background:rgba(23,18,29,.18); backdrop-filter:blur(7px); }
-    .self-input,.self-select { background:rgba(255,255,255,.20) !important; border-color:rgba(255,255,255,.38); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
-    .tab-bar { background:linear-gradient(135deg,rgba(255,255,255,.32),rgba(255,255,255,.14) 45%,rgba(255,255,255,.22)) !important; }
-    .tab-button { padding-top:11px; padding-bottom:10px; }
-    .home-shortcut { background:linear-gradient(135deg,rgba(255,255,255,.38),rgba(255,255,255,.18) 55%,rgba(255,255,255,.27)) !important; }
-    .home-shortcut:before { opacity:.5; }
-    .bot-balance,.muted,.balance-label { text-shadow:0 1px 4px rgba(20,15,20,.28); }
-    .status.error,.connection-error { backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
-    .boost-dialog { background-color:rgba(255,255,255,.18) !important; }
     @media (prefers-reduced-motion: reduce) {
       body::before { animation:none !important; }
       #autumnParticles { display:none !important; }
@@ -362,7 +328,6 @@
 <body>
   <canvas id="autumnParticles" aria-hidden="true"></canvas>
   <div id="loadingScreen" class="loading-screen" aria-live="polite">
-    <canvas id="loadingParticles" aria-hidden="true"></canvas>
     <img class="loading-art" src="home.png" alt="">
     <div class="loading-shade" aria-hidden="true"></div>
     <div class="loading-status">
@@ -401,16 +366,16 @@
       <section class="coin-area">
         <section class="home-shortcuts" aria-label="جایزه‌ها و امکانات فصل">
           <button id="dailyRewardButton" class="home-shortcut daily" type="button" disabled>
-            <span class="shortcut-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="giftG" x1="4" y1="2" x2="27" y2="30"><stop stop-color="#fff2a0"/><stop offset="1" stop-color="#ff9e32"/></linearGradient></defs><path d="M5 13h22v15H5z" fill="url(#giftG)" stroke="#fff4c2" stroke-width="1.2"/><path d="M3 9h26v6H3z" fill="#ffdb69" stroke="#fff4c2" stroke-width="1.2"/><path d="M16 9v19" stroke="#ff6d54" stroke-width="4"/><path d="M16 9C5 12 4 1 11 3c4 1 5 6 5 6Z" fill="#ff6d54" stroke="#ffe7a1"/><path d="M16 9c11 3 12-8 5-6-4 1-5 6-5 6Z" fill="#ff6d54" stroke="#ffe7a1"/></svg></span><span class="shortcut-label">جایزه روزانه</span>
+            <span class="shortcut-icon" aria-hidden="true">🎁</span><span class="shortcut-label">جایزه روزانه</span>
           </button>
           <button id="leaderboardButton" class="home-shortcut leaderboard" type="button" disabled>
-            <span class="shortcut-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M9 4h14v8c0 6-3 9-7 9s-7-3-7-9V4Z" fill="#7edcff" stroke="#e8fbff" stroke-width="1.4"/><path d="M9 7H4v4c0 5 3 7 7 7M23 7h5v4c0 5-3 7-7 7" stroke="#ffd878" stroke-width="2.5"/><path d="M13 21h6v4h-6z" fill="#ffe08a"/><path d="M9 28h14v-3H9z" fill="#ffbd45" stroke="#fff0ba"/></svg></span><span class="shortcut-label">لیدربورد</span>
+            <span class="shortcut-icon" aria-hidden="true">🏆</span><span class="shortcut-label">لیدربورد</span>
           </button>
           <button id="seasonButton" class="home-shortcut season" type="button" disabled>
-            <span class="shortcut-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2 19.5 11.5 30 16l-10.5 3.5L16 30l-3.5-10.5L2 16l10.5-4.5L16 2Z" fill="#d6a4ff" stroke="#fff0ff" stroke-width="1.4"/><circle cx="16" cy="16" r="4" fill="#fff8c9"/><path d="m25 2 1.3 3.7L30 7l-3.7 1.3L25 12l-1.3-3.7L20 7l3.7-1.3L25 2Z" fill="#fff0a0"/></svg></span><span class="shortcut-label">ماموریت فصل</span>
+            <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ماموریت فصل</span>
           </button>
           <button id="wheelButton" class="home-shortcut wheel" type="button" disabled>
-            <span class="shortcut-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" fill="#50e0b4" stroke="#d9fff2" stroke-width="1.5"/><circle cx="16" cy="16" r="9" stroke="#12664f" stroke-width="2"/><path d="M16 5v22M5 16h22M8.2 8.2l15.6 15.6M23.8 8.2 8.2 23.8" stroke="#12664f" stroke-width="1.5"/><circle cx="16" cy="16" r="4" fill="#fff2a6" stroke="#fff" stroke-width="1.2"/></svg></span><span class="shortcut-label">گردونه شانس</span>
+            <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
           </button>
         </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
@@ -612,8 +577,6 @@
       let selfLockChatId = "";
       let loadingPercent = 0;
       let loadingTimer = 0;
-      let loadingStartedAt = 0;
-      let loadingFinishRequested = false;
       let initialLoadStarted = false;
       const tapLabels = new Set();
 
@@ -1392,38 +1355,27 @@
         }
       }
 
-      let wheelRotation = 0;
-      let wheelSpinning = false;
       async function spinWheel() {
-        if (wheelSpinning) return;
         const spin = featureDialogBody.querySelector(".feature-primary");
         const disc = $("wheelDisc");
         if (!spin || !disc) return;
-        wheelSpinning = true;
         spin.disabled = true;
-        $("wheelResult").dir = "rtl";
         $("wheelResult").textContent = "در حال چرخش...";
         try {
           const result = await userApiRequest("features/wheel-spin");
-          const index = Number.isInteger(result.prize_index) ? ((result.prize_index % 7) + 7) % 7 : Math.floor(Math.random() * 7);
-          const segmentAngle = 360 / 7;
-          const centerAngle = index * segmentAngle + segmentAngle / 2;
-          const current = ((wheelRotation % 360) + 360) % 360;
-          const delta = ((360 - centerAngle - current) % 360 + 360) % 360;
-          wheelRotation += 360 * (6 + Math.floor(Math.random() * 3)) + delta;
-          disc.style.transform = "rotate(" + wheelRotation + "deg)";
+          const centerAngle = result.prize_index * 360 / 7 + 180 / 7;
+          const targetRotation = 360 * 6 + (360 - centerAngle);
+          disc.style.transform = "rotate(" + targetRotation + "deg)";
           window.setTimeout(async () => {
             $("wheelResult").textContent = "🎉 جایزه: " + result.prize.label;
             spin.textContent = "چرخش امروز استفاده شد ✓";
             spin.disabled = true;
-            wheelSpinning = false;
             await request("state").catch((error) =>
               showStatus(error && error.message ? error.message : "به‌روزرسانی موجودی ناموفق بود.", "error")
             );
             showStatus("🎉 گردونه برایت «" + result.prize.label + "» آورد!", "info");
-          }, 5350);
+          }, 4800);
         } catch (error) {
-          wheelSpinning = false;
           spin.disabled = false;
           $("wheelResult").textContent = error && error.message
             ? error.message
@@ -2561,31 +2513,24 @@
 
       function beginLoadingScreen() {
         window.clearInterval(loadingTimer);
-        loadingStartedAt = Date.now();
-        loadingFinishRequested = false;
         loadingPercent = 0;
         loadingScreen.classList.remove("is-hidden");
         $("loadingProgressFill").style.width = "0%";
         $("loadingPercent").textContent = "0%";
         loadingTimer = window.setInterval(() => {
-          loadingPercent = Math.min(94, loadingPercent + 2);
+          loadingPercent = Math.min(92, loadingPercent + 3 + Math.floor(Math.random() * 5));
           $("loadingProgressFill").style.width = loadingPercent + "%";
           $("loadingPercent").textContent = loadingPercent + "%";
-        }, 100);
+        }, 110);
       }
 
       function finishLoadingScreen() {
-        if (loadingFinishRequested) return;
-        loadingFinishRequested = true;
         window.clearInterval(loadingTimer);
         loadingTimer = 0;
-        const remaining = Math.max(0, 5000 - (Date.now() - loadingStartedAt));
-        window.setTimeout(() => {
-          loadingPercent = 100;
-          $("loadingProgressFill").style.width = "100%";
-          $("loadingPercent").textContent = "100%";
-          window.setTimeout(() => loadingScreen.classList.add("is-hidden"), 320);
-        }, remaining);
+        loadingPercent = 100;
+        $("loadingProgressFill").style.width = "100%";
+        $("loadingPercent").textContent = "100%";
+        window.setTimeout(() => loadingScreen.classList.add("is-hidden"), 260);
       }
 
       function showConnectionDialog(message) {
@@ -2761,51 +2706,56 @@
     /* Low-cost autumn ambience: capped DPR, 18 particles, throttled to ~30fps,
        paused when the page is hidden. No libraries, network calls, or touch handlers. */
     (() => {
-      const canvases = [document.getElementById("autumnParticles"), document.getElementById("loadingParticles")].filter(Boolean);
-      if (!canvases.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const colors = ["rgba(255,177,67,.72)", "rgba(222,91,34,.64)", "rgba(255,215,125,.66)", "rgba(167,86,42,.58)"];
+      const canvas = document.getElementById("autumnParticles");
+      if (!canvas || !canvas.getContext || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const ctx = canvas.getContext("2d", { alpha: true });
+      if (!ctx) return;
+      const colors = ["rgba(255,177,67,.58)", "rgba(222,91,34,.48)", "rgba(255,215,125,.48)", "rgba(167,86,42,.42)"];
+      const leaves = [];
+      const COUNT = 18;
+      let width = 0, height = 0, dpr = 1, raf = 0, lastFrame = 0, running = false;
       const rand = (min, max) => min + Math.random() * (max - min);
-      const animators = canvases.map((canvas, canvasIndex) => {
-        const ctx = canvas.getContext("2d", { alpha: true });
-        if (!ctx) return null;
-        const leaves = []; const COUNT = canvasIndex === 1 ? 22 : 25;
-        let width = 0, height = 0, dpr = 1, raf = 0, lastFrame = 0, running = false;
-        function resize() {
-          const rect = canvas.getBoundingClientRect();
-          width = Math.max(1, rect.width || window.innerWidth); height = Math.max(1, rect.height || window.innerHeight);
-          dpr = Math.min(window.devicePixelRatio || 1, 1.25);
-          canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          if (!leaves.length) for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
+      function resize() {
+        width = Math.max(1, window.innerWidth); height = Math.max(1, window.innerHeight);
+        dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+        canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+        canvas.style.width = width + "px"; canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (!leaves.length) {
+          for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
         }
-        function makeLeaf(initial) {
-          return { x: rand(0, Math.max(1, width)), y: initial ? rand(-height, height) : rand(-70, -15),
-            size: rand(canvasIndex === 1 ? 16 : 15, canvasIndex === 1 ? 29 : 27), speed: rand(20, 42), drift: rand(12, 32), phase: rand(0, Math.PI * 2),
-            spin: rand(.4, 1.2) * (Math.random() < .5 ? -1 : 1), color: colors[(Math.random() * colors.length) | 0], alpha: rand(.58, .95) };
+      }
+      function makeLeaf(initial) {
+        return { x: rand(0, Math.max(1, width)), y: initial ? rand(-height, height) : rand(-50, -12),
+          size: rand(4, 8), speed: rand(10, 23), drift: rand(5, 15), phase: rand(0, Math.PI * 2),
+          spin: rand(.35, 1.05) * (Math.random() < .5 ? -1 : 1), color: colors[(Math.random() * colors.length) | 0], alpha: rand(.48, .9) };
+      }
+      function draw(now) {
+        raf = 0;
+        if (!running || document.hidden) return;
+        if (now - lastFrame < 32) { raf = requestAnimationFrame(draw); return; }
+        const dt = Math.min(.05, lastFrame ? (now - lastFrame) / 1000 : .032); lastFrame = now;
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < leaves.length; i++) {
+          const p = leaves[i];
+          p.y += p.speed * dt; p.x += Math.sin(now * .00035 + p.phase) * p.drift * dt;
+          p.phase += p.spin * dt;
+          if (p.y > height + 20 || p.x < -25 || p.x > width + 25) { leaves[i] = makeLeaf(false); continue; }
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(Math.sin(p.phase) * .7);
+          ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
+          ctx.beginPath(); ctx.moveTo(0, -p.size); ctx.quadraticCurveTo(p.size * 1.25, -p.size * .35, p.size * .55, p.size * .55);
+          ctx.quadraticCurveTo(0, p.size * 1.2, -p.size * .55, p.size * .35); ctx.quadraticCurveTo(-p.size * 1.1, -p.size * .45, 0, -p.size); ctx.fill();
+          ctx.strokeStyle = "rgba(255,225,165,.22)"; ctx.lineWidth = .65; ctx.beginPath(); ctx.moveTo(0, -p.size * .7); ctx.lineTo(0, p.size * .55); ctx.stroke(); ctx.restore();
         }
-        function draw(now) {
-          raf = 0; if (!running || document.hidden) return;
-          if (now - lastFrame < 32) { raf = requestAnimationFrame(draw); return; }
-          const dt = Math.min(.05, lastFrame ? (now - lastFrame) / 1000 : .032); lastFrame = now;
-          ctx.clearRect(0, 0, width, height);
-          for (let i = 0; i < leaves.length; i++) {
-            const p = leaves[i]; p.y += p.speed * dt; p.x += Math.sin(now * .00035 + p.phase) * p.drift * dt; p.phase += p.spin * dt;
-            if (p.y > height + 45 || p.x < -55 || p.x > width + 55) { leaves[i] = makeLeaf(false); continue; }
-            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(Math.sin(p.phase) * 1.05); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color;
-            ctx.beginPath(); ctx.moveTo(0, -p.size); ctx.quadraticCurveTo(p.size * 1.35, -p.size * .35, p.size * .55, p.size * .62);
-            ctx.quadraticCurveTo(0, p.size * 1.2, -p.size * .55, p.size * .35); ctx.quadraticCurveTo(-p.size * 1.1, -p.size * .45, 0, -p.size); ctx.fill();
-            ctx.strokeStyle = "rgba(255,235,185,.42)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, -p.size * .7); ctx.lineTo(0, p.size * .55); ctx.stroke(); ctx.restore();
-          }
-          raf = requestAnimationFrame(draw);
-        }
-        function start() { if (running || document.hidden) return; running = true; lastFrame = 0; raf = requestAnimationFrame(draw); }
-        function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
-        resize(); start(); return { resize, start, stop };
-      }).filter(Boolean);
-      window.addEventListener("resize", () => animators.forEach(a => a.resize()), { passive: true });
-      document.addEventListener("visibilitychange", () => animators.forEach(a => document.hidden ? a.stop() : a.start()));
-      window.addEventListener("pagehide", () => animators.forEach(a => a.stop()), { passive: true });
-      window.addEventListener("pageshow", () => animators.forEach(a => a.start()), { passive: true });
+        raf = requestAnimationFrame(draw);
+      }
+      function start() { if (running || document.hidden) return; running = true; lastFrame = 0; raf = requestAnimationFrame(draw); }
+      function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
+      resize(); start();
+      window.addEventListener("resize", resize, { passive: true });
+      document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else start(); });
+      window.addEventListener("pagehide", stop, { passive: true });
+      window.addEventListener("pageshow", start, { passive: true });
     })();
   </script>
 </body>
