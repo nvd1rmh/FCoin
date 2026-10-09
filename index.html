@@ -23,7 +23,7 @@
       margin: 0; min-height: 100vh; color: #fff;
       font-family: Tahoma, "Segoe UI", sans-serif;
       background:
-        linear-gradient(180deg, rgba(11,9,11,.48) 0%, rgba(16,14,18,.56) 58%, rgba(16,14,18,.64) 100%),
+        linear-gradient(180deg, rgba(11,9,11,.44) 0%, rgba(16,14,18,.51) 58%, rgba(16,14,18,.59) 100%),
         url("back.png") center center / cover fixed,
         radial-gradient(ellipse at 50% 35%, #ff9d2626 0, transparent 37%),
         radial-gradient(ellipse at 50% 12%, #352116 0, #1a1518 40%, var(--bg) 78%);
@@ -46,8 +46,8 @@
     .app { padding-bottom:110px; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
-    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 18px), 540px); display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:5px; padding:7px; border:1px solid var(--border); border-radius:19px; background:#171622ed; box-shadow:0 12px 36px #0008; backdrop-filter:blur(16px); }
-    .tab-button { min-width:0; border:0; border-radius:13px; padding:9px 4px 8px; background:transparent; color:var(--muted); font-size:11px; cursor:pointer; }
+    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 30px), 500px); display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:4px; padding:6px; border:1px solid var(--border); border-radius:19px; background:linear-gradient(145deg,rgba(34,36,47,.78),rgba(18,19,29,.72)); box-shadow:0 12px 32px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.18); backdrop-filter:blur(22px) saturate(145%); -webkit-backdrop-filter:blur(22px) saturate(145%); }
+    .tab-button { min-width:0; border:0; border-radius:13px; padding:7px 3px 6px; background:transparent; color:var(--muted); font-size:11px; cursor:pointer; }
     .tab-button span { display:block; font-size:18px; line-height:1.2; margin-bottom:3px; }
     .tab-button.active { color:#b8ffdf; background:#62e5aa1c; }
     .placeholder-card { margin-top:22px; padding:26px 20px; text-align:center; border:1px solid var(--border); border-radius:22px; background:linear-gradient(145deg,#ffffff0d,#ffffff03); }
@@ -147,7 +147,7 @@
     .boost-dialog-actions button { border:1px solid var(--border); border-radius:12px; padding:12px 8px; background:#ffffff0c; cursor:pointer; font-size:12px; font-weight:800; }
     .boost-dialog-actions .boost-confirm { border-color:#d2a0ff66; color:#fff; background:linear-gradient(110deg,#a143ee,#6922bd); }
     .boost-dialog-actions button:disabled { opacity:.5; cursor:wait; }
-    .energy-card { background:var(--panel); border:1px solid var(--border); border-radius:18px; padding:15px 16px; }
+    .energy-card { width: min(100%, 430px); margin-inline:auto; background:rgba(28,29,39,.46); border:1px solid rgba(255,255,255,.17); border-radius:18px; padding:12px 14px; box-shadow:inset 0 1px rgba(255,255,255,.09); backdrop-filter:blur(16px) saturate(125%); -webkit-backdrop-filter:blur(16px) saturate(125%); }
     .energy-top { display:flex; justify-content:space-between; align-items:center; font-size:13px; }
     .energy-top span:first-child { color:#e9e7f0; }
     .energy-count { direction:ltr; color:var(--mint); font-weight:700; }
@@ -245,14 +245,28 @@
     .loading-screen.is-hidden { visibility:hidden; opacity:0; pointer-events:none; }
     .loading-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
     .loading-shade { position:absolute; inset:0; background:linear-gradient(180deg,#0002 0%,#05040700 48%,#080609d9 100%); }
-    .loading-status { position:absolute; z-index:1; right:max(24px,env(safe-area-inset-right)); bottom:max(38px,calc(env(safe-area-inset-bottom) + 28px)); left:max(24px,env(safe-area-inset-left)); margin:auto; width:min(calc(100vw - 48px),420px); text-align:center; }
+    .loading-status { position:absolute; z-index:3; right:max(24px,env(safe-area-inset-right)); bottom:max(52px,calc(env(safe-area-inset-bottom) + 42px)); left:max(24px,env(safe-area-inset-left)); margin:auto; width:min(calc(100vw - 48px),420px); text-align:center; }
     .loading-caption { margin-bottom:11px; color:#ffe2a0; font-size:12px; font-weight:900; letter-spacing:.3px; text-shadow:0 1px 10px #000; }
-    .loading-progress { height:9px; overflow:hidden; border:1px solid #ffdc8a77; border-radius:99px; background:#050505a8; box-shadow:0 0 18px #ffaa3866; }
+    .loading-progress { height:13px; overflow:hidden; border:1px solid #ffdc8a77; border-radius:99px; background:#050505a8; box-shadow:0 0 18px #ffaa3866; }
     .loading-progress-fill { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#ff8b21,#ffe184); box-shadow:0 0 13px #ffbe48; transition:width .18s ease; }
     .loading-percent { margin-top:6px; color:#fff0c5; direction:ltr; font-size:10px; font-weight:800; }
     .connection-dialog { border-color:#ff81705c; background:radial-gradient(ellipse at 50% 0,#ff554328,transparent 57%),linear-gradient(155deg,#24151cf5,#111018f7); }
     .connection-dialog .feature-dialog-head h2 { color:#ffd5d2; }
     .connection-copy { color:#e8dbe0; font-size:12px; line-height:2; }
+    /* restrained iOS-like glass: translucent neutral tint, never opaque black or yellow */
+    .placeholder-card,.mission-hero,.mission-card,.energy-card,.exchange-card,.home-level,.daily-day,.leader-row,.season-task,.feature-dialog,.upgrade-card,.invite-card,.self-grid-button {
+      background-color:rgba(28,30,41,.48); border-color:rgba(255,255,255,.15);
+      box-shadow:inset 0 1px rgba(255,255,255,.10),0 8px 24px rgba(0,0,0,.10);
+      -webkit-backdrop-filter:blur(15px) saturate(125%); backdrop-filter:blur(15px) saturate(125%);
+    }
+    .home-shortcut { will-change:transform; transition:transform .16s ease, filter .16s ease; }
+    .home-shortcut:active { transform:scale(.96); filter:brightness(1.12); }
+    .wheel-slot { direction:rtl; unicode-bidi:plaintext; writing-mode:horizontal-tb; }
+    .wheel-wrap { filter:drop-shadow(0 12px 18px rgba(0,0,0,.22)); }
+    .wheel-disc { border-color:#d9dce7; box-shadow:0 0 0 4px rgba(255,255,255,.16),0 0 26px rgba(135,164,255,.22),inset 0 0 22px rgba(0,0,0,.25); }
+    .wheel-center { border-color:rgba(255,255,255,.78); color:#f8f9ff; background:radial-gradient(circle at 35% 25%,#a8c7ff,#5a6fba 65%,#2b3157); box-shadow:0 0 17px rgba(137,169,255,.55); }
+    .wheel-result { color:#e6edff; direction:rtl; unicode-bidi:plaintext; }
+    .loading-leaves { position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none; }
     .connection-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
     .connection-actions button { padding:11px 8px; border:1px solid #ffffff24; border-radius:12px; color:#f4e9ed; background:#ffffff0b; font-size:11px; font-weight:900; cursor:pointer; }
     .connection-actions .retry-button { color:#2b1b06; border-color:#ffe69b; background:linear-gradient(100deg,#ffe78f,#ffb73a); }
@@ -328,7 +342,7 @@
 <body>
   <canvas id="autumnParticles" aria-hidden="true"></canvas>
   <div id="loadingScreen" class="loading-screen" aria-live="polite">
-    <img class="loading-art" src="home.png" alt="">
+    <img class="loading-art" src="home.png" alt=""><canvas id="loadingLeaves" class="loading-leaves" aria-hidden="true"></canvas>
     <div class="loading-shade" aria-hidden="true"></div>
     <div class="loading-status">
       <div class="loading-caption">در حال بارگذاری اطلاعات حساب...</div>
@@ -578,6 +592,7 @@
       let loadingPercent = 0;
       let loadingTimer = 0;
       let initialLoadStarted = false;
+      const introStartedAt = performance.now();
       const tapLabels = new Set();
 
       function showStatus(message, type) {
@@ -2530,7 +2545,7 @@
         loadingPercent = 100;
         $("loadingProgressFill").style.width = "100%";
         $("loadingPercent").textContent = "100%";
-        window.setTimeout(() => loadingScreen.classList.add("is-hidden"), 260);
+        window.setTimeout(() => loadingScreen.classList.add("is-hidden"), Math.max(260, 5000 - (performance.now() - introStartedAt)));
       }
 
       function showConnectionDialog(message) {
@@ -2712,7 +2727,7 @@
       if (!ctx) return;
       const colors = ["rgba(255,177,67,.58)", "rgba(222,91,34,.48)", "rgba(255,215,125,.48)", "rgba(167,86,42,.42)"];
       const leaves = [];
-      const COUNT = 18;
+      const COUNT = 20;
       let width = 0, height = 0, dpr = 1, raf = 0, lastFrame = 0, running = false;
       const rand = (min, max) => min + Math.random() * (max - min);
       function resize() {
@@ -2727,7 +2742,7 @@
       }
       function makeLeaf(initial) {
         return { x: rand(0, Math.max(1, width)), y: initial ? rand(-height, height) : rand(-50, -12),
-          size: rand(4, 8), speed: rand(10, 23), drift: rand(5, 15), phase: rand(0, Math.PI * 2),
+          size: rand(6, 10), speed: rand(12, 25), drift: rand(7, 17), phase: rand(0, Math.PI * 2),
           spin: rand(.35, 1.05) * (Math.random() < .5 ? -1 : 1), color: colors[(Math.random() * colors.length) | 0], alpha: rand(.48, .9) };
       }
       function draw(now) {
@@ -2756,6 +2771,23 @@
       document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else start(); });
       window.addEventListener("pagehide", stop, { passive: true });
       window.addEventListener("pageshow", start, { passive: true });
+    })();
+  </script>
+
+  <script>
+    /* Separate lightweight leaf layer over home.png while the 5-second intro is visible. */
+    (() => {
+      const canvas = document.getElementById("loadingLeaves");
+      const screen = document.getElementById("loadingScreen");
+      if (!canvas || !screen || !canvas.getContext || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const ctx = canvas.getContext("2d", { alpha: true }); if (!ctx) return;
+      const palette = ["rgba(255,157,54,.78)","rgba(205,68,37,.72)","rgba(255,197,91,.78)","rgba(147,67,38,.70)"];
+      let w=0,h=0,raf=0,last=0,active=false; const leaves=[]; const rand=(a,b)=>a+Math.random()*(b-a);
+      function size(){w=innerWidth;h=innerHeight;const d=Math.min(devicePixelRatio||1,1.15);canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);if(!leaves.length)for(let i=0;i<15;i++)leaves.push(make(true));}
+      function make(initial){return {x:rand(-10,w+10),y:initial?rand(-h,h):rand(-70,-15),s:rand(9,15),v:rand(22,42),d:rand(10,24),a:rand(0,6.28),r:rand(-1.5,1.5),c:palette[(Math.random()*palette.length)|0]};}
+      function frame(t){raf=0;if(!active||document.hidden||screen.classList.contains('is-hidden'))return;if(t-last<32){raf=requestAnimationFrame(frame);return;}const dt=Math.min(.05,last?(t-last)/1000:.032);last=t;ctx.clearRect(0,0,w,h);for(let i=0;i<leaves.length;i++){const p=leaves[i];p.y+=p.v*dt;p.x+=Math.sin(t*.001+p.a)*p.d*dt;p.a+=p.r*dt;if(p.y>h+30){leaves[i]=make(false);continue;}ctx.save();ctx.translate(p.x,p.y);ctx.rotate(Math.sin(p.a)*.8);ctx.fillStyle=p.c;ctx.beginPath();ctx.moveTo(0,-p.s);ctx.quadraticCurveTo(p.s*1.1,-p.s*.3,p.s*.45,p.s*.55);ctx.quadraticCurveTo(0,p.s*1.15,-p.s*.45,p.s*.35);ctx.quadraticCurveTo(-p.s,-p.s*.35,0,-p.s);ctx.fill();ctx.strokeStyle='rgba(255,235,195,.4)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(0,-p.s*.65);ctx.lineTo(0,p.s*.55);ctx.stroke();ctx.restore();}raf=requestAnimationFrame(frame);}
+      function sync(){const should=!document.hidden&&!screen.classList.contains('is-hidden');if(should&&!active){active=true;last=0;raf=requestAnimationFrame(frame);}else if(!should&&active){active=false;if(raf)cancelAnimationFrame(raf);raf=0;ctx.clearRect(0,0,w,h);}}
+      size();sync();new MutationObserver(sync).observe(screen,{attributes:true,attributeFilter:['class']});addEventListener('resize',size,{passive:true});document.addEventListener('visibilitychange',sync);addEventListener('pagehide',()=>{active=false;if(raf)cancelAnimationFrame(raf);});
     })();
   </script>
 </body>
