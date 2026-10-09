@@ -30,7 +30,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     /* Background image gets its own GPU-friendly layer for subtle device-tilt parallax. */
-    .scene-background { position:fixed; z-index:0; inset:-24px; pointer-events:none; overflow:hidden; transform:translate3d(var(--scene-x,0px),var(--scene-y,0px),0) scale(1.055); transform-origin:center; will-change:transform; background:url("back.png") center center / cover no-repeat; }
+    .scene-background { position:fixed; z-index:0; inset:-24px; pointer-events:none; overflow:hidden; transform:scale(1.02); transform-origin:center; background:url("back.png") center center / cover no-repeat; }
     .scene-background::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(11,9,11,.32) 0%,rgba(16,14,18,.38) 58%,rgba(16,14,18,.43) 100%); }
     /* Lightweight atmosphere: stays behind all controls and never intercepts touches. */
     body::before {
@@ -42,7 +42,6 @@
       opacity:.9; transform:translate3d(0,0,0);
       animation:none;
     }
-    #autumnParticles { position:fixed; inset:0; z-index:2; width:100%; height:100%; pointer-events:none; contain:strict; }
     .app { position:relative; z-index:3; width: min(100%, 520px); min-height: 100vh; margin: auto; padding: 16px 20px max(26px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; }
     .app { padding-bottom:110px; }
     .tab-panel { display:none; }
@@ -217,7 +216,7 @@
     .daily-day.is-current { border-color:#ffd45a99; color:#fff0b4; background:linear-gradient(145deg,#ba781f5c,#2d2117dd); box-shadow:0 0 16px #ffb52f33; }
     .feature-primary { width:100%; margin-top:13px; padding:13px; border:1px solid #ffe99c8a; border-radius:13px; color:#291b06; background:linear-gradient(105deg,#ffe88d,#ffb833); box-shadow:0 8px 20px #ffb52f24; font-weight:900; cursor:pointer; }
     .feature-primary:disabled { opacity:.48; cursor:not-allowed; }
-    .home-shortcut.store { right:0; left:auto; top:calc(3% + 132px); transform:none; width:58px; height:58px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
+    .home-shortcut.store { right:0; left:auto; top:calc(3% + 144px); width:62px; height:62px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
     .home-shortcut.store:active { transform:scale(.97); }
     .shop-hero { padding:15px; margin-bottom:12px; border:1px solid #ffd97870; border-radius:18px; text-align:center; background:radial-gradient(ellipse at 50% 0,#ffd45a24,transparent 75%),#ffffff07; }
     .shop-hero-icon { font-size:30px; filter:drop-shadow(0 3px 8px #f4bd4555); }
@@ -350,7 +349,6 @@
     @media (max-width:360px), (max-height:700px) { .coin-area{min-height:265px;padding:0;} .coin-button{width:min(61vw,240px);} .tap-hint{margin-top:12px;} }
     @media (prefers-reduced-motion: reduce) {
       body::before { animation:none !important; }
-      #autumnParticles { display:none !important; }
       .coin-button,.home-shortcut { transition-duration:.01ms !important; }
       .home-shortcut:before { display:none !important; }
       .tap-float { animation-duration:.01ms; }
@@ -359,9 +357,8 @@
 </head>
 <body>
   <div class="scene-background" id="sceneBackground" aria-hidden="true"></div>
-  <canvas id="autumnParticles" aria-hidden="true"></canvas>
   <div id="loadingScreen" class="loading-screen" aria-live="polite">
-    <img class="loading-art" src="home.png" alt=""><canvas id="loadingLeaves" class="loading-leaves" aria-hidden="true"></canvas>
+    <img class="loading-art" src="home.png" alt="">
     <div class="loading-shade" aria-hidden="true"></div>
     <div class="loading-status">
       <div class="loading-caption">در حال بارگذاری اطلاعات حساب...</div>
