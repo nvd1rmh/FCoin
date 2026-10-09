@@ -40,10 +40,9 @@
         radial-gradient(ellipse at 82% 48%, rgba(255,195,83,.075), transparent 34%),
         radial-gradient(ellipse at 50% 88%, rgba(206,83,24,.07), transparent 42%);
       opacity:.9; transform:translate3d(0,0,0);
-      animation:autumn-ambient 18s ease-in-out infinite alternate;
+      animation:none;
     }
     #autumnParticles { position:fixed; inset:0; z-index:2; width:100%; height:100%; pointer-events:none; contain:strict; }
-    @keyframes autumn-ambient { from { transform:translate3d(-.5%,0,0) scale(1); opacity:.65; } to { transform:translate3d(.5%,-.5%,0) scale(1.035); opacity:1; } }
     .app { position:relative; z-index:3; width: min(100%, 520px); min-height: 100vh; margin: auto; padding: 16px 20px max(26px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; }
     .app { padding-bottom:110px; }
     .tab-panel { display:none; }
@@ -192,18 +191,16 @@
     .home-shortcut:nth-child(3),.home-shortcut:nth-child(4) { right:0; }
     .home-shortcut:nth-child(1),.home-shortcut:nth-child(3) { top:3%; }
     .home-shortcut:nth-child(2),.home-shortcut:nth-child(4) { top:calc(3% + 72px); }
-    .home-shortcut:before { position:absolute; z-index:-1; inset:-40% auto -40% -35%; width:28px; content:""; transform:rotate(24deg); background:#fff6; filter:blur(9px); animation:shortcut-shine 4s ease-in-out infinite; }
+    .home-shortcut:before { position:absolute; z-index:-1; inset:-40% auto -40% -35%; width:28px; content:""; transform:rotate(24deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent); opacity:.45; }
     .home-shortcut:active { transform:scale(.97); }
     .home-shortcut:disabled { opacity:.5; cursor:not-allowed; }
     .home-shortcut .shortcut-icon { font-size:22px; line-height:1; }
     .home-shortcut .shortcut-label { font-size:9px; font-weight:900; line-height:1.2; white-space:nowrap; }
     .home-shortcut.daily { border-color:#ffcb5a4f; color:#ffe9ae; }
     .home-shortcut.leaderboard { border-color:#9edfff3d; color:#d8f1ff; }
-    .home-shortcut.season { border-color:#c78aff70; color:#f0d7ff; background:linear-gradient(130deg,#542384d9,#211626ed 68%,#13111b); box-shadow:0 0 18px #b34cff45,0 7px 20px #0008,inset 0 1px #fff4; }
-    .home-shortcut.season:after { position:absolute; z-index:-1; inset:0; border:1px solid #e6b5ff55; border-radius:inherit; content:""; animation:season-glow 1.8s ease-in-out infinite alternate; }
-    .home-shortcut.wheel { border-color:#62e5b555; color:#baffdf; background:linear-gradient(130deg,#126d50d9,#152520ec 68%,#11151b); box-shadow:0 0 16px #32d89c3a,0 7px 20px #0008,inset 0 1px #fff3; }
-    @keyframes shortcut-shine { 0%,72% { left:-35%; } 100% { left:135%; } }
-    @keyframes season-glow { to { box-shadow:inset 0 0 13px #d890ff44,0 0 18px #b34cff77; } }
+    .home-shortcut.season { border-color:#c78aff70; color:#f0d7ff; background:linear-gradient(130deg,#542384c8,#211626d8 68%,#13111bdc); box-shadow:0 4px 10px #0004,inset 0 1px #fff3; }
+    .home-shortcut.season:after { position:absolute; z-index:-1; inset:0; border:1px solid #e6b5ff38; border-radius:inherit; content:""; pointer-events:none; }
+    .home-shortcut.wheel { border-color:#62e5b555; color:#baffdf; background:linear-gradient(130deg,#126d50c8,#152520d8 68%,#11151bdc); box-shadow:0 4px 10px #0004,inset 0 1px #fff3; }
     .feature-dialog,.connection-dialog { width:min(calc(100% - 28px),480px); max-height:min(86vh,760px); padding:0; overflow:hidden; border:1px solid #ffc85c4d; border-radius:23px; color:#fff; background:radial-gradient(ellipse at 50% 0,#ffaf3530,transparent 55%),linear-gradient(155deg,#19151df5,#0e1018f7); box-shadow:0 24px 90px #000c,0 0 32px #ffad3022; }
     .feature-dialog::backdrop,.connection-dialog::backdrop { background:#050508d9; backdrop-filter:blur(7px); }
     .feature-dialog-inner { max-height:min(86vh,760px); overflow:auto; padding:20px; }
@@ -261,8 +258,8 @@
       box-shadow:inset 0 1px rgba(255,255,255,.10),0 8px 24px rgba(0,0,0,.10);
       -webkit-backdrop-filter:blur(15px) saturate(125%); backdrop-filter:blur(15px) saturate(125%);
     }
-    .home-shortcut { will-change:transform; transition:transform .16s ease, filter .16s ease; }
-    .home-shortcut:active { transform:scale(.96); filter:brightness(1.12); }
+    .home-shortcut { transition:transform .1s ease; }
+    .home-shortcut:active { transform:scale(.98); }
     .wheel-slot { direction:rtl; unicode-bidi:plaintext; writing-mode:horizontal-tb; }
     .wheel-wrap { filter:drop-shadow(0 12px 18px rgba(0,0,0,.22)); }
     .wheel-disc { border-color:#d9dce7; box-shadow:0 0 0 4px rgba(255,255,255,.16),0 0 26px rgba(135,164,255,.22),inset 0 0 22px rgba(0,0,0,.25); }
@@ -339,7 +336,8 @@
     @media (prefers-reduced-motion: reduce) {
       body::before { animation:none !important; }
       #autumnParticles { display:none !important; }
-      .coin-button { transition-duration:.01ms !important; }
+      .coin-button,.home-shortcut { transition-duration:.01ms !important; }
+      .home-shortcut:before { display:none !important; }
       .tap-float { animation-duration:.01ms; }
     }
   </style>
@@ -2733,12 +2731,12 @@
       if (!ctx) return;
       const colors = ["rgba(255,177,67,.58)", "rgba(222,91,34,.48)", "rgba(255,215,125,.48)", "rgba(167,86,42,.42)"];
       const leaves = [];
-      const COUNT = 20;
+      const COUNT = 8;
       let width = 0, height = 0, dpr = 1, raf = 0, lastFrame = 0, running = false;
       const rand = (min, max) => min + Math.random() * (max - min);
       function resize() {
         width = Math.max(1, window.innerWidth); height = Math.max(1, window.innerHeight);
-        dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+        dpr = Math.min(window.devicePixelRatio || 1, 1.0);
         canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
         canvas.style.width = width + "px"; canvas.style.height = height + "px";
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -2804,10 +2802,11 @@
       if (!layer || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       let targetX = 0, targetY = 0, currentX = 0, currentY = 0, raf = 0, last = 0, motionReady = false;
       const clamp = (v, n) => Math.max(-n, Math.min(n, v));
+      layer.style.setProperty('--scene-x','0px'); layer.style.setProperty('--scene-y','0px');
       function onOrientation(e) {
         if (typeof e.gamma !== 'number' || typeof e.beta !== 'number') return;
-        targetX = clamp(e.gamma / 45, -1, 1) * 11;
-        targetY = clamp((e.beta - 35) / 55, -1, 1) * 8;
+        targetX = clamp(e.gamma / 35, -1, 1) * 16;
+        targetY = clamp((e.beta - 35) / 45, -1, 1) * 11;
         start();
       }
       function onPointer(e) {
@@ -2821,8 +2820,8 @@
         if (document.hidden) return;
         if (t - last < 32) { raf = requestAnimationFrame(frame); return; }
         last = t;
-        currentX += (targetX - currentX) * .12;
-        currentY += (targetY - currentY) * .12;
+        currentX += (targetX - currentX) * .18;
+        currentY += (targetY - currentY) * .18;
         layer.style.setProperty('--scene-x', currentX.toFixed(2) + 'px');
         layer.style.setProperty('--scene-y', currentY.toFixed(2) + 'px');
         if (Math.abs(targetX-currentX) > .08 || Math.abs(targetY-currentY) > .08) raf = requestAnimationFrame(frame);
@@ -2838,7 +2837,9 @@
         }
       }
       window.addEventListener('pointermove', onPointer, {passive:true});
+      // Sensor permission on iOS must be requested directly from a user gesture.
       window.addEventListener('touchstart', enableMotion, {passive:true, once:true});
+      window.addEventListener('pointerdown', enableMotion, {passive:true, once:true});
       window.addEventListener('click', enableMotion, {passive:true, once:true});
       document.addEventListener('visibilitychange', () => { if (document.hidden && raf) { cancelAnimationFrame(raf); raf = 0; } else start(); });
       start();
