@@ -217,7 +217,7 @@
     .daily-day.is-current { border-color:#ffd45a99; color:#fff0b4; background:linear-gradient(145deg,#ba781f5c,#2d2117dd); box-shadow:0 0 16px #ffb52f33; }
     .feature-primary { width:100%; margin-top:13px; padding:13px; border:1px solid #ffe99c8a; border-radius:13px; color:#291b06; background:linear-gradient(105deg,#ffe88d,#ffb833); box-shadow:0 8px 20px #ffb52f24; font-weight:900; cursor:pointer; }
     .feature-primary:disabled { opacity:.48; cursor:not-allowed; }
-    .home-shortcut.store { right:0; left:auto; top:calc(3% + 144px); transform:none; width:78px; height:64px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
+    .home-shortcut.store { right:0; left:auto; top:calc(3% + 132px); transform:none; width:58px; height:58px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
     .home-shortcut.store:active { transform:scale(.97); }
     .shop-hero { padding:15px; margin-bottom:12px; border:1px solid #ffd97870; border-radius:18px; text-align:center; background:radial-gradient(ellipse at 50% 0,#ffd45a24,transparent 75%),#ffffff07; }
     .shop-hero-icon { font-size:30px; filter:drop-shadow(0 3px 8px #f4bd4555); }
@@ -2858,56 +2858,7 @@
     })();
   </script>
 
-  <script>
-    /* Subtle, smoothed device-tilt parallax. Limited travel keeps the image edges covered. */
-    (() => {
-      const layer = document.getElementById('sceneBackground');
-      if (!layer || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      let targetX = 0, targetY = 0, currentX = 0, currentY = 0, raf = 0, last = 0, motionReady = false;
-      const clamp = (v, n) => Math.max(-n, Math.min(n, v));
-      layer.style.setProperty('--scene-x','0px'); layer.style.setProperty('--scene-y','0px');
-      function onOrientation(e) {
-        if (typeof e.gamma !== 'number' || typeof e.beta !== 'number') return;
-        targetX = clamp(e.gamma / 35, -1, 1) * 16;
-        targetY = clamp((e.beta - 35) / 45, -1, 1) * 11;
-        start();
-      }
-      function onPointer(e) {
-        if (e.pointerType === 'touch') return;
-        targetX = clamp((e.clientX / Math.max(1, innerWidth) - .5) * 2, -1, 1) * 5;
-        targetY = clamp((e.clientY / Math.max(1, innerHeight) - .5) * 2, -1, 1) * 4;
-        start();
-      }
-      function frame(t) {
-        raf = 0;
-        if (document.hidden) return;
-        if (t - last < 32) { raf = requestAnimationFrame(frame); return; }
-        last = t;
-        currentX += (targetX - currentX) * .18;
-        currentY += (targetY - currentY) * .18;
-        layer.style.setProperty('--scene-x', currentX.toFixed(2) + 'px');
-        layer.style.setProperty('--scene-y', currentY.toFixed(2) + 'px');
-        if (Math.abs(targetX-currentX) > .08 || Math.abs(targetY-currentY) > .08) raf = requestAnimationFrame(frame);
-      }
-      function start() { if (!raf && !document.hidden) raf = requestAnimationFrame(frame); }
-      function enableMotion() {
-        if (motionReady) return;
-        motionReady = true;
-        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-          DeviceOrientationEvent.requestPermission().then(state => { if (state === 'granted') window.addEventListener('deviceorientation', onOrientation, {passive:true}); }).catch(()=>{});
-        } else {
-          window.addEventListener('deviceorientation', onOrientation, {passive:true});
-        }
-      }
-      window.addEventListener('pointermove', onPointer, {passive:true});
-      // Sensor permission on iOS must be requested directly from a user gesture.
-      window.addEventListener('touchstart', enableMotion, {passive:true, once:true});
-      window.addEventListener('pointerdown', enableMotion, {passive:true, once:true});
-      window.addEventListener('click', enableMotion, {passive:true, once:true});
-      document.addEventListener('visibilitychange', () => { if (document.hidden && raf) { cancelAnimationFrame(raf); raf = 0; } else start(); });
-      start();
-    })();
-  </script>
+
 
 </body>
 </html>
