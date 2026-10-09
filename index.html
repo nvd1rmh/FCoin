@@ -217,6 +217,21 @@
     .daily-day.is-current { border-color:#ffd45a99; color:#fff0b4; background:linear-gradient(145deg,#ba781f5c,#2d2117dd); box-shadow:0 0 16px #ffb52f33; }
     .feature-primary { width:100%; margin-top:13px; padding:13px; border:1px solid #ffe99c8a; border-radius:13px; color:#291b06; background:linear-gradient(105deg,#ffe88d,#ffb833); box-shadow:0 8px 20px #ffb52f24; font-weight:900; cursor:pointer; }
     .feature-primary:disabled { opacity:.48; cursor:not-allowed; }
+    .home-shortcut.store { right:0; left:auto; top:calc(3% + 144px); transform:none; width:78px; height:64px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
+    .home-shortcut.store:active { transform:scale(.97); }
+    .shop-hero { padding:15px; margin-bottom:12px; border:1px solid #ffd97870; border-radius:18px; text-align:center; background:radial-gradient(ellipse at 50% 0,#ffd45a24,transparent 75%),#ffffff07; }
+    .shop-hero-icon { font-size:30px; filter:drop-shadow(0 3px 8px #f4bd4555); }
+    .shop-hero strong { display:block; margin:4px 0; color:#ffe5a0; font-size:16px; }
+    .shop-hero p { margin:0; color:#cfc5ad; font-size:11px; line-height:1.8; }
+    .shop-grid { display:grid; gap:9px; }
+    .shop-item { display:grid; grid-template-columns:44px minmax(0,1fr) auto; gap:10px; align-items:center; padding:12px; border:1px solid #f6d77b38; border-radius:16px; background:linear-gradient(125deg,#fff1c00c,#ffffff04); }
+    .shop-item-icon { width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(145deg,#ffdf7c30,#d9901710);border:1px solid #ffe08a40;font-size:22px; }
+    .shop-item-name { color:#fff0c2;font-weight:900;font-size:12px; }
+    .shop-item-note { color:#bcb3a1;font-size:10px;margin-top:4px;line-height:1.6; }
+    .shop-buy { border:1px solid #fff0aa90;border-radius:11px;padding:9px 10px;background:linear-gradient(110deg,#ffe99a,#e6a72e);color:#392607;font-weight:900;font-size:11px;white-space:nowrap; }
+    .shop-buy:disabled { opacity:.45; }
+    .shop-cost { color:#ffe08a;font-weight:900;direction:ltr;white-space:nowrap; }
+
     .leader-list,.season-list { display:grid; gap:9px; }
     .leader-row { display:grid; grid-template-columns:38px minmax(0,1fr) auto; align-items:center; gap:10px; padding:12px; border:1px solid #ffffff17; border-radius:15px; background:linear-gradient(120deg,#ffffff0d,#ffffff04); }
     .leader-medal { font-size:23px; text-align:center; }
@@ -395,6 +410,7 @@
           <button id="wheelButton" class="home-shortcut wheel" type="button" disabled>
             <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
           </button>
+          <button id="storeButton" class="home-shortcut store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
         </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
           <img id="coinImage" class="coin-face" src="FCoin.png" alt="" draggable="false">
@@ -578,7 +594,7 @@
       const loadingScreen = $("loadingScreen");
       const featureButtons = [
         $("dailyRewardButton"), $("seasonButton"),
-        $("leaderboardButton"), $("wheelButton")
+        $("leaderboardButton"), $("wheelButton"), $("storeButton")
       ];
       let serverState = null;
       let busy = false;
@@ -1401,6 +1417,52 @@
             : "چرخش گردونه انجام نشد.";
           showStatus($("wheelResult").textContent, "error");
         }
+      }
+
+      const SHOP_ITEMS = [
+        {id:"diamond", name:"شارژ دایموند", cost:10000, icon:"💎", note:"یک شارژ برای بازی دایموند"},
+        {id:"bridge", name:"شارژ بریج", cost:20000, icon:"🌉", note:"یک شارژ برای بازی بریج"},
+        {id:"wheel", name:"شارژ گردونه شانس", cost:5000, icon:"☸️", note:"یک شارژ اضافه برای گردونه"},
+        {id:"boost", name:"شارژ تقویت", cost:7500, icon:"⚡", note:"یک شارژ تقویت اضافه"}
+      ];
+      async function openStore() {
+        openFeatureDialog("♛ فروشگاه طلایی");
+        featureDialogBody.replaceChildren(featureMessage("در حال دریافت فروشگاه..."));
+        try { renderStore(await userApiRequest("features/shop-state")); }
+        catch (error) { featureError(error?.message || "فروشگاه بارگذاری نشد.", openStore); }
+      }
+      function renderStore(state) {
+        const hero = document.createElement("div"); hero.className = "shop-hero";
+        hero.innerHTML = '<div class="shop-hero-icon">♛</div><strong>فروشگاه سلطنتی F Coin</strong><p>هر آیتم را روزی یک‌بار بخر؛ خرید با موجودی واقعی سرور ثبت می‌شود.</p>';
+        const grid = document.createElement("div"); grid.className = "shop-grid";
+        for (const item of SHOP_ITEMS) {
+          const bought = Boolean(state.purchased_today?.[item.id]);
+          const card = document.createElement("div"); card.className = "shop-item";
+          const icon = document.createElement("div"); icon.className = "shop-item-icon"; icon.textContent = item.icon;
+          const info = document.createElement("div");
+          const name = document.createElement("div"); name.className = "shop-item-name"; name.textContent = item.name;
+          const note = document.createElement("div"); note.className = "shop-item-note"; note.textContent = item.note;
+          const cost = document.createElement("div"); cost.className = "shop-cost"; cost.textContent = item.cost.toLocaleString("en-US") + " F";
+          info.append(name,note,cost);
+          const button = document.createElement("button"); button.className = "shop-buy"; button.type = "button";
+          button.disabled = bought || !hasUserAccount(); button.textContent = bought ? "خرید امروز ✓" : "خرید";
+          button.addEventListener("click", async () => {
+            button.disabled = true; button.textContent = "...";
+            try {
+              const result = await userApiRequest("features/shop-buy", {item_id:item.id});
+              showStatus("خرید موفق: " + item.name + "؛ اطلاع‌رسانی در ربات ارسال شد.", "info");
+              renderStore(result);
+              await request("state").catch(()=>{});
+            } catch(error) {
+              button.disabled = false; button.textContent = "خرید";
+              showStatus(error?.message || "خرید انجام نشد.", "error");
+            }
+          });
+          card.append(icon,info,button); grid.append(card);
+        }
+        const balance = document.createElement("div"); balance.className = "bot-balance";
+        balance.textContent = "موجودی فعلی F Coin: " + Number(state.balance || 0).toLocaleString("en-US");
+        featureDialogBody.replaceChildren(hero,grid,balance);
       }
 
       async function claimDailyMission() {
@@ -2669,6 +2731,7 @@
       $("seasonButton").addEventListener("click", openSeason);
       $("leaderboardButton").addEventListener("click", openLeaderboard);
       $("wheelButton").addEventListener("click", openWheel);
+      $("storeButton").addEventListener("click", openStore);
       document.querySelectorAll("[data-close-dialog]").forEach((button) => {
         button.addEventListener("click", () => closeDialog($(button.dataset.closeDialog)));
       });
