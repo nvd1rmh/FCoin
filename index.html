@@ -376,6 +376,14 @@
       filter:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
       text-shadow:none !important; scroll-behavior:auto !important;
     }
+    /* Keep essential tap feedback animated even in low-graphics mode. */
+    body.low-graphics .tap-float {
+      animation:tap-rise .95s cubic-bezier(.2,.7,.25,1) forwards !important;
+      text-shadow:0 2px 0 #8b3315, 0 3px 8px #ffb82f99 !important;
+      will-change:transform,opacity;
+    }
+    body.low-graphics #tapButton.is-pressed { transform:scale(.975) !important; }
+    body.low-graphics #tapButton { transition:transform .09s ease-out !important; }
     body.low-graphics #coinLeaves { display:none !important; }
     body.low-graphics .home-shortcut:before, body.low-graphics .home-shortcut:after,
     body.low-graphics .boost-button:before, body.low-graphics .balance-card:after { display:none !important; }
@@ -698,8 +706,20 @@
       playRetryTimer = window.setTimeout(() => {
         if (musicEnabled && music.paused) tryPlayMusic();
       }, 1000);
+      let firstRealGestureHandled = false;
+      function handleFirstRealGesture(event) {
+        unlockMusicFromGesture();
+        // Browsers/Telegram only allow haptics from a real user gesture; synthetic taps cannot unlock them.
+        if (!firstRealGestureHandled && event && event.isTrusted) {
+          firstRealGestureHandled = true;
+          const loading = document.getElementById("loadingScreen");
+          if (loading && !loading.classList.contains("is-hidden") && !(event.target && event.target.closest && event.target.closest("#tapButton"))) {
+            vibrate("high");
+          }
+        }
+      }
       ["pointerdown", "touchstart", "click", "keydown"].forEach((eventName) => {
-        document.addEventListener(eventName, unlockMusicFromGesture, { capture: true, passive: true });
+        document.addEventListener(eventName, handleFirstRealGesture, { capture: true, passive: true });
       });
       document.addEventListener("visibilitychange", () => {
         if (!document.hidden && musicEnabled && music.paused) tryPlayMusic();
@@ -746,25 +766,32 @@
           loadingMusicRetryTimer = 0;
         }
       }
+      let lastHapticAt = 0;
       function vibrate(kind) {
         if (!vibrationEnabled) return;
+        const now = Date.now();
+        // Avoid duplicate feedback when touch/pointer/click events arrive close together.
+        if (now - lastHapticAt < 110) return;
+        lastHapticAt = now;
         const isCoin = kind === "coin";
         const haptics = tg && tg.HapticFeedback;
         let hapticWorked = false;
-        // Telegram's native haptics are preferred inside the Mini App.
+        // Prefer Telegram haptics. Do not also invoke the browser vibrator when it worked.
         try {
           if (haptics && typeof haptics.impactOccurred === "function") {
             haptics.impactOccurred(isCoin ? "medium" : "heavy");
             hapticWorked = true;
           }
         } catch (_) {}
-        // Browser vibration is a fallback on Android WebViews that support it.
-        try {
-          if (navigator && typeof navigator.vibrate === "function") {
-            navigator.vibrate(isCoin ? 35 : [70, 25, 70]);
-          }
-        } catch (_) {}
-        // Some Telegram builds expose selection feedback but no working impact.
+        if (!hapticWorked) {
+          try {
+            if (navigator && typeof navigator.vibrate === "function") {
+              navigator.vibrate(isCoin ? 35 : 70);
+              hapticWorked = true;
+            }
+          } catch (_) {}
+        }
+        // Selection feedback is a last resort only; never stack multiple patterns.
         if (!hapticWorked) {
           try { if (haptics && typeof haptics.selectionChanged === "function") haptics.selectionChanged(); } catch (_) {}
         }
@@ -3083,7 +3110,7 @@
       leafImage.src = "barg.png";
       const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const leaves = [];
-      const COUNT = 9;
+      const COUNT = 20;
       let width = 1, height = 1, dpr = 1, raf = 0, lastFrame = 0, running = false;
       const rand = (min, max) => min + Math.random() * (max - min);
       function resize() {
@@ -3096,9 +3123,9 @@
         if (!leaves.length) for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
       }
       function makeLeaf(initial) {
-        const size = rand(19, 34);
+        const size = rand(23, 39);
         return { x: rand(-12, width + 12), y: initial ? rand(-height, height) : rand(-size * 2, -size), size,
-          speed: rand(17, 31), drift: rand(12, 27), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
+          speed: rand(22, 39), drift: rand(14, 31), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
           rotation: rand(0, Math.PI * 2), rotationSpeed: rand(-.65, .65), alpha: rand(.65, .9) };
       }
       function shouldRun() {
