@@ -603,24 +603,51 @@
       const vibrationToggle = $("vibrationToggle");
       let musicEnabled = true;
       let vibrationEnabled = true;
+      let musicStarted = false;
+      let playRetryTimer = 0;
+
       function tryPlayMusic() {
         if (!music || !musicEnabled) return;
-        if (music.ended) music.currentTime = 0;
+        if (music.ended) {
+          try { music.currentTime = 0; } catch (_) {}
+        }
+        // Call play directly; do not await anything before it, since mobile
+        // WebViews may require this call to happen during a user gesture.
         try {
           const result = music.play();
-          if (result && typeof result.catch === "function") result.catch(() => {});
-        } catch (_) {}
+          if (result && typeof result.then === "function") {
+            result.then(() => {
+              musicStarted = true;
+              if (playRetryTimer) window.clearTimeout(playRetryTimer);
+              playRetryTimer = 0;
+            }).catch(() => {
+              musicStarted = false;
+            });
+          }
+        } catch (_) {
+          musicStarted = false;
+        }
       }
-      // Start immediately, then retry once after the WebView has initialized.
-      // A scripted pause/play cannot bypass the browser's user-gesture policy.
+
+      function unlockMusicFromGesture() {
+        if (!musicEnabled || musicStarted || !music || !music.paused) return;
+        // Keep trying on later gestures until playback actually succeeds.
+        tryPlayMusic();
+      }
+
+      // Attempt autoplay immediately, then after the media has had a chance to
+      // load. Autoplay may still be blocked by Telegram/iOS until user input.
       try { music.load(); } catch (_) {}
       tryPlayMusic();
-      window.setTimeout(() => {
-        if (musicEnabled && music.paused) {
-          try { music.currentTime = 0; } catch (_) {}
-          tryPlayMusic();
-        }
+      music.addEventListener("canplay", () => {
+        if (musicEnabled && music.paused) tryPlayMusic();
+      });
+      playRetryTimer = window.setTimeout(() => {
+        if (musicEnabled && music.paused) tryPlayMusic();
       }, 1000);
+      ["pointerdown", "touchstart", "click", "keydown"].forEach((eventName) => {
+        document.addEventListener(eventName, unlockMusicFromGesture, { capture: true, passive: true });
+      });
       document.addEventListener("visibilitychange", () => {
         if (!document.hidden && musicEnabled && music.paused) tryPlayMusic();
       });
@@ -640,7 +667,7 @@
         if (!musicEnabled) return;
         window.setTimeout(() => {
           if (!musicEnabled) return;
-          music.currentTime = 0;
+          try { music.currentTime = 0; } catch (_) {}
           tryPlayMusic();
         }, 5000);
       });
@@ -657,17 +684,24 @@
       }
       function vibrate(kind) {
         if (!vibrationEnabled) return;
-        // Telegram's native haptics are generally more reliable in Mini Apps.
+        const isCoin = kind === "coin";
+        let telegramHapticSent = false;
         const haptics = tg && tg.HapticFeedback;
         try {
           if (haptics && typeof haptics.impactOccurred === "function") {
-            haptics.impactOccurred(kind === "coin" ? "medium" : "heavy");
-            return;
+            haptics.impactOccurred(isCoin ? "medium" : "heavy");
+            telegramHapticSent = true;
           }
         } catch (_) {}
-        if (!navigator.vibrate) return;
+        // Some Telegram WebViews expose HapticFeedback but do not deliver it
+        // on the current device. Also try the browser vibration API when present.
+        // The pattern is deliberately stronger for controls than for coin taps.
         try {
-          navigator.vibrate(kind === "coin" ? [32, 12, 18] : [45, 18, 45]);
+          if (navigator && typeof navigator.vibrate === "function") {
+            navigator.vibrate(isCoin ? [35, 18, 30] : [70, 25, 70]);
+          } else if (!telegramHapticSent && haptics && typeof haptics.selectionChanged === "function") {
+            haptics.selectionChanged();
+          }
         } catch (_) {}
       }
       const tapButton = $("tapButton");
@@ -2761,9 +2795,6 @@
       vibrationToggle.addEventListener("change", () => { vibrationEnabled = vibrationToggle.checked; });
       // Defaults intentionally reset on each fresh Mini App open; no persistence.
       tryPlayMusic();
-      document.addEventListener("pointerdown", () => {
-        if (musicEnabled && music.paused && !document.hidden) tryPlayMusic();
-      }, {capture:true, passive:true, once:true});
       document.addEventListener("pointerdown", (event) => {
         if (event.target.closest("#tapButton")) return;
         if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("high");
