@@ -468,7 +468,7 @@
             <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
           </button>
           <button id="storeButton" class="home-shortcut store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
-          <button id="minerButton" class="home-shortcut miner" type="button" disabled aria-label="ماینر"><span class="shortcut-icon" aria-hidden="true">⛏️</span><span class="shortcut-label">ماینر</span></button>
+          <button id="minerButton" class="home-shortcut miner" type="button" aria-label="ماینر"><span class="shortcut-icon" aria-hidden="true">⛏️</span><span class="shortcut-label">ماینر</span></button>
         </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
           <img id="coinImage" class="coin-face" src="FCoin.png" alt="" draggable="false">
@@ -768,7 +768,6 @@
       }
       function vibrate(kind) {
         if (!vibrationEnabled) return;
-        const isCoin = kind === "coin";
         const haptics = tg && tg.HapticFeedback;
         let hapticWorked = false;
         // Telegram's native haptics are preferred inside the Mini App.
@@ -781,7 +780,7 @@
         // Browser vibration is a fallback on Android WebViews that support it.
         try {
           if (navigator && typeof navigator.vibrate === "function") {
-            navigator.vibrate(40);
+            navigator.vibrate(50);
           }
         } catch (_) {}
         // Some Telegram builds expose selection feedback but no working impact.
