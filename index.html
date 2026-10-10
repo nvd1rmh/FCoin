@@ -368,6 +368,28 @@
       .home-shortcut:before { display:none !important; }
       .tap-float { animation-duration:.01ms; }
     }
+    /* Low-graphics mode: preserve layout/functionality while removing costly decoration. */
+    .coin-leaves { position:absolute; z-index:0; inset:0; width:100%; height:100%; pointer-events:none; contain:strict; }
+    .coin-area > #tapButton, .coin-area > .tap-actions { position:relative; z-index:2; }
+    body.low-graphics *, body.low-graphics *::before, body.low-graphics *::after {
+      animation:none !important; transition:none !important; box-shadow:none !important;
+      filter:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+      text-shadow:none !important; scroll-behavior:auto !important;
+    }
+    body.low-graphics #coinLeaves { display:none !important; }
+    body.low-graphics .home-shortcut:before, body.low-graphics .home-shortcut:after,
+    body.low-graphics .boost-button:before, body.low-graphics .balance-card:after { display:none !important; }
+    body.low-graphics .home-shortcut, body.low-graphics .boost-button,
+    body.low-graphics .settings-button, body.low-graphics .tab-bar,
+    body.low-graphics .balance-card, body.low-graphics .energy-card,
+    body.low-graphics .home-level, body.low-graphics .mission-card,
+    body.low-graphics .placeholder-card, body.low-graphics .upgrade-card,
+    body.low-graphics .feature-dialog, body.low-graphics .connection-dialog,
+    body.low-graphics .season-chip, body.low-graphics .boost-count {
+      background-image:none !important; background-color:rgba(30,27,35,.96) !important;
+      border-color:rgba(255,255,255,.12) !important;
+    }
+    body.low-graphics .scene-background { transform:none !important; }
   </style>
 </head>
 <body>
@@ -412,6 +434,7 @@
         <div class="home-xp-bar"><div id="homeXpFill" class="home-xp-fill"></div></div>
       </section>
       <section class="coin-area">
+        <canvas id="coinLeaves" class="coin-leaves" aria-hidden="true"></canvas>
         <section class="home-shortcuts" aria-label="جایزه‌ها و امکانات فصل">
           <button id="dailyRewardButton" class="home-shortcut daily" type="button" disabled>
             <span class="shortcut-icon" aria-hidden="true">🎁</span><span class="shortcut-label">جایزه روزانه</span>
@@ -563,6 +586,7 @@
       <div class="feature-dialog-head"><h2 id="settingsDialogTitle">⚙ تنظیمات بازی</h2><button class="dialog-close" type="button" data-close-dialog="settingsDialog" aria-label="بستن">×</button></div>
       <div class="settings-row"><div><strong>🎵 موزیک پس‌زمینه</strong><small>پخش آهنگ در تمام بخش‌های مینی‌اپ</small></div><label class="settings-toggle"><input id="musicToggle" type="checkbox" checked><span></span></label></div>
       <div class="settings-row"><div><strong>📳 لرزش گوشی</strong><small>بازخورد لمسی برای ضربه‌ها و دکمه‌ها</small></div><label class="settings-toggle"><input id="vibrationToggle" type="checkbox" checked><span></span></label></div>
+      <div class="settings-row"><div><strong>✨ گرافیک بالا</strong><small>برگ‌های متحرک و افکت‌های ظاهری؛ خاموش‌کردن برای اجرای روان‌تر گوشی‌های ضعیف. انتخابت ذخیره می‌شود.</small></div><label class="settings-toggle"><input id="highGraphicsToggle" type="checkbox" checked><span></span></label></div>
     </div>
   </dialog>
 
@@ -601,18 +625,39 @@
       const settingsDialog = $("settingsDialog");
       const musicToggle = $("musicToggle");
       const vibrationToggle = $("vibrationToggle");
+      const highGraphicsToggle = $("highGraphicsToggle");
+      const GRAPHICS_PREF_KEY = "fcoin_high_graphics_v1";
+      function readHighGraphicsPreference() {
+        try {
+          const saved = localStorage.getItem(GRAPHICS_PREF_KEY);
+          return saved === null ? true : saved === "1";
+        } catch (_) { return true; }
+      }
+      let highGraphicsEnabled = readHighGraphicsPreference();
+      function applyHighGraphics(enabled, persist = true) {
+        highGraphicsEnabled = Boolean(enabled);
+        if (highGraphicsToggle) highGraphicsToggle.checked = highGraphicsEnabled;
+        document.body.classList.toggle("low-graphics", !highGraphicsEnabled);
+        if (persist) { try { localStorage.setItem(GRAPHICS_PREF_KEY, highGraphicsEnabled ? "1" : "0"); } catch (_) {} }
+        window.dispatchEvent(new CustomEvent("fcoin-graphics-change", { detail: { enabled: highGraphicsEnabled } }));
+      }
+      applyHighGraphics(highGraphicsEnabled, false);
       let musicEnabled = true;
       let vibrationEnabled = true;
       let musicStarted = false;
       let playRetryTimer = 0;
+      let loadingMusicRetryTimer = 0;
 
-      function tryPlayMusic() {
+      function tryPlayMusic(fromGesture = false) {
         if (!music || !musicEnabled) return;
+        // A real user gesture is the most reliable opportunity to unlock audio
+        // in Telegram/iOS WebViews. Restart from zero only if playback is stopped.
+        if (fromGesture && music.paused) {
+          try { music.currentTime = 0; } catch (_) {}
+        }
         if (music.ended) {
           try { music.currentTime = 0; } catch (_) {}
         }
-        // Call play directly; do not await anything before it, since mobile
-        // WebViews may require this call to happen during a user gesture.
         try {
           const result = music.play();
           if (result && typeof result.then === "function") {
@@ -620,28 +665,36 @@
               musicStarted = true;
               if (playRetryTimer) window.clearTimeout(playRetryTimer);
               playRetryTimer = 0;
-            }).catch(() => {
-              musicStarted = false;
-            });
+              if (loadingMusicRetryTimer) window.clearInterval(loadingMusicRetryTimer);
+              loadingMusicRetryTimer = 0;
+            }).catch(() => { musicStarted = false; });
           }
-        } catch (_) {
-          musicStarted = false;
-        }
+        } catch (_) { musicStarted = false; }
       }
 
       function unlockMusicFromGesture() {
-        if (!musicEnabled || musicStarted || !music || !music.paused) return;
-        // Keep trying on later gestures until playback actually succeeds.
-        tryPlayMusic();
+        if (!musicEnabled || !music || !music.paused) return;
+        // Re-attempt synchronously in the gesture handler, not after a timer.
+        tryPlayMusic(true);
       }
 
-      // Attempt autoplay immediately, then after the media has had a chance to
-      // load. Autoplay may still be blocked by Telegram/iOS until user input.
+      // Start at the very beginning of the loading screen and retry frequently
+      // while the intro is visible. This improves readiness, but cannot bypass
+      // autoplay restrictions that require a real user gesture.
       try { music.load(); } catch (_) {}
       tryPlayMusic();
       music.addEventListener("canplay", () => {
         if (musicEnabled && music.paused) tryPlayMusic();
       });
+      loadingMusicRetryTimer = window.setInterval(() => {
+        const loading = document.getElementById("loadingScreen");
+        if (!musicEnabled || musicStarted || !music.paused || !loading || loading.classList.contains("is-hidden")) {
+          window.clearInterval(loadingMusicRetryTimer);
+          loadingMusicRetryTimer = 0;
+          return;
+        }
+        tryPlayMusic();
+      }, 250);
       playRetryTimer = window.setTimeout(() => {
         if (musicEnabled && music.paused) tryPlayMusic();
       }, 1000);
@@ -675,34 +728,46 @@
         musicEnabled = Boolean(enabled);
         musicToggle.checked = musicEnabled;
         if (musicEnabled) {
-          music.currentTime = 0;
-          tryPlayMusic();
+          try { music.currentTime = 0; } catch (_) {}
+          tryPlayMusic(true);
+          if (loadingMusicRetryTimer) window.clearInterval(loadingMusicRetryTimer);
+          loadingMusicRetryTimer = window.setInterval(() => {
+            if (!musicEnabled || musicStarted || !music.paused) {
+              window.clearInterval(loadingMusicRetryTimer);
+              loadingMusicRetryTimer = 0;
+              return;
+            }
+            tryPlayMusic();
+          }, 250);
         } else {
           music.pause();
           music.currentTime = 0;
+          if (loadingMusicRetryTimer) window.clearInterval(loadingMusicRetryTimer);
+          loadingMusicRetryTimer = 0;
         }
       }
       function vibrate(kind) {
         if (!vibrationEnabled) return;
         const isCoin = kind === "coin";
-        let telegramHapticSent = false;
         const haptics = tg && tg.HapticFeedback;
+        let hapticWorked = false;
+        // Telegram's native haptics are preferred inside the Mini App.
         try {
           if (haptics && typeof haptics.impactOccurred === "function") {
             haptics.impactOccurred(isCoin ? "medium" : "heavy");
-            telegramHapticSent = true;
+            hapticWorked = true;
           }
         } catch (_) {}
-        // Some Telegram WebViews expose HapticFeedback but do not deliver it
-        // on the current device. Also try the browser vibration API when present.
-        // The pattern is deliberately stronger for controls than for coin taps.
+        // Browser vibration is a fallback on Android WebViews that support it.
         try {
           if (navigator && typeof navigator.vibrate === "function") {
-            navigator.vibrate(isCoin ? [35, 18, 30] : [70, 25, 70]);
-          } else if (!telegramHapticSent && haptics && typeof haptics.selectionChanged === "function") {
-            haptics.selectionChanged();
+            navigator.vibrate(isCoin ? 35 : [70, 25, 70]);
           }
         } catch (_) {}
+        // Some Telegram builds expose selection feedback but no working impact.
+        if (!hapticWorked) {
+          try { if (haptics && typeof haptics.selectionChanged === "function") haptics.selectionChanged(); } catch (_) {}
+        }
       }
       const tapButton = $("tapButton");
       const exchangeButton = $("exchangeButton");
@@ -2793,15 +2858,16 @@
       });
       musicToggle.addEventListener("change", () => setMusicEnabled(musicToggle.checked));
       vibrationToggle.addEventListener("change", () => { vibrationEnabled = vibrationToggle.checked; });
-      // Defaults intentionally reset on each fresh Mini App open; no persistence.
+      highGraphicsToggle.addEventListener("change", () => applyHighGraphics(highGraphicsToggle.checked));
+      // Music and vibration reset on each fresh Mini App open; graphics preference persists.
       tryPlayMusic();
       document.addEventListener("pointerdown", (event) => {
         if (event.target.closest("#tapButton")) return;
-        if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("high");
+        if (event.target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
       }, {capture:true, passive:true});
       document.addEventListener("click", (event) => {
         if (event.detail === 0 && !event.target.closest("#tapButton")) {
-          if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("high");
+          if (event.target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
         }
       }, {capture:true, passive:true});
       tapButton.addEventListener("pointerdown", handleTap);
@@ -3002,6 +3068,92 @@
     })();
   </script>
 
+
+  <script>
+    /* Efficient coin-screen autumn leaves: one shared image, 9 particles, capped DPR, ~30fps. */
+    (() => {
+      const canvas = document.getElementById("coinLeaves");
+      const area = document.querySelector(".coin-area");
+      const home = document.getElementById("homePanel");
+      if (!canvas || !area || !home || !canvas.getContext) return;
+      const ctx = canvas.getContext("2d", { alpha: true });
+      if (!ctx) return;
+      const leafImage = new Image();
+      leafImage.decoding = "async";
+      leafImage.src = "barg.png";
+      const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const leaves = [];
+      const COUNT = 9;
+      let width = 1, height = 1, dpr = 1, raf = 0, lastFrame = 0, running = false;
+      const rand = (min, max) => min + Math.random() * (max - min);
+      function resize() {
+        const rect = area.getBoundingClientRect();
+        width = Math.max(1, rect.width); height = Math.max(1, rect.height);
+        dpr = Math.min(window.devicePixelRatio || 1, 1.1);
+        canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+        canvas.style.width = width + "px"; canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (!leaves.length) for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
+      }
+      function makeLeaf(initial) {
+        const size = rand(19, 34);
+        return { x: rand(-12, width + 12), y: initial ? rand(-height, height) : rand(-size * 2, -size), size,
+          speed: rand(17, 31), drift: rand(12, 27), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
+          rotation: rand(0, Math.PI * 2), rotationSpeed: rand(-.65, .65), alpha: rand(.65, .9) };
+      }
+      function shouldRun() {
+        return !reduceMotion && !document.hidden && !document.body.classList.contains("low-graphics") &&
+          home.classList.contains("active") && leafImage.complete && leafImage.naturalWidth > 0;
+      }
+      function frame(now) {
+        raf = 0;
+        if (!running || !shouldRun()) { stop(); return; }
+        if (now - lastFrame < 33) { raf = requestAnimationFrame(frame); return; }
+        const dt = Math.min(.045, lastFrame ? (now - lastFrame) / 1000 : .033);
+        lastFrame = now;
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < leaves.length; i++) {
+          const leaf = leaves[i];
+          leaf.y += leaf.speed * dt;
+          leaf.x += Math.sin(now * .00055 + leaf.phase) * leaf.drift * dt;
+          leaf.phase += leaf.spin * dt;
+          leaf.rotation += leaf.rotationSpeed * dt;
+          if (leaf.y > height + leaf.size * 2) { leaves[i] = makeLeaf(false); continue; }
+          const flutter = Math.cos(leaf.phase * 1.7);
+          ctx.save();
+          ctx.globalAlpha = leaf.alpha;
+          ctx.translate(leaf.x, leaf.y);
+          ctx.rotate(leaf.rotation + Math.sin(leaf.phase) * .22);
+          ctx.scale(flutter, 1); // gentle left-right flip to imitate a leaf fluttering
+          const aspect = leafImage.naturalHeight / Math.max(1, leafImage.naturalWidth);
+          ctx.drawImage(leafImage, -leaf.size / 2, -leaf.size * aspect / 2, leaf.size, leaf.size * aspect);
+          ctx.restore();
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      function start() {
+        if (running || !shouldRun()) return;
+        running = true; lastFrame = 0; raf = requestAnimationFrame(frame);
+      }
+      function stop() {
+        running = false;
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        ctx.clearRect(0, 0, width, height);
+      }
+      function sync() { if (shouldRun()) start(); else stop(); }
+      leafImage.addEventListener("load", () => { resize(); sync(); }, { once: true });
+      leafImage.addEventListener("error", stop, { once: true });
+      resize();
+      window.addEventListener("resize", () => { resize(); sync(); }, { passive: true });
+      if ("ResizeObserver" in window) new ResizeObserver(() => { resize(); sync(); }).observe(area);
+      document.addEventListener("visibilitychange", sync);
+      window.addEventListener("pagehide", stop, { passive: true });
+      window.addEventListener("pageshow", sync, { passive: true });
+      window.addEventListener("fcoin-graphics-change", sync);
+      new MutationObserver(sync).observe(home, { attributes: true, attributeFilter: ["class"] });
+    })();
+  </script>
 
 
 </body>
