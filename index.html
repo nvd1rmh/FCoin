@@ -189,10 +189,12 @@
     .coin-area { position:relative; }
     .home-shortcuts { position:absolute; z-index:4; inset:0; pointer-events:none; }
     .home-shortcut { position:absolute; isolation:isolate; display:flex; width:62px; height:62px; flex-direction:column; align-items:center; justify-content:center; gap:4px; overflow:hidden; border:1px solid #ffd45a36; border-radius:15px; color:#fff5d4; background:linear-gradient(135deg,#231a16f2,#12111adf); box-shadow:0 7px 18px #0005,inset 0 1px #fff2; cursor:pointer; pointer-events:auto; transition:transform .15s ease,filter .15s ease; }
-    .home-shortcut:nth-child(1),.home-shortcut:nth-child(2) { left:0; }
-    .home-shortcut:nth-child(3),.home-shortcut:nth-child(4) { right:0; }
-    .home-shortcut:nth-child(1),.home-shortcut:nth-child(3) { top:3%; }
-    .home-shortcut:nth-child(2),.home-shortcut:nth-child(4) { top:calc(3% + 72px); }
+    /* Left column: daily reward, leaderboard, wheel. Right: season, miner, store. */
+    .home-shortcut:nth-child(1),.home-shortcut:nth-child(2),.home-shortcut:nth-child(3) { left:0; right:auto; }
+    .home-shortcut:nth-child(4),.home-shortcut:nth-child(5),.home-shortcut:nth-child(6) { right:0; left:auto; }
+    .home-shortcut:nth-child(1),.home-shortcut:nth-child(4) { top:3%; }
+    .home-shortcut:nth-child(2),.home-shortcut:nth-child(5) { top:calc(3% + 72px); }
+    .home-shortcut:nth-child(3),.home-shortcut:nth-child(6) { top:calc(3% + 144px); }
     .home-shortcut:before { position:absolute; z-index:-1; inset:-40% auto -40% -35%; width:28px; content:""; transform:rotate(24deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent); opacity:.45; }
     .home-shortcut:active { transform:scale(.97); }
     .home-shortcut:disabled { opacity:.5; cursor:not-allowed; }
@@ -231,9 +233,9 @@
     .daily-day.is-current { border-color:#ffd45a99; color:#fff0b4; background:linear-gradient(145deg,#ba781f5c,#2d2117dd); box-shadow:0 0 16px #ffb52f33; }
     .feature-primary { width:100%; margin-top:13px; padding:13px; border:1px solid #ffe99c8a; border-radius:13px; color:#291b06; background:linear-gradient(105deg,#ffe88d,#ffb833); box-shadow:0 8px 20px #ffb52f24; font-weight:900; cursor:pointer; }
     .feature-primary:disabled { opacity:.48; cursor:not-allowed; }
-    .home-shortcut.store { right:0; left:auto; top:calc(3% + 144px); width:62px; height:62px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
+    .home-shortcut.store { width:62px; height:62px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
     .home-shortcut.store:active { transform:scale(.97); }
-    .home-shortcut.miner { left:0; right:auto; top:calc(3% + 144px); width:62px; height:62px; border-color:#43baffaa; color:#e2f6ff; background:radial-gradient(ellipse at 20% 0,#50c8ff66,transparent 60%),linear-gradient(145deg,#0879c8,#123c79 58%,#0b193b); box-shadow:0 5px 18px #168eff45,inset 0 1px #d8f5ff55,0 0 12px #1e9dff20; }
+    .home-shortcut.miner { width:62px; height:62px; border-color:#43baffaa; color:#e2f6ff; background:radial-gradient(ellipse at 20% 0,#50c8ff66,transparent 60%),linear-gradient(145deg,#0879c8,#123c79 58%,#0b193b); box-shadow:0 5px 18px #168eff45,inset 0 1px #d8f5ff55,0 0 12px #1e9dff20; }
     .home-shortcut.miner:after { position:absolute; z-index:-1; inset:0; border:1px solid #7bd7ff55; border-radius:inherit; content:""; pointer-events:none; }
     .home-shortcut.miner .shortcut-icon { filter:drop-shadow(0 0 6px #65d4ff80); }
     .home-shortcut.miner:active { transform:scale(.97); }
@@ -461,14 +463,14 @@
           <button id="leaderboardButton" class="home-shortcut leaderboard" type="button" disabled>
             <span class="shortcut-icon" aria-hidden="true">🏆</span><span class="shortcut-label">لیدربورد</span>
           </button>
-          <button id="seasonButton" class="home-shortcut season" type="button" disabled>
-            <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ماموریت فصل</span>
-          </button>
           <button id="wheelButton" class="home-shortcut wheel" type="button" disabled>
             <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
           </button>
-          <button id="storeButton" class="home-shortcut store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
+          <button id="seasonButton" class="home-shortcut season" type="button" disabled>
+            <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ماموریت فصل</span>
+          </button>
           <button id="minerButton" class="home-shortcut miner" type="button" aria-label="ماینر"><span class="shortcut-icon" aria-hidden="true">⛏️</span><span class="shortcut-label">ماینر</span></button>
+          <button id="storeButton" class="home-shortcut store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
         </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
           <img id="coinImage" class="coin-face" src="FCoin.png" alt="" draggable="false">
@@ -769,21 +771,21 @@
       function vibrate(kind) {
         if (!vibrationEnabled) return;
         const haptics = tg && tg.HapticFeedback;
+        // Fire a fresh 50 ms browser vibration on every interaction; no cooldown.
+        try {
+          if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+            navigator.vibrate(0);
+            navigator.vibrate(50);
+          }
+        } catch (_) {}
+        // Telegram native feedback remains enabled for Mini App devices.
         let hapticWorked = false;
-        // Telegram's native haptics are preferred inside the Mini App.
         try {
           if (haptics && typeof haptics.impactOccurred === "function") {
             haptics.impactOccurred("medium");
             hapticWorked = true;
           }
         } catch (_) {}
-        // Browser vibration is a fallback on Android WebViews that support it.
-        try {
-          if (navigator && typeof navigator.vibrate === "function") {
-            navigator.vibrate(50);
-          }
-        } catch (_) {}
-        // Some Telegram builds expose selection feedback but no working impact.
         if (!hapticWorked) {
           try { if (haptics && typeof haptics.selectionChanged === "function") haptics.selectionChanged(); } catch (_) {}
         }
