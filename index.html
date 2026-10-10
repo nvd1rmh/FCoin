@@ -770,31 +770,23 @@
       function vibrate(kind) {
         if (!vibrationEnabled) return;
         const now = Date.now();
-        // Avoid duplicate feedback when touch/pointer/click events arrive close together.
-        if (now - lastHapticAt < 110) return;
+        // One short debounce protects against duplicate handlers for the same physical press.
+        if (now - lastHapticAt < 180) return;
         lastHapticAt = now;
         const isCoin = kind === "coin";
         const haptics = tg && tg.HapticFeedback;
-        let hapticWorked = false;
-        // Prefer Telegram haptics. Do not also invoke the browser vibrator when it worked.
+        // Use exactly one haptic provider per press. Telegram is preferred inside Mini Apps.
+        if (haptics && typeof haptics.impactOccurred === "function") {
+          try { haptics.impactOccurred(isCoin ? "medium" : "heavy"); return; } catch (_) {}
+        }
         try {
-          if (haptics && typeof haptics.impactOccurred === "function") {
-            haptics.impactOccurred(isCoin ? "medium" : "heavy");
-            hapticWorked = true;
+          if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+            navigator.vibrate(isCoin ? 25 : 35);
+            return;
           }
         } catch (_) {}
-        if (!hapticWorked) {
-          try {
-            if (navigator && typeof navigator.vibrate === "function") {
-              navigator.vibrate(isCoin ? 35 : 70);
-              hapticWorked = true;
-            }
-          } catch (_) {}
-        }
-        // Selection feedback is a last resort only; never stack multiple patterns.
-        if (!hapticWorked) {
-          try { if (haptics && typeof haptics.selectionChanged === "function") haptics.selectionChanged(); } catch (_) {}
-        }
+        // Fallback only when impactOccurred is unavailable.
+        try { if (haptics && typeof haptics.selectionChanged === "function") haptics.selectionChanged(); } catch (_) {}
       }
       const tapButton = $("tapButton");
       const exchangeButton = $("exchangeButton");
@@ -2888,14 +2880,20 @@
       highGraphicsToggle.addEventListener("change", () => applyHighGraphics(highGraphicsToggle.checked));
       // Music and vibration reset on each fresh Mini App open; graphics preference persists.
       tryPlayMusic();
+      // Physical taps vibrate on pointerdown only. The click event is not used for
+      // touch/mouse feedback, because it follows pointerdown and caused double haptics.
       document.addEventListener("pointerdown", (event) => {
-        if (event.target.closest("#tapButton")) return;
-        if (event.target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
+        const target = event.target;
+        if (!target || typeof target.closest !== "function" || target.closest("#tapButton")) return;
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        if (target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
       }, {capture:true, passive:true});
-      document.addEventListener("click", (event) => {
-        if (event.detail === 0 && !event.target.closest("#tapButton")) {
-          if (event.target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
-        }
+      // Keep keyboard accessibility without duplicating a physical tap's haptic.
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        const target = event.target;
+        if (target && typeof target.closest === "function" && !target.closest("#tapButton") &&
+            target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
       }, {capture:true, passive:true});
       tapButton.addEventListener("pointerdown", handleTap);
       removeCoinBackground();
