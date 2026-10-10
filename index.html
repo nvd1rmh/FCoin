@@ -376,14 +376,20 @@
       filter:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
       text-shadow:none !important; scroll-behavior:auto !important;
     }
-    /* Keep essential tap feedback animated even in low-graphics mode. */
     body.low-graphics .tap-float {
       animation:tap-rise .95s cubic-bezier(.2,.7,.25,1) forwards !important;
-      text-shadow:0 2px 0 #8b3315, 0 3px 8px #ffb82f99 !important;
+      text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0 !important;
       will-change:transform,opacity;
     }
-    body.low-graphics #tapButton.is-pressed { transform:scale(.975) !important; }
-    body.low-graphics #tapButton { transition:transform .09s ease-out !important; }
+    body.low-graphics .coin-button {
+      transition:transform .15s cubic-bezier(.22,.7,.25,1),filter .15s ease !important;
+      filter:drop-shadow(0 10px 12px #0007) !important;
+    }
+    body.low-graphics .coin-button.is-pressed {
+      transform:perspective(900px) rotateX(calc(4deg + var(--tap-rot-x,0deg))) rotateY(var(--tap-rot-y,0deg)) translateZ(-4px) scale(.99) !important;
+      filter:brightness(.92) !important;
+      transition-duration:.07s !important;
+    }
     body.low-graphics #coinLeaves { display:none !important; }
     body.low-graphics .home-shortcut:before, body.low-graphics .home-shortcut:after,
     body.low-graphics .boost-button:before, body.low-graphics .balance-card:after { display:none !important; }
@@ -405,6 +411,7 @@
   <div id="loadingScreen" class="loading-screen" aria-live="polite">
     <img class="loading-art" src="home.png" alt="">
     <div class="loading-shade" aria-hidden="true"></div>
+    <canvas id="loadingLeaves" class="loading-leaves" aria-hidden="true"></canvas>
     <div class="loading-status">
       <div class="loading-caption">در حال بارگذاری اطلاعات حساب...</div>
       <div class="loading-progress"><div id="loadingProgressFill" class="loading-progress-fill"></div></div>
@@ -686,9 +693,9 @@
         tryPlayMusic(true);
       }
 
-      // Start at the very beginning of the loading screen and retry frequently
-      // while the intro is visible. This improves readiness, but cannot bypass
-      // autoplay restrictions that require a real user gesture.
+      // Attempt playback immediately and retry throughout loading. Browsers may
+      // still require a genuine user gesture; never fake coin taps or award coins
+      // just to unlock media/haptics.
       try { music.load(); } catch (_) {}
       tryPlayMusic();
       music.addEventListener("canplay", () => {
@@ -706,20 +713,8 @@
       playRetryTimer = window.setTimeout(() => {
         if (musicEnabled && music.paused) tryPlayMusic();
       }, 1000);
-      let firstRealGestureHandled = false;
-      function handleFirstRealGesture(event) {
-        unlockMusicFromGesture();
-        // Browsers/Telegram only allow haptics from a real user gesture; synthetic taps cannot unlock them.
-        if (!firstRealGestureHandled && event && event.isTrusted) {
-          firstRealGestureHandled = true;
-          const loading = document.getElementById("loadingScreen");
-          if (loading && !loading.classList.contains("is-hidden") && !(event.target && event.target.closest && event.target.closest("#tapButton"))) {
-            vibrate("high");
-          }
-        }
-      }
       ["pointerdown", "touchstart", "click", "keydown"].forEach((eventName) => {
-        document.addEventListener(eventName, handleFirstRealGesture, { capture: true, passive: true });
+        document.addEventListener(eventName, unlockMusicFromGesture, { capture: true, passive: true });
       });
       document.addEventListener("visibilitychange", () => {
         if (!document.hidden && musicEnabled && music.paused) tryPlayMusic();
@@ -766,27 +761,28 @@
           loadingMusicRetryTimer = 0;
         }
       }
-      let lastHapticAt = 0;
       function vibrate(kind) {
         if (!vibrationEnabled) return;
-        const now = Date.now();
-        // One short debounce protects against duplicate handlers for the same physical press.
-        if (now - lastHapticAt < 180) return;
-        lastHapticAt = now;
         const isCoin = kind === "coin";
         const haptics = tg && tg.HapticFeedback;
-        // Use exactly one haptic provider per press. Telegram is preferred inside Mini Apps.
-        if (haptics && typeof haptics.impactOccurred === "function") {
-          try { haptics.impactOccurred(isCoin ? "medium" : "heavy"); return; } catch (_) {}
-        }
+        let hapticWorked = false;
+        // Telegram's native haptics are preferred inside the Mini App.
         try {
-          if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
-            navigator.vibrate(isCoin ? 25 : 35);
-            return;
+          if (haptics && typeof haptics.impactOccurred === "function") {
+            haptics.impactOccurred("medium");
+            hapticWorked = true;
           }
         } catch (_) {}
-        // Fallback only when impactOccurred is unavailable.
-        try { if (haptics && typeof haptics.selectionChanged === "function") haptics.selectionChanged(); } catch (_) {}
+        // Browser vibration is a fallback on Android WebViews that support it.
+        try {
+          if (navigator && typeof navigator.vibrate === "function") {
+            navigator.vibrate(25);
+          }
+        } catch (_) {}
+        // Some Telegram builds expose selection feedback but no working impact.
+        if (!hapticWorked) {
+          try { if (haptics && typeof haptics.selectionChanged === "function") haptics.selectionChanged(); } catch (_) {}
+        }
       }
       const tapButton = $("tapButton");
       const exchangeButton = $("exchangeButton");
@@ -2880,20 +2876,14 @@
       highGraphicsToggle.addEventListener("change", () => applyHighGraphics(highGraphicsToggle.checked));
       // Music and vibration reset on each fresh Mini App open; graphics preference persists.
       tryPlayMusic();
-      // Physical taps vibrate on pointerdown only. The click event is not used for
-      // touch/mouse feedback, because it follows pointerdown and caused double haptics.
       document.addEventListener("pointerdown", (event) => {
-        const target = event.target;
-        if (!target || typeof target.closest !== "function" || target.closest("#tapButton")) return;
-        if (event.pointerType === "mouse" && event.button !== 0) return;
-        if (target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
+        if (event.target.closest("#tapButton")) return;
+        if (event.target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
       }, {capture:true, passive:true});
-      // Keep keyboard accessibility without duplicating a physical tap's haptic.
-      document.addEventListener("keydown", (event) => {
-        if (event.key !== "Enter" && event.key !== " ") return;
-        const target = event.target;
-        if (target && typeof target.closest === "function" && !target.closest("#tapButton") &&
-            target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
+      document.addEventListener("click", (event) => {
+        if (event.detail === 0 && !event.target.closest("#tapButton")) {
+          if (event.target.closest("button, [role='button'], .settings-toggle, .tab-button, .account-tab")) vibrate("high");
+        }
       }, {capture:true, passive:true});
       tapButton.addEventListener("pointerdown", handleTap);
       removeCoinBackground();
@@ -3085,7 +3075,7 @@
       const ctx = canvas.getContext("2d", { alpha: true }); if (!ctx) return;
       const palette = ["rgba(255,157,54,.78)","rgba(205,68,37,.72)","rgba(255,197,91,.78)","rgba(147,67,38,.70)"];
       let w=0,h=0,raf=0,last=0,active=false; const leaves=[]; const rand=(a,b)=>a+Math.random()*(b-a);
-      function size(){w=innerWidth;h=innerHeight;const d=Math.min(devicePixelRatio||1,1.15);canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);if(!leaves.length)for(let i=0;i<15;i++)leaves.push(make(true));}
+      function size(){w=innerWidth;h=innerHeight;const d=Math.min(devicePixelRatio||1,1.15);canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);if(!leaves.length)for(let i=0;i<32;i++)leaves.push(make(true));}
       function make(initial){return {x:rand(-10,w+10),y:initial?rand(-h,h):rand(-70,-15),s:rand(9,15),v:rand(22,42),d:rand(10,24),a:rand(0,6.28),r:rand(-1.5,1.5),c:palette[(Math.random()*palette.length)|0]};}
       function frame(t){raf=0;if(!active||document.hidden||screen.classList.contains('is-hidden'))return;if(t-last<32){raf=requestAnimationFrame(frame);return;}const dt=Math.min(.05,last?(t-last)/1000:.032);last=t;ctx.clearRect(0,0,w,h);for(let i=0;i<leaves.length;i++){const p=leaves[i];p.y+=p.v*dt;p.x+=Math.sin(t*.001+p.a)*p.d*dt;p.a+=p.r*dt;if(p.y>h+30){leaves[i]=make(false);continue;}ctx.save();ctx.translate(p.x,p.y);ctx.rotate(Math.sin(p.a)*.8);ctx.fillStyle=p.c;ctx.beginPath();ctx.moveTo(0,-p.s);ctx.quadraticCurveTo(p.s*1.1,-p.s*.3,p.s*.45,p.s*.55);ctx.quadraticCurveTo(0,p.s*1.15,-p.s*.45,p.s*.35);ctx.quadraticCurveTo(-p.s,-p.s*.35,0,-p.s);ctx.fill();ctx.strokeStyle='rgba(255,235,195,.4)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(0,-p.s*.65);ctx.lineTo(0,p.s*.55);ctx.stroke();ctx.restore();}raf=requestAnimationFrame(frame);}
       function sync(){const should=!document.hidden&&!screen.classList.contains('is-hidden');if(should&&!active){active=true;last=0;raf=requestAnimationFrame(frame);}else if(!should&&active){active=false;if(raf)cancelAnimationFrame(raf);raf=0;ctx.clearRect(0,0,w,h);}}
@@ -3108,7 +3098,7 @@
       leafImage.src = "barg.png";
       const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const leaves = [];
-      const COUNT = 20;
+      const COUNT = 18;
       let width = 1, height = 1, dpr = 1, raf = 0, lastFrame = 0, running = false;
       const rand = (min, max) => min + Math.random() * (max - min);
       function resize() {
@@ -3121,9 +3111,9 @@
         if (!leaves.length) for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
       }
       function makeLeaf(initial) {
-        const size = rand(23, 39);
+        const size = rand(19, 34);
         return { x: rand(-12, width + 12), y: initial ? rand(-height, height) : rand(-size * 2, -size), size,
-          speed: rand(22, 39), drift: rand(14, 31), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
+          speed: rand(17, 31), drift: rand(12, 27), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
           rotation: rand(0, Math.PI * 2), rotationSpeed: rand(-.65, .65), alpha: rand(.65, .9) };
       }
       function shouldRun() {
