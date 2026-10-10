@@ -557,7 +557,7 @@
     </nav>
   </main>
 
-  <audio id="backgroundMusic" src="music.mp3" preload="auto" playsinline></audio>
+  <audio id="backgroundMusic" src="music.mp3" preload="auto" autoplay playsinline></audio>
   <dialog id="settingsDialog" class="feature-dialog settings-dialog" aria-labelledby="settingsDialogTitle">
     <div class="feature-dialog-inner">
       <div class="feature-dialog-head"><h2 id="settingsDialogTitle">⚙ تنظیمات بازی</h2><button class="dialog-close" type="button" data-close-dialog="settingsDialog" aria-label="بستن">×</button></div>
@@ -606,10 +606,36 @@
       function tryPlayMusic() {
         if (!music || !musicEnabled) return;
         if (music.ended) music.currentTime = 0;
-        const result = music.play();
-        if (result && typeof result.catch === "function") result.catch(() => {});
+        try {
+          const result = music.play();
+          if (result && typeof result.catch === "function") result.catch(() => {});
+        } catch (_) {}
       }
-      // Browser/Telegram may block autoplay until the first user gesture.
+      // Start immediately, then retry once after the WebView has initialized.
+      // A scripted pause/play cannot bypass the browser's user-gesture policy.
+      try { music.load(); } catch (_) {}
+      tryPlayMusic();
+      window.setTimeout(() => {
+        if (musicEnabled && music.paused) {
+          try { music.currentTime = 0; } catch (_) {}
+          tryPlayMusic();
+        }
+      }, 1000);
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden && musicEnabled && music.paused) tryPlayMusic();
+      });
+      window.addEventListener("pageshow", () => {
+        if (musicEnabled && music.paused) tryPlayMusic();
+      });
+      if (tg && typeof tg.onEvent === "function") {
+        try { tg.onEvent("activated", () => { if (musicEnabled && music.paused) tryPlayMusic(); }); } catch (_) {}
+      }
+      // Cache static assets locally for subsequent opens; never cache API responses.
+      if ("serviceWorker" in navigator && location.protocol === "https:") {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {});
+        }, { once: true });
+      }
       music.addEventListener("ended", () => {
         if (!musicEnabled) return;
         window.setTimeout(() => {
@@ -630,8 +656,19 @@
         }
       }
       function vibrate(kind) {
-        if (!vibrationEnabled || !navigator.vibrate) return;
-        try { navigator.vibrate(kind === "low" ? 12 : 24); } catch (_) {}
+        if (!vibrationEnabled) return;
+        // Telegram's native haptics are generally more reliable in Mini Apps.
+        const haptics = tg && tg.HapticFeedback;
+        try {
+          if (haptics && typeof haptics.impactOccurred === "function") {
+            haptics.impactOccurred(kind === "coin" ? "medium" : "heavy");
+            return;
+          }
+        } catch (_) {}
+        if (!navigator.vibrate) return;
+        try {
+          navigator.vibrate(kind === "coin" ? [32, 12, 18] : [45, 18, 45]);
+        } catch (_) {}
       }
       const tapButton = $("tapButton");
       const exchangeButton = $("exchangeButton");
@@ -2536,7 +2573,7 @@
         }
         if (!serverState ||
             (!isBoostActive() && Math.floor(availableEnergy() + 1e-9) < serverState.tap_power)) return;
-        vibrate("low");
+        vibrate("coin");
         queuedTaps += 1;
         const keyboardTap = event.type === "click" && event.detail === 0;
         const normalizedX = keyboardTap ? 0.5 :
@@ -2729,11 +2766,11 @@
       }, {capture:true, passive:true, once:true});
       document.addEventListener("pointerdown", (event) => {
         if (event.target.closest("#tapButton")) return;
-        if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("medium");
+        if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("high");
       }, {capture:true, passive:true});
       document.addEventListener("click", (event) => {
         if (event.detail === 0 && !event.target.closest("#tapButton")) {
-          if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("medium");
+          if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("high");
         }
       }, {capture:true, passive:true});
       tapButton.addEventListener("pointerdown", handleTap);
