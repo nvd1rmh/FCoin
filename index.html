@@ -92,6 +92,9 @@
     .self-disabled { opacity:.5; }
     .profile-card { margin-top:20px; padding:18px; border:1px solid #8ef0c62b; border-radius:20px; background:linear-gradient(135deg,#8ef0c610,#ffffff04); }
     header { display:flex; align-items:center; justify-content:flex-start; direction:ltr; gap:12px; min-height:34px; }
+    .settings-button { flex:none; width:35px; height:35px; display:grid; place-items:center; border:1px solid #ffd45a55; border-radius:12px; color:#ffe6a0; background:radial-gradient(circle at 30% 20%,#ffffff25,transparent 55%),linear-gradient(145deg,#47321b,#17131a); box-shadow:0 0 15px #ffbd3930,inset 0 1px #fff3; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
+    .settings-button svg { width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .settings-button:active { transform:scale(.92) rotate(12deg); filter:brightness(1.25); }
     .brand { display:flex; align-items:center; gap:8px; font-weight:900; font-size:15px; letter-spacing:-.3px; }
     .brand-mark { width:15px; height:15px; border-radius:50%; display:block; background:radial-gradient(circle at 32% 28%,#fff4a8,#ffd34f 42%,#d68517 78%,#8c470c); box-shadow:0 0 0 3px #ffd45a16,0 0 15px #ffc64a52,inset 0 1px 2px #fff9; }
     .live { display:none; }
@@ -201,6 +204,18 @@
     .home-shortcut.season:after { position:absolute; z-index:-1; inset:0; border:1px solid #e6b5ff38; border-radius:inherit; content:""; pointer-events:none; }
     .home-shortcut.wheel { border-color:#62e5b555; color:#baffdf; background:linear-gradient(130deg,#126d50c8,#152520d8 68%,#11151bdc); box-shadow:0 4px 10px #0004,inset 0 1px #fff3; }
     .feature-dialog,.connection-dialog { width:min(calc(100% - 28px),480px); max-height:min(86vh,760px); padding:0; overflow:hidden; border:1px solid #ffc85c4d; border-radius:23px; color:#fff; background:radial-gradient(ellipse at 50% 0,#ffaf3530,transparent 55%),linear-gradient(155deg,#19151df5,#0e1018f7); box-shadow:0 24px 90px #000c,0 0 32px #ffad3022; }
+    .settings-row { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:15px 2px; border-top:1px solid #ffffff12; }
+    .settings-row:first-of-type { border-top:0; }
+    .settings-row strong,.settings-row small { display:block; }
+    .settings-row strong { font-size:13px; }
+    .settings-row small { margin-top:5px; color:var(--muted); font-size:10px; line-height:1.7; }
+    .settings-toggle { position:relative; flex:none; width:48px; height:28px; }
+    .settings-toggle input { position:absolute; opacity:0; width:1px; height:1px; }
+    .settings-toggle span { position:absolute; inset:0; border:1px solid #ffffff20; border-radius:99px; background:#ffffff18; transition:.2s; }
+    .settings-toggle span:before { content:""; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#ddd8e7; box-shadow:0 2px 5px #0006; transition:.2s; }
+    .settings-toggle input:checked + span { background:#40c98b65; border-color:#8ef0c680; }
+    .settings-toggle input:checked + span:before { transform:translateX(20px); background:#9affd4; }
+    .settings-toggle input:focus-visible + span { outline:2px solid #ffd45a; outline-offset:3px; }
     .feature-dialog::backdrop,.connection-dialog::backdrop { background:#050508d9; backdrop-filter:blur(7px); }
     .feature-dialog-inner { max-height:min(86vh,760px); overflow:auto; padding:20px; }
     .feature-dialog-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:15px; }
@@ -368,6 +383,9 @@
   </div>
   <main class="app">
     <header>
+      <button id="settingsButton" class="settings-button" type="button" aria-label="تنظیمات" title="تنظیمات">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/><path d="m19.4 13.5 1.1.9-1.4 2.4-1.4-.5a7.9 7.9 0 0 1-1.5.9l-.2 1.5h-2.8l-.3-1.5a7.9 7.9 0 0 1-1.5-.9l-1.4.5-1.4-2.4 1.1-.9a7.4 7.4 0 0 1 0-1.8l-1.1-.9 1.4-2.4 1.4.5a7.9 7.9 0 0 1 1.5-.9l.3-1.5h2.8l.2 1.5a7.9 7.9 0 0 1 1.5.9l1.4-.5 1.4 2.4-1.1.9a7.4 7.4 0 0 1 0 1.8Z"/></svg>
+      </button>
       <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>F Coin</span></div>
       <div id="seasonBadge" class="season-chip">Season 1 - Oct</div>
     </header>
@@ -539,6 +557,15 @@
     </nav>
   </main>
 
+  <audio id="backgroundMusic" src="music.mp3" preload="auto" playsinline></audio>
+  <dialog id="settingsDialog" class="feature-dialog settings-dialog" aria-labelledby="settingsDialogTitle">
+    <div class="feature-dialog-inner">
+      <div class="feature-dialog-head"><h2 id="settingsDialogTitle">⚙ تنظیمات بازی</h2><button class="dialog-close" type="button" data-close-dialog="settingsDialog" aria-label="بستن">×</button></div>
+      <div class="settings-row"><div><strong>🎵 موزیک پس‌زمینه</strong><small>پخش آهنگ در تمام بخش‌های مینی‌اپ</small></div><label class="settings-toggle"><input id="musicToggle" type="checkbox" checked><span></span></label></div>
+      <div class="settings-row"><div><strong>📳 لرزش گوشی</strong><small>بازخورد لمسی برای ضربه‌ها و دکمه‌ها</small></div><label class="settings-toggle"><input id="vibrationToggle" type="checkbox" checked><span></span></label></div>
+    </div>
+  </dialog>
+
   <dialog id="featureDialog" class="feature-dialog" aria-labelledby="featureDialogTitle">
     <div class="feature-dialog-inner">
       <div class="feature-dialog-head">
@@ -570,6 +597,42 @@
       }
 
       const $ = (id) => document.getElementById(id);
+      const music = $("backgroundMusic");
+      const settingsDialog = $("settingsDialog");
+      const musicToggle = $("musicToggle");
+      const vibrationToggle = $("vibrationToggle");
+      let musicEnabled = true;
+      let vibrationEnabled = true;
+      function tryPlayMusic() {
+        if (!music || !musicEnabled) return;
+        if (music.ended) music.currentTime = 0;
+        const result = music.play();
+        if (result && typeof result.catch === "function") result.catch(() => {});
+      }
+      // Browser/Telegram may block autoplay until the first user gesture.
+      music.addEventListener("ended", () => {
+        if (!musicEnabled) return;
+        window.setTimeout(() => {
+          if (!musicEnabled) return;
+          music.currentTime = 0;
+          tryPlayMusic();
+        }, 5000);
+      });
+      function setMusicEnabled(enabled) {
+        musicEnabled = Boolean(enabled);
+        musicToggle.checked = musicEnabled;
+        if (musicEnabled) {
+          music.currentTime = 0;
+          tryPlayMusic();
+        } else {
+          music.pause();
+          music.currentTime = 0;
+        }
+      }
+      function vibrate(kind) {
+        if (!vibrationEnabled || !navigator.vibrate) return;
+        try { navigator.vibrate(kind === "low" ? 12 : 24); } catch (_) {}
+      }
       const tapButton = $("tapButton");
       const exchangeButton = $("exchangeButton");
       const exchangeAmount = $("exchangeAmount");
@@ -1241,11 +1304,7 @@
       }
 
       function updateSeasonBadge(state) {
-        $("seasonBadge").textContent =
-          "Season " + Number(state.season).toLocaleString("en-US") + " - " + state.month +
-          (Number.isFinite(state.days_remaining)
-            ? " · " + Number(state.days_remaining).toLocaleString("en-US") + "d"
-            : "");
+        $("seasonBadge").textContent = "۴ روز باقی مونده";
       }
 
       function renderSeason(state) {
@@ -1253,9 +1312,9 @@
         const countdown = document.createElement("div");
         countdown.className = "season-countdown";
         const label = document.createElement("span");
-        label.textContent = "مانده تا پایان Season " + state.season;
+        label.textContent = "پایان سیزن ۱ · ۲۵ اکتبر";
         const remaining = document.createElement("strong");
-        remaining.textContent = Number(state.days_remaining).toLocaleString("en-US") + "d";
+        remaining.textContent = "۴ روز باقی مونده";
         countdown.append(label, remaining);
         const list = document.createElement("div");
         list.className = "season-list";
@@ -1438,9 +1497,8 @@
           const icon = document.createElement("div"); icon.className = "shop-item-icon"; icon.textContent = item.icon;
           const info = document.createElement("div");
           const name = document.createElement("div"); name.className = "shop-item-name"; name.textContent = item.name;
-          const note = document.createElement("div"); note.className = "shop-item-note"; note.textContent = item.note;
           const cost = document.createElement("div"); cost.className = "shop-cost"; cost.textContent = item.cost.toLocaleString("en-US") + " F";
-          info.append(name,note,cost);
+          info.append(name,cost);
           const button = document.createElement("button"); button.className = "shop-buy"; button.type = "button";
           button.disabled = bought || !hasUserAccount(); button.textContent = bought ? "خرید امروز ✓" : "خرید";
           button.addEventListener("click", async () => {
@@ -2478,6 +2536,7 @@
         }
         if (!serverState ||
             (!isBoostActive() && Math.floor(availableEnergy() + 1e-9) < serverState.tap_power)) return;
+        vibrate("low");
         queuedTaps += 1;
         const keyboardTap = event.type === "click" && event.detail === 0;
         const normalizedX = keyboardTap ? 0.5 :
@@ -2657,6 +2716,26 @@
         }
       }
 
+      $("settingsButton").addEventListener("click", () => {
+        if (typeof settingsDialog.showModal === "function") settingsDialog.showModal();
+        else settingsDialog.setAttribute("open", "");
+      });
+      musicToggle.addEventListener("change", () => setMusicEnabled(musicToggle.checked));
+      vibrationToggle.addEventListener("change", () => { vibrationEnabled = vibrationToggle.checked; });
+      // Defaults intentionally reset on each fresh Mini App open; no persistence.
+      tryPlayMusic();
+      document.addEventListener("pointerdown", () => {
+        if (musicEnabled && music.paused && !document.hidden) tryPlayMusic();
+      }, {capture:true, passive:true, once:true});
+      document.addEventListener("pointerdown", (event) => {
+        if (event.target.closest("#tapButton")) return;
+        if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("medium");
+      }, {capture:true, passive:true});
+      document.addEventListener("click", (event) => {
+        if (event.detail === 0 && !event.target.closest("#tapButton")) {
+          if (event.target.closest("button, [role='button'], .settings-toggle")) vibrate("medium");
+        }
+      }, {capture:true, passive:true});
       tapButton.addEventListener("pointerdown", handleTap);
       removeCoinBackground();
       tapButton.addEventListener("click", (event) => {
