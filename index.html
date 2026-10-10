@@ -233,6 +233,10 @@
     .feature-primary:disabled { opacity:.48; cursor:not-allowed; }
     .home-shortcut.store { right:0; left:auto; top:calc(3% + 144px); width:62px; height:62px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
     .home-shortcut.store:active { transform:scale(.97); }
+    .home-shortcut.miner { left:0; right:auto; top:calc(3% + 144px); width:62px; height:62px; border-color:#43baffaa; color:#e2f6ff; background:radial-gradient(ellipse at 20% 0,#50c8ff66,transparent 60%),linear-gradient(145deg,#0879c8,#123c79 58%,#0b193b); box-shadow:0 5px 18px #168eff45,inset 0 1px #d8f5ff55,0 0 12px #1e9dff20; }
+    .home-shortcut.miner:after { position:absolute; z-index:-1; inset:0; border:1px solid #7bd7ff55; border-radius:inherit; content:""; pointer-events:none; }
+    .home-shortcut.miner .shortcut-icon { filter:drop-shadow(0 0 6px #65d4ff80); }
+    .home-shortcut.miner:active { transform:scale(.97); }
     .shop-hero { padding:15px; margin-bottom:12px; border:1px solid #ffd97870; border-radius:18px; text-align:center; background:radial-gradient(ellipse at 50% 0,#ffd45a24,transparent 75%),#ffffff07; }
     .shop-hero-icon { font-size:30px; filter:drop-shadow(0 3px 8px #f4bd4555); }
     .shop-hero strong { display:block; margin:4px 0; color:#ffe5a0; font-size:16px; }
@@ -464,6 +468,7 @@
             <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
           </button>
           <button id="storeButton" class="home-shortcut store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
+          <button id="minerButton" class="home-shortcut miner" type="button" disabled aria-label="ماینر"><span class="shortcut-icon" aria-hidden="true">⛏️</span><span class="shortcut-label">ماینر</span></button>
         </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
           <img id="coinImage" class="coin-face" src="FCoin.png" alt="" draggable="false">
@@ -776,7 +781,7 @@
         // Browser vibration is a fallback on Android WebViews that support it.
         try {
           if (navigator && typeof navigator.vibrate === "function") {
-            navigator.vibrate(25);
+            navigator.vibrate(40);
           }
         } catch (_) {}
         // Some Telegram builds expose selection feedback but no working impact.
@@ -2957,6 +2962,10 @@
       $("leaderboardButton").addEventListener("click", openLeaderboard);
       $("wheelButton").addEventListener("click", openWheel);
       $("storeButton").addEventListener("click", openStore);
+      $("minerButton").addEventListener("click", () => {
+        openFeatureDialog("⛏️ ماینر");
+        featureDialogBody.append(featureMessage("این قابلیت به‌زودی با شروع سیزن ۲ هالووین فعال خواهد شد ..."));
+      });
       document.querySelectorAll("[data-close-dialog]").forEach((button) => {
         button.addEventListener("click", () => closeDialog($(button.dataset.closeDialog)));
       });
