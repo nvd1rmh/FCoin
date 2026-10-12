@@ -92,7 +92,7 @@
     .self-disabled { opacity:.5; }
     .profile-card { margin-top:20px; padding:18px; border:1px solid #8ef0c62b; border-radius:20px; background:linear-gradient(135deg,#8ef0c610,#ffffff04); }
     header { display:flex; align-items:center; justify-content:flex-start; direction:ltr; gap:12px; min-height:34px; }
-    .settings-button { flex:none; width:35px; height:35px; display:grid; place-items:center; border:1px solid #ffd45a55; border-radius:12px; color:#ffe6a0; background:radial-gradient(circle at 30% 20%,#ffffff25,transparent 55%),linear-gradient(145deg,#47321b,#17131a); box-shadow:0 0 15px #ffbd3930,inset 0 1px #fff3; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
+    .settings-button { flex:none; width:40px; height:40px; display:grid; place-items:center; border:1px solid #ffe08b9c; border-radius:14px; color:#fff0bf; background:radial-gradient(circle at 28% 18%,#ffffff38,transparent 54%),linear-gradient(145deg,#815421,#292019 70%,#17131a); box-shadow:0 0 18px #ffbd3955,inset 0 1px #fff7,0 4px 12px #0007; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
     .settings-button svg { width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
     .settings-button:active { transform:scale(.92) rotate(12deg); filter:brightness(1.25); }
     .brand { display:flex; align-items:center; gap:8px; font-weight:900; font-size:15px; letter-spacing:-.3px; }
@@ -120,20 +120,24 @@
     .tap-hint { margin-top:22px; color:#c5c2d0; font-size:13px; }
     .tap-hint strong { color:var(--gold); }
     .tap-hint strong { display:inline-block; padding:5px 10px; margin-right:3px; border:1px solid #ffd45a28; border-radius:999px; background:linear-gradient(135deg,#ffd45a16,#ffad3208); box-shadow:inset 0 1px #fff2,0 4px 14px #0002; }
-    .tap-actions { display:flex; direction:ltr; align-items:center; justify-content:center; gap:10px; margin-top:15px; }
-    .boost-control { display:flex; align-items:center; gap:6px; }
-    .boost-button { position:relative; overflow:hidden; min-width:108px; border:1px solid #dd9dff70; border-radius:13px; padding:10px 15px; color:#fff; background:linear-gradient(120deg,#8e2de2,#4a00e0 55%,#b64cff); box-shadow:0 0 18px #9d45ff55,inset 0 1px #fff6; font-size:13px; font-weight:900; cursor:pointer; transition:transform .12s ease,filter .15s ease; }
+    .tap-actions { width:min(100%,310px); display:grid; grid-template-columns:1fr 1fr; direction:ltr; align-items:center; justify-content:center; gap:12px; margin-top:13px; }
+    .boost-control { min-width:0; display:flex; align-items:center; }
+    .boost-button { position:relative; overflow:hidden; width:100%; min-width:0; display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid #dd9dff8c; border-radius:14px; padding:11px 8px; color:#fff; background:linear-gradient(120deg,#8e2de2,#4a00e0 55%,#b64cff); box-shadow:0 0 18px #9d45ff66,inset 0 1px #fff8,0 6px 14px #0006; font-size:13px; font-weight:900; cursor:pointer; transition:transform .12s ease,filter .15s ease; }
     .boost-button:before { content:""; position:absolute; inset:-50% auto -50% -35%; width:22px; transform:rotate(25deg); background:#ffffff50; filter:blur(6px); animation:boost-shine 2.8s ease-in-out infinite; pointer-events:none; }
     .boost-button:active { transform:scale(.96); }
     .boost-button:disabled { opacity:.48; cursor:not-allowed; filter:saturate(.55); }
     .boost-count { min-width:39px; padding:6px 7px; border:1px solid #c89bff45; border-radius:10px; color:#e7c7ff; background:#7d36ba24; direction:ltr; text-align:center; font-size:11px; font-weight:900; font-variant-numeric:tabular-nums; }
     .boost-button.is-active { box-shadow:0 0 23px #bd62ffb5,inset 0 1px #fff9; animation:boost-pulse .8s ease-in-out infinite alternate; }
+    .boost-count { flex:none; min-width:31px; padding:4px 6px; border:1px solid #fff7; border-radius:8px; color:#fff; background:#230c3c88; direction:ltr; text-align:center; font-size:10px; font-weight:900; font-variant-numeric:tabular-nums; }
+    .upgrade-home-button { position:relative; isolation:isolate; overflow:hidden; width:100%; min-width:0; border:1px solid #ffd27ab0; border-radius:14px; padding:11px 8px; color:#fff7dc; background:radial-gradient(circle at 25% 5%,#fff8,transparent 44%),linear-gradient(125deg,#ff9c18,#ef5b0a 52%,#c63a08); box-shadow:0 0 20px #ff7b1870,inset 0 1px #fff9,0 6px 14px #0006; font-size:13px; font-weight:1000; cursor:pointer; }
+    .upgrade-home-button:after { position:absolute; z-index:-1; inset:-50% auto -50% -30%; width:26px; content:""; transform:rotate(24deg); background:linear-gradient(90deg,transparent,#fff9,transparent); filter:blur(4px); animation:boost-shine 2.5s ease-in-out infinite; }
+    .upgrade-home-button:active { transform:scale(.97); filter:brightness(1.12); }
     @keyframes boost-shine { 0%,70% { left:-35%; } 100% { left:130%; } }
     @keyframes boost-pulse { to { filter:brightness(1.3); } }
     @media (max-width:380px) {
-      .tap-actions { gap:6px; }
-      .boost-button { min-width:88px; padding:9px 10px; }
-      .boost-count { min-width:35px; padding:6px 5px; }
+      .tap-actions { gap:8px; }
+      .boost-button,.upgrade-home-button { padding:10px 6px; font-size:12px; }
+      .boost-count { min-width:28px; padding:4px 5px; }
       .tap-hint { font-size:11px; }
       .tap-hint strong { padding:5px 7px; }
       .home-shortcut { width:56px; height:56px; border-radius:14px; }
@@ -169,7 +173,7 @@
     .exchange-button:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
     .bot-balance { text-align:center; color:#a6a3b2; font-size:11px; margin-top:14px; }
     .bot-balance b { color:#fff; direction:ltr; display:inline-block; margin-right:4px; }
-    .status { display:none; border-radius:12px; padding:11px 13px; margin-top:14px; font-size:12px; line-height:1.7; word-break:break-word; }
+    .status { position:fixed; z-index:20; left:50%; bottom:calc(82px + env(safe-area-inset-bottom)); width:min(calc(100% - 28px),480px); transform:translateX(-50%); display:none; border-radius:12px; padding:11px 13px; margin:0; font-size:12px; line-height:1.7; word-break:break-word; box-shadow:0 8px 26px #0009; }
     .status.show { display:block; }
     .status.error { color:#ffb5b5; background:#e64b4b18; border:1px solid #ff737333; }
     .status.info { color:#c7c2d2; background:#ffffff09; border:1px solid var(--border); }
@@ -304,17 +308,18 @@
     .connection-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
     .connection-actions button { padding:11px 8px; border:1px solid #ffffff24; border-radius:12px; color:#f4e9ed; background:#ffffff0b; font-size:11px; font-weight:900; cursor:pointer; }
     .connection-actions .retry-button { color:#2b1b06; border-color:#ffe69b; background:linear-gradient(100deg,#ffe78f,#ffb73a); }
-    .tab-bar { grid-template-columns:repeat(6,minmax(0,1fr)); gap:4px; padding:7px; }
+    .tab-bar { grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; padding:7px; }
     /* Keep the image visible through glass instead of frosting it into a solid panel. */
     .tab-bar { background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.025) 55%,rgba(165,190,225,.055)); border-color:rgba(255,255,255,.28); backdrop-filter:blur(7px) saturate(135%); -webkit-backdrop-filter:blur(7px) saturate(135%); box-shadow:0 10px 26px rgba(0,0,0,.17),inset 0 1px rgba(255,255,255,.34),inset 0 -1px rgba(255,255,255,.05); }
     .energy-card { background:linear-gradient(135deg,rgba(255,255,255,.085),rgba(255,255,255,.018) 60%,rgba(170,195,225,.04)); border-color:rgba(255,255,255,.26); backdrop-filter:blur(6px) saturate(140%); -webkit-backdrop-filter:blur(6px) saturate(140%); }
     .tab-button { padding:9px 2px 8px; font-size:10px; white-space:nowrap; }
     .tab-button span { font-size:18px; }
     .tab-button.active { color:#ffe8a0; background:linear-gradient(145deg,#ffc74628,#ff9d1410); box-shadow:inset 0 1px #fff2; }
-    .invite-hero { border-color:#8ef0c62b; background:radial-gradient(ellipse at 50% 0,#53e0ac1c,transparent 65%),linear-gradient(145deg,#171f27,#171622); }
+    .invite-hero { border-color:rgba(255,255,255,.24); background:radial-gradient(ellipse at 50% 0,#53e0ac1c,transparent 65%),rgba(28,30,41,.58); box-shadow:inset 0 1px #fff2,0 8px 24px #0003; backdrop-filter:blur(14px) saturate(125%); -webkit-backdrop-filter:blur(14px) saturate(125%); }
     .invite-reward { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:18px; padding:12px; border:1px solid #8ef0c626; border-radius:13px; background:#8ef0c60b; color:var(--muted); font-size:11px; }
     .invite-reward b { color:var(--mint); font-size:12px; }
     .invite-card,.upgrade-card { margin-top:13px; padding:16px; border:1px solid var(--border); border-radius:19px; background:linear-gradient(145deg,#ffffff0c,#ffffff04); box-shadow:0 12px 26px #0002; }
+    .account-subpanel .invite-card { border-color:rgba(255,255,255,.24); background:rgba(28,30,41,.58); box-shadow:inset 0 1px #fff2,0 8px 24px #0003; backdrop-filter:blur(14px) saturate(125%); -webkit-backdrop-filter:blur(14px) saturate(125%); }
     .invite-card-title { font-size:13px; font-weight:800; }
     .invite-link { overflow-wrap:anywhere; margin-top:12px; padding:12px; border:1px solid #8ef0c622; border-radius:12px; background:#070d12; color:#b7ffdf; font:12px/1.7 ui-monospace,Consolas,monospace; text-align:left; }
     .invite-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:11px; }
@@ -326,13 +331,13 @@
     .connection-error-icon { font-size:19px; }
     .connection-error p { margin:8px 0 0; color:#fff0f0; font-size:12px; line-height:1.8; overflow-wrap:anywhere; }
     .connection-error small { display:block; margin-top:7px; color:#ffc7a6; font-size:10px; line-height:1.7; }
-    .account-tabs { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; padding:5px; border:1px solid var(--border); border-radius:14px; background:#ffffff06; }
+    .account-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:12px 0; padding:5px; border:1px solid rgba(255,255,255,.2); border-radius:16px; background:rgba(29,31,42,.45); box-shadow:inset 0 1px #fff2,0 8px 22px #0002; backdrop-filter:blur(12px) saturate(125%); -webkit-backdrop-filter:blur(12px) saturate(125%); }
     .account-tab { border:0; border-radius:10px; padding:11px 8px; color:var(--muted); background:transparent; font-weight:800; cursor:pointer; }
     .account-tab.active { color:#ffe8a0; background:#ffc7461c; }
     .account-subpanel { display:none; }
     .account-subpanel.active { display:block; }
-    .account-info { display:grid; gap:9px; margin:12px 0; padding:15px; border:1px solid var(--border); border-radius:17px; background:linear-gradient(145deg,#ffffff0c,#ffffff04); }
-    .account-info-row { display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--muted); font-size:12px; }
+    .account-info { display:grid; gap:9px; margin:12px 0; padding:15px; border:1px solid rgba(255,255,255,.22); border-radius:17px; background:rgba(28,30,41,.55); box-shadow:inset 0 1px #fff2,0 8px 24px #0003; backdrop-filter:blur(14px) saturate(125%); -webkit-backdrop-filter:blur(14px) saturate(125%); }
+    .account-info-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:9px 10px; border:1px solid rgba(255,255,255,.12); border-radius:11px; color:#dedce8; background:rgba(255,255,255,.045); font-size:12px; }
     .account-info-row strong { color:#f5f2fa; text-align:left; }
     .self-grid { display:grid; direction:ltr; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:12px; }
     .self-grid-button { direction:rtl; min-height:72px; padding:12px 8px; border:1px solid #ffd45a2c; border-radius:15px; color:#f5e6bc; background:linear-gradient(145deg,#ffd45a12,#ffffff05); font-weight:800; cursor:pointer; }
@@ -399,16 +404,19 @@
     body.low-graphics #coinLeaves { display:none !important; }
     body.low-graphics .home-shortcut:before, body.low-graphics .home-shortcut:after,
     body.low-graphics .boost-button:before, body.low-graphics .balance-card:after { display:none !important; }
-    body.low-graphics .home-shortcut, body.low-graphics .boost-button,
+    body.low-graphics .home-shortcut:not(.upgrade-home-button),
     body.low-graphics .settings-button, body.low-graphics .tab-bar,
     body.low-graphics .balance-card, body.low-graphics .energy-card,
     body.low-graphics .home-level, body.low-graphics .mission-card,
     body.low-graphics .placeholder-card, body.low-graphics .upgrade-card,
     body.low-graphics .feature-dialog, body.low-graphics .connection-dialog,
-    body.low-graphics .season-chip, body.low-graphics .boost-count {
+    body.low-graphics .season-chip {
       background-image:none !important; background-color:rgba(30,27,35,.96) !important;
       border-color:rgba(255,255,255,.12) !important;
     }
+    body.low-graphics .home-shortcut:disabled,
+    body.low-graphics .boost-button:disabled,
+    body.low-graphics .upgrade-home-button:disabled { opacity:1 !important; filter:none !important; }
     body.low-graphics .scene-background { transform:none !important; }
   </style>
 </head>
@@ -430,7 +438,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/><path d="m19.4 13.5 1.1.9-1.4 2.4-1.4-.5a7.9 7.9 0 0 1-1.5.9l-.2 1.5h-2.8l-.3-1.5a7.9 7.9 0 0 1-1.5-.9l-1.4.5-1.4-2.4 1.1-.9a7.4 7.4 0 0 1 0-1.8l-1.1-.9 1.4-2.4 1.4.5a7.9 7.9 0 0 1 1.5-.9l.3-1.5h2.8l.2 1.5a7.9 7.9 0 0 1 1.5.9l1.4-.5 1.4 2.4-1.1.9a7.4 7.4 0 0 1 0 1.8Z"/></svg>
       </button>
       <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>F Coin</span></div>
-      <div id="seasonBadge" class="season-chip">Season 1 - Oct</div>
+      <div id="seasonBadge" class="season-chip">Season 1</div>
     </header>
 
     <section id="connectionError" class="connection-error" role="alert" aria-live="assertive" hidden>
@@ -477,9 +485,11 @@
         </button>
         <div class="tap-actions">
           <div class="boost-control">
-            <button id="boostButton" class="boost-button" type="button" disabled>تقویت</button>
-            <span id="boostCount" class="boost-count">0/3</span>
+            <button id="boostButton" class="boost-button" type="button" disabled>
+              <span id="boostLabel">تقویت</span><span id="boostCount" class="boost-count">0/3</span>
+            </button>
           </div>
+          <button id="upgradeHomeButton" class="upgrade-home-button" type="button">⚡ ارتقا</button>
         </div>
       </section>
       <section class="energy-card" aria-label="انرژی">
@@ -545,12 +555,6 @@
       </section>
       <p class="upgrade-footnote">ارتقاها دائمی هستند و پس از تأیید سرور، هزینه از موجودی F Coin کسر می‌شود.</p>
     </section>
-    <section id="selfPanel" class="tab-panel" aria-label="سلف">
-      <div class="placeholder-card"><div class="placeholder-icon">🛡️</div><h1>پنل سلف</h1><p>یک قابلیت را انتخاب کن تا تنظیمات همان بخش را جداگانه مدیریت کنی.</p></div>
-      <div id="selfApp" class="mission-list">
-        <div class="mission-card"><div class="mission-title">در حال دریافت وضعیت پنل سلف…</div></div>
-      </div>
-    </section>
     <section id="missionsPanel" class="tab-panel" aria-label="ماموریت‌ها">
       <div class="placeholder-card"><div class="placeholder-icon">🎯</div><h1>ماموریت‌ها</h1><p>با بازی و فعالیت روزانه XP بگیر؛ پیشرفتت ثبت می‌شود و با هر لول‌آپ جایزهٔ F Coin می‌گیری.</p></div>
       <section class="mission-hero" aria-label="سطح و تجربه">
@@ -570,6 +574,7 @@
       <div class="account-tabs" role="tablist" aria-label="بخش‌های حساب">
         <button class="account-tab active" type="button" data-account-tab="accountInfoPanel">اطلاعات حساب</button>
         <button class="account-tab" type="button" data-account-tab="accountInvitePanel">دعوت از دوستان</button>
+        <button class="account-tab" type="button" data-account-tab="accountSelfPanel">پنل سلف</button>
       </div>
       <section id="accountInfoPanel" class="account-subpanel active">
         <div id="accountInfo" class="account-info"><div class="account-info-row"><span>در حال دریافت اطلاعات…</span></div></div>
@@ -590,15 +595,18 @@
           <p id="inviteNote" class="exchange-sub">پاداش پس از اولین ورود دوست از لینک دعوت ثبت می‌شود.</p>
         </section>
       </section>
+      <section id="accountSelfPanel" class="account-subpanel">
+        <div class="placeholder-card"><div class="placeholder-icon">🛡️</div><h1>پنل سلف</h1><p>یک قابلیت را انتخاب کن تا تنظیمات همان بخش را جداگانه مدیریت کنی.</p></div>
+        <div id="selfApp" class="mission-list">
+          <div class="mission-card"><div class="mission-title">در حال دریافت وضعیت پنل سلف…</div></div>
+        </div>
+      </section>
     </section>
     <div id="status" class="status" role="status" aria-live="polite"></div>
     <nav class="tab-bar" aria-label="ناوبری اصلی">
       <button class="tab-button active" type="button" data-tab="homePanel" aria-current="page"><span>🏠</span>خانه</button>
       <button class="tab-button" type="button" data-tab="convertPanel"><span>🔄</span>تبدیل</button>
-      <button class="tab-button" type="button" data-tab="upgradePanel"><span>⚡</span>ارتقا</button>
-      <button class="tab-button" type="button" data-tab="missionsPanel"><span>🎯</span>ماموریت</button>
-      <button class="tab-button" type="button" data-tab="selfPanel"><span>🛡️</span>پنل سلف</button>
-      <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب</button>
+      <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب کاربری / دعوت</button>
     </nav>
   </main>
 
@@ -834,11 +842,9 @@
 
       function showStatus(message, type) {
         if (type === "error") {
-          $("connectionErrorTitle").textContent = "مشکل در اتصال یا انجام درخواست";
-          $("connectionErrorMessage").textContent = message;
-          connectionError.hidden = false;
-          hideStatus();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          connectionError.hidden = true;
+          statusBox.textContent = message;
+          statusBox.className = "status show error";
           return;
         }
         connectionError.hidden = true;
@@ -898,9 +904,10 @@
           upgrades_supported: tapPower !== null &&
             (reportedMaxEnergy !== null || energyLevel !== null)
         };
-        if (Number.isInteger(state.season_number) && typeof state.season_month === "string") {
+        if (Number.isInteger(state.season_number) || typeof state.season_name === "string") {
           updateSeasonBadge({
             season: state.season_number,
+            name: state.season_name,
             month: state.season_month,
             days_remaining: Number(state.season_days_remaining)
           });
@@ -1123,7 +1130,7 @@
           ? Math.max(1, Math.ceil(serverState.boost_until - Date.now() / 1000))
           : 0;
         $("boostCount").textContent = Math.min(uses, limit) + "/" + limit;
-        boostButton.textContent = active ? "فعال · " + remaining + " ثانیه" : "تقویت";
+        $("boostLabel").textContent = active ? "فعال · " + remaining + " ثانیه" : "تقویت";
         boostButton.classList.toggle("is-active", active);
         boostButton.disabled = busy || !serverState || active || uses >= limit;
         boostConfirmButton.disabled = busy || !serverState || active || uses >= limit;
@@ -1338,7 +1345,8 @@
       }
 
       function featureError(message, retry) {
-        featureDialogBody.replaceChildren(featureMessage(message));
+        showStatus(message, "error");
+        featureDialogBody.replaceChildren();
         if (retry) {
           const button = document.createElement("button");
           button.type = "button";
@@ -1461,72 +1469,68 @@
       }
 
       function updateSeasonBadge(state) {
-        $("seasonBadge").textContent = "۴ روز باقی مونده";
+        const name = typeof state.name === "string" ? state.name :
+          typeof state.season_name === "string" ? state.season_name : "";
+        $("seasonBadge").textContent = name.trim()
+          ? name.trim()
+          : "Season " + String(state.season || state.number || 1);
       }
 
-      function renderSeason(state) {
+      function renderSeason(state, levelState) {
         updateSeasonBadge(state);
         const countdown = document.createElement("div");
         countdown.className = "season-countdown";
+        countdown.dir = "ltr";
         const label = document.createElement("span");
-        label.textContent = "پایان سیزن ۱ · ۲۵ اکتبر";
+        label.textContent = state.season_name || "Season " + String(state.season || 1);
         const remaining = document.createElement("strong");
-        remaining.textContent = "۴ روز باقی مونده";
-        countdown.append(label, remaining);
-        const list = document.createElement("div");
-        list.className = "season-list";
-        state.missions.forEach((mission) => {
-          const card = document.createElement("article");
-          card.className = "season-task" + (mission.completed ? " is-complete" : "");
-          const top = document.createElement("div");
-          top.className = "season-task-top";
-          const title = document.createElement("div");
-          title.className = "season-task-title";
-          title.textContent = (mission.claimed ? "✅ " : mission.completed ? "🏁 " : "✦ ") + mission.title;
-          const reward = document.createElement("div");
-          reward.className = "season-task-reward";
-          reward.textContent = "+" + Number(mission.reward).toLocaleString("en-US") + " F";
-          top.append(title, reward);
-          const progress = document.createElement("div");
-          progress.className = "season-task-progress";
-          const progressText = document.createElement("span");
-          progressText.textContent = "پیشرفت";
-          const progressValue = document.createElement("b");
-          progressValue.textContent =
-            Number(mission.progress).toLocaleString("en-US") + " / " +
-            Number(mission.target).toLocaleString("en-US");
-          progress.append(progressText, progressValue);
-          const bar = document.createElement("div");
-          bar.className = "season-task-bar";
-          const fill = document.createElement("div");
-          fill.className = "season-task-fill";
-          fill.style.width =
-            Math.min(100, Number(mission.progress) / Number(mission.target) * 100) + "%";
-          bar.append(fill);
-          card.append(top, progress, bar);
-          if (mission.completed && !mission.claimed) {
-            const claim = document.createElement("button");
-            claim.type = "button";
-            claim.className = "feature-primary";
-            claim.textContent = "دریافت +" + Number(mission.reward).toLocaleString("en-US") + " F Coin";
-            claim.addEventListener("click", () => claimSeasonMission(mission.id));
-            card.append(claim);
-          } else if (mission.claimed) {
-            const received = document.createElement("div");
-            received.className = "mission-status";
-            received.textContent = "جایزه دریافت شد.";
-            card.append(received);
-          }
-          list.append(card);
-        });
-        featureDialogBody.replaceChildren(countdown, list);
+        remaining.textContent = Math.max(0, Number(state.days_remaining) || 0) + "d";
+        countdown.append(remaining, label);
+
+        const levelCard = document.createElement("section");
+        levelCard.className = "mission-hero";
+        const levelTop = document.createElement("div");
+        levelTop.className = "mission-hero-top";
+        const levelLabel = document.createElement("span");
+        levelLabel.textContent = "⭐ لول " + Number(levelState.level || 0).toLocaleString("en-US");
+        const xpLabel = document.createElement("span");
+        xpLabel.textContent = Number(levelState.xp || 0).toLocaleString("en-US") + " XP";
+        levelTop.append(levelLabel, xpLabel);
+        const levelText = document.createElement("div");
+        levelText.className = "mission-level";
+        levelText.textContent =
+          "لول " + Number(levelState.level || 0).toLocaleString("en-US") +
+          " · جایزهٔ لول بعدی: +" +
+          Number(levelState.level_reward_fcoin || 0).toLocaleString("en-US") + " F Coin";
+        const xpBar = document.createElement("div");
+        xpBar.className = "mission-xp-bar";
+        const xpFill = document.createElement("div");
+        xpFill.className = "mission-xp-fill";
+        const target = Math.max(1, Number(levelState.level_target) || 1);
+        xpFill.style.width = Math.min(100, Number(levelState.level_progress || 0) / target * 100) + "%";
+        xpBar.append(xpFill);
+        const remainingXp = document.createElement("div");
+        remainingXp.className = "mission-next";
+        remainingXp.textContent =
+          "مانده تا لول بعدی: " +
+          Math.max(0, target - Number(levelState.xp || 0)).toLocaleString("en-US") + " XP";
+        levelCard.append(levelTop, levelText, xpBar, remainingXp);
+
+        const placeholder = document.createElement("div");
+        placeholder.className = "feature-empty";
+        placeholder.textContent = "ماموریت‌ها به‌زودی اضافه می‌شوند!";
+        featureDialogBody.replaceChildren(countdown, levelCard, placeholder);
       }
 
       async function openSeason() {
-        openFeatureDialog("✦ Season " + $("seasonBadge").textContent.split(" ")[1] + " · ماموریت‌ها");
+        openFeatureDialog("✦ ماموریت فصل");
         featureDialogBody.append(featureMessage("در حال دریافت ماموریت‌های فصل..."));
         try {
-          renderSeason(await userApiRequest("features/season-state"));
+          const [seasonState, levelState] = await Promise.all([
+            userApiRequest("features/season-state"),
+            userApiRequest("missions/state")
+          ]);
+          renderSeason(seasonState, levelState);
         } catch (error) {
           featureError(error && error.message ? error.message : "ماموریت‌های فصل دریافت نشد.", openSeason);
         }
@@ -1534,8 +1538,11 @@
 
       async function claimSeasonMission(missionId) {
         try {
-          const result = await userApiRequest("features/season-claim", { mission_id: missionId });
-          renderSeason(result);
+          const [result, levelState] = await Promise.all([
+            userApiRequest("features/season-claim", { mission_id: missionId }),
+            userApiRequest("missions/state")
+          ]);
+          renderSeason(result, levelState);
           const claimedMission = result.missions.find((mission) => mission.id === missionId);
           showStatus(
             "🎉 پاداش فصل دریافت شد: +" +
@@ -2788,7 +2795,8 @@
           panel.classList.toggle("active", panel.id === panelId);
         });
         document.querySelectorAll(".tab-button").forEach((button) => {
-          const selected = button.dataset.tab === panelId;
+          const selected = button.dataset.tab === panelId ||
+            (panelId === "upgradePanel" && button.dataset.tab === "homePanel");
           button.classList.toggle("active", selected);
           if (selected) button.setAttribute("aria-current", "page");
           else button.removeAttribute("aria-current");
@@ -2796,12 +2804,6 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
         if (panelId === "missionsPanel") {
           refreshMissions().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.", "error"));
-        } else if (panelId === "selfPanel") {
-          refreshSelf().catch((error) => {
-            selfApp.replaceChildren();
-            const card = selfCard("پنل سلف", error && error.message ? error.message : "وضعیت سلف دریافت نشد.");
-            selfApp.append(card);
-          });
         }
       }
 
@@ -2828,8 +2830,7 @@
       }
 
       function showConnectionDialog(message) {
-        $("connectionDialogMessage").textContent = message;
-        showDialog($("connectionDialog"));
+        showStatus(message, "error");
       }
 
       async function loadInitialData() {
@@ -2960,6 +2961,7 @@
       claimDailyButton.addEventListener("click", claimDailyMission);
       $("dailyRewardButton").addEventListener("click", openDailyReward);
       $("seasonButton").addEventListener("click", openSeason);
+      $("upgradeHomeButton").addEventListener("click", () => selectTab("upgradePanel"));
       $("leaderboardButton").addEventListener("click", openLeaderboard);
       $("wheelButton").addEventListener("click", openWheel);
       $("storeButton").addEventListener("click", openStore);
@@ -2993,6 +2995,12 @@
               $("inviteNote").textContent = error && error.message ? error.message : "دریافت لینک دعوت ناموفق بود.";
               showStatus($("inviteNote").textContent, "error");
             });
+          } else if (panelId === "accountSelfPanel") {
+            refreshSelf().catch((error) => {
+              selfApp.replaceChildren();
+              const card = selfCard("پنل سلف", error && error.message ? error.message : "وضعیت سلف دریافت نشد.");
+              selfApp.append(card);
+            });
           }
         });
       });
@@ -3011,7 +3019,8 @@
           if (document.getElementById("missionsPanel").classList.contains("active")) {
             refreshMissions().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.", "error"));
           }
-          if (document.getElementById("selfPanel").classList.contains("active")) {
+          if (document.getElementById("accountPanel").classList.contains("active") &&
+              document.getElementById("accountSelfPanel").classList.contains("active")) {
             refreshSelf().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی سلف ناموفق بود.", "error"));
           }
         }
