@@ -46,7 +46,7 @@
     .app { padding-bottom:110px; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
-    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 30px), 500px); display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:4px; padding:6px; border:1px solid var(--border); border-radius:19px; background:linear-gradient(135deg,rgba(255,255,255,.105),rgba(255,255,255,.025) 48%,rgba(160,185,220,.055)); box-shadow:0 10px 28px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.32),inset 0 -1px rgba(255,255,255,.055); backdrop-filter:blur(8px) saturate(135%); -webkit-backdrop-filter:blur(8px) saturate(135%); }
+    .tab-bar { position:fixed; z-index:5; left:50%; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(calc(100% - 30px), 500px); display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; padding:6px; border:1px solid var(--border); border-radius:19px; background:linear-gradient(135deg,rgba(255,255,255,.105),rgba(255,255,255,.025) 48%,rgba(160,185,220,.055)); box-shadow:0 10px 28px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.32),inset 0 -1px rgba(255,255,255,.055); backdrop-filter:blur(8px) saturate(135%); -webkit-backdrop-filter:blur(8px) saturate(135%); }
     .tab-button { min-width:0; border:0; border-radius:13px; padding:7px 3px 6px; background:transparent; color:var(--muted); font-size:11px; cursor:pointer; }
     .tab-button span { display:block; font-size:18px; line-height:1.2; margin-bottom:3px; }
     .tab-button.active { color:#b8ffdf; background:#62e5aa1c; }
@@ -92,9 +92,11 @@
     .self-disabled { opacity:.5; }
     .profile-card { margin-top:20px; padding:18px; border:1px solid #8ef0c62b; border-radius:20px; background:linear-gradient(135deg,#8ef0c610,#ffffff04); }
     header { display:flex; align-items:center; justify-content:flex-start; direction:ltr; gap:12px; min-height:34px; }
-    .settings-button { flex:none; width:40px; height:40px; display:grid; place-items:center; border:1px solid #ffe08b9c; border-radius:14px; color:#fff0bf; background:radial-gradient(circle at 28% 18%,#ffffff38,transparent 54%),linear-gradient(145deg,#815421,#292019 70%,#17131a); box-shadow:0 0 18px #ffbd3955,inset 0 1px #fff7,0 4px 12px #0007; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
-    .settings-button svg { width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .settings-button { flex:none; width:39px; height:39px; display:grid; place-items:center; border:1px solid #ffd45a75; border-radius:14px; color:#ffe6a0; background:radial-gradient(circle at 30% 20%,#ffffff25,transparent 55%),linear-gradient(145deg,#47321b,#17131a); box-shadow:0 0 15px #ffbd3930,inset 0 1px #fff3; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
+    .settings-button svg { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
     .settings-button:active { transform:scale(.92) rotate(12deg); filter:brightness(1.25); }
+    .upgrade-shortcut { min-width:78px; border:1px solid #ffc05b; border-radius:13px; padding:9px 13px; color:#3b2107; background:#f5a52d; font-size:12px; font-weight:900; cursor:pointer; }
+    .upgrade-shortcut:active { filter:brightness(.94); }
     .brand { display:flex; align-items:center; gap:8px; font-weight:900; font-size:15px; letter-spacing:-.3px; }
     .brand-mark { width:15px; height:15px; border-radius:50%; display:block; background:radial-gradient(circle at 32% 28%,#fff4a8,#ffd34f 42%,#d68517 78%,#8c470c); box-shadow:0 0 0 3px #ffd45a16,0 0 15px #ffc64a52,inset 0 1px 2px #fff9; }
     .live { display:none; }
@@ -104,7 +106,7 @@
     .balance-label { color:#c8ad83; font-size:11px; margin-bottom:3px; text-align:center; }
     .balance-value { font-size:34px; font-weight:900; direction:ltr; text-align:center; white-space:nowrap; letter-spacing:.4px; color:#fff7dc; text-shadow:0 2px 18px #ffd45a55; font-variant-numeric:tabular-nums; }
     .balance-unit { font-size:13px; color:var(--gold); margin-right:6px; text-shadow:0 0 14px #ffd45a80; }
-    .wallet-icon { position:relative; width:42px; height:42px; flex:none; border-radius:50%; display:grid; place-items:center; font-size:20px; color:#fff1b4; background:linear-gradient(145deg,#fff4a9,#f7b824 60%,#b45a12); border:1px solid #fff4b878; box-shadow:inset 0 2px 3px #fff9, inset 0 -4px 7px #74370a8c,0 5px 14px #e99f2440; text-shadow:0 2px 3px #74400b; }
+    .wallet-icon { display:block; width:42px; height:42px; flex:none; border-radius:50%; object-fit:contain; }
     .coin-area { min-height:clamp(300px, 45vh, 390px); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:3px 0 5px; perspective:1100px; }
     .coin-button { position:relative; isolation:isolate; display:grid; place-items:center; border:0; cursor:pointer; width:min(64vw, 270px); aspect-ratio:1; border-radius:50%; padding:0; color:inherit; background:transparent; filter:drop-shadow(0 21px 20px #0009) drop-shadow(0 0 20px #ffb51e55); transform:perspective(900px) rotateX(4deg) rotateY(0deg); transform-origin:center; transition:transform .15s cubic-bezier(.22,.7,.25,1),filter .15s ease; backface-visibility:hidden; user-select:none; touch-action:none; -webkit-user-select:none; }
     .coin-button:before,.coin-button:after { content:none; }
@@ -120,24 +122,18 @@
     .tap-hint { margin-top:22px; color:#c5c2d0; font-size:13px; }
     .tap-hint strong { color:var(--gold); }
     .tap-hint strong { display:inline-block; padding:5px 10px; margin-right:3px; border:1px solid #ffd45a28; border-radius:999px; background:linear-gradient(135deg,#ffd45a16,#ffad3208); box-shadow:inset 0 1px #fff2,0 4px 14px #0002; }
-    .tap-actions { width:min(100%,310px); display:grid; grid-template-columns:1fr 1fr; direction:ltr; align-items:center; justify-content:center; gap:12px; margin-top:13px; }
-    .boost-control { min-width:0; display:flex; align-items:center; }
-    .boost-button { position:relative; overflow:hidden; width:100%; min-width:0; display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid #dd9dff8c; border-radius:14px; padding:11px 8px; color:#fff; background:linear-gradient(120deg,#8e2de2,#4a00e0 55%,#b64cff); box-shadow:0 0 18px #9d45ff66,inset 0 1px #fff8,0 6px 14px #0006; font-size:13px; font-weight:900; cursor:pointer; transition:transform .12s ease,filter .15s ease; }
-    .boost-button:before { content:""; position:absolute; inset:-50% auto -50% -35%; width:22px; transform:rotate(25deg); background:#ffffff50; filter:blur(6px); animation:boost-shine 2.8s ease-in-out infinite; pointer-events:none; }
-    .boost-button:active { transform:scale(.96); }
+    .tap-actions { display:flex; direction:ltr; align-items:center; justify-content:center; gap:9px; margin-top:12px; }
+    .boost-button { display:flex; align-items:center; justify-content:center; gap:8px; min-width:112px; border:1px solid #dd9dff70; border-radius:13px; padding:9px 12px; color:#fff; background:linear-gradient(120deg,#8e2de2,#4a00e0 55%,#b64cff); box-shadow:0 0 12px #9d45ff35,inset 0 1px #fff4; font-size:12px; font-weight:900; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
+    .boost-button:active { transform:scale(.98); }
     .boost-button:disabled { opacity:.48; cursor:not-allowed; filter:saturate(.55); }
-    .boost-count { min-width:39px; padding:6px 7px; border:1px solid #c89bff45; border-radius:10px; color:#e7c7ff; background:#7d36ba24; direction:ltr; text-align:center; font-size:11px; font-weight:900; font-variant-numeric:tabular-nums; }
-    .boost-button.is-active { box-shadow:0 0 23px #bd62ffb5,inset 0 1px #fff9; animation:boost-pulse .8s ease-in-out infinite alternate; }
-    .boost-count { flex:none; min-width:31px; padding:4px 6px; border:1px solid #fff7; border-radius:8px; color:#fff; background:#230c3c88; direction:ltr; text-align:center; font-size:10px; font-weight:900; font-variant-numeric:tabular-nums; }
-    .upgrade-home-button { position:relative; isolation:isolate; overflow:hidden; width:100%; min-width:0; border:1px solid #ffd27ab0; border-radius:14px; padding:11px 8px; color:#fff7dc; background:radial-gradient(circle at 25% 5%,#fff8,transparent 44%),linear-gradient(125deg,#ff9c18,#ef5b0a 52%,#c63a08); box-shadow:0 0 20px #ff7b1870,inset 0 1px #fff9,0 6px 14px #0006; font-size:13px; font-weight:1000; cursor:pointer; }
-    .upgrade-home-button:after { position:absolute; z-index:-1; inset:-50% auto -50% -30%; width:26px; content:""; transform:rotate(24deg); background:linear-gradient(90deg,transparent,#fff9,transparent); filter:blur(4px); animation:boost-shine 2.5s ease-in-out infinite; }
-    .upgrade-home-button:active { transform:scale(.97); filter:brightness(1.12); }
+    .boost-count { min-width:28px; padding:3px 5px; border:1px solid #ffffff35; border-radius:8px; color:#f0dcff; background:#ffffff16; direction:ltr; text-align:center; font-size:9px; font-weight:900; font-variant-numeric:tabular-nums; }
+    .boost-button.is-active { box-shadow:0 0 14px #bd62ff70,inset 0 1px #fff9; }
     @keyframes boost-shine { 0%,70% { left:-35%; } 100% { left:130%; } }
     @keyframes boost-pulse { to { filter:brightness(1.3); } }
     @media (max-width:380px) {
-      .tap-actions { gap:8px; }
-      .boost-button,.upgrade-home-button { padding:10px 6px; font-size:12px; }
-      .boost-count { min-width:28px; padding:4px 5px; }
+      .tap-actions { gap:6px; }
+      .boost-button { min-width:104px; padding:9px 9px; }
+      .boost-count { min-width:26px; padding:3px 4px; }
       .tap-hint { font-size:11px; }
       .tap-hint strong { padding:5px 7px; }
       .home-shortcut { width:56px; height:56px; border-radius:14px; }
@@ -173,11 +169,11 @@
     .exchange-button:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
     .bot-balance { text-align:center; color:#a6a3b2; font-size:11px; margin-top:14px; }
     .bot-balance b { color:#fff; direction:ltr; display:inline-block; margin-right:4px; }
-    .status { position:fixed; z-index:20; left:50%; bottom:calc(82px + env(safe-area-inset-bottom)); width:min(calc(100% - 28px),480px); transform:translateX(-50%); display:none; border-radius:12px; padding:11px 13px; margin:0; font-size:12px; line-height:1.7; word-break:break-word; box-shadow:0 8px 26px #0009; }
+    .status { display:none; border-radius:12px; padding:11px 13px; margin-top:14px; font-size:12px; line-height:1.7; word-break:break-word; }
     .status.show { display:block; }
     .status.error { color:#ffb5b5; background:#e64b4b18; border:1px solid #ff737333; }
     .status.info { color:#c7c2d2; background:#ffffff09; border:1px solid var(--border); }
-    .connection-error { margin-top:20px; padding:19px; border-radius:20px; border:1px solid #ff81705c; background:linear-gradient(135deg,#661f2aee,#351a2de8); box-shadow:0 12px 34px #e64b4b20; }
+    .connection-error { position:fixed; z-index:20; right:50%; bottom:calc(82px + env(safe-area-inset-bottom)); transform:translateX(50%); width:min(calc(100% - 28px),480px); padding:14px 15px; border-radius:16px; border:1px solid #ff81705c; background:linear-gradient(135deg,#661f2aee,#351a2de8); box-shadow:0 12px 34px #e64b4b20; }
     .connection-error[hidden] { display:none; }
     .connection-error-title { display:flex; align-items:center; gap:10px; color:#ffe5df; font-size:17px; font-weight:900; }
     .connection-error-icon { width:38px; height:38px; display:grid; place-items:center; border-radius:13px; background:#ff777728; font-size:20px; }
@@ -315,29 +311,29 @@
     .tab-button { padding:9px 2px 8px; font-size:10px; white-space:nowrap; }
     .tab-button span { font-size:18px; }
     .tab-button.active { color:#ffe8a0; background:linear-gradient(145deg,#ffc74628,#ff9d1410); box-shadow:inset 0 1px #fff2; }
-    .invite-hero { border-color:rgba(255,255,255,.24); background:radial-gradient(ellipse at 50% 0,#53e0ac1c,transparent 65%),rgba(28,30,41,.58); box-shadow:inset 0 1px #fff2,0 8px 24px #0003; backdrop-filter:blur(14px) saturate(125%); -webkit-backdrop-filter:blur(14px) saturate(125%); }
+    .invite-hero { border-color:#8ef0c62b; background:radial-gradient(ellipse at 50% 0,#53e0ac1c,transparent 65%),linear-gradient(145deg,#171f27,#171622); }
     .invite-reward { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:18px; padding:12px; border:1px solid #8ef0c626; border-radius:13px; background:#8ef0c60b; color:var(--muted); font-size:11px; }
     .invite-reward b { color:var(--mint); font-size:12px; }
     .invite-card,.upgrade-card { margin-top:13px; padding:16px; border:1px solid var(--border); border-radius:19px; background:linear-gradient(145deg,#ffffff0c,#ffffff04); box-shadow:0 12px 26px #0002; }
-    .account-subpanel .invite-card { border-color:rgba(255,255,255,.24); background:rgba(28,30,41,.58); box-shadow:inset 0 1px #fff2,0 8px 24px #0003; backdrop-filter:blur(14px) saturate(125%); -webkit-backdrop-filter:blur(14px) saturate(125%); }
+    .invite-card { border-color:rgba(255,255,255,.22); background:rgba(26,29,40,.62); backdrop-filter:blur(15px) saturate(130%); -webkit-backdrop-filter:blur(15px) saturate(130%); }
     .invite-card-title { font-size:13px; font-weight:800; }
     .invite-link { overflow-wrap:anywhere; margin-top:12px; padding:12px; border:1px solid #8ef0c622; border-radius:12px; background:#070d12; color:#b7ffdf; font:12px/1.7 ui-monospace,Consolas,monospace; text-align:left; }
     .invite-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:11px; }
     .invite-actions .exchange-button { padding:12px 8px; }
     .exchange-button.secondary { color:#e5e1ef; background:#ffffff10; border:1px solid var(--border); box-shadow:none; }
     .invite-card .exchange-sub { margin-bottom:0; }
-    .connection-error { position:relative; z-index:6; margin:12px 0 6px; padding:14px 15px; border:1px solid #ff727266; border-radius:16px; background:linear-gradient(135deg,#3c1d26,#211923); box-shadow:0 12px 28px #0007; }
+    .connection-error { position:fixed; z-index:20; right:50%; bottom:calc(82px + env(safe-area-inset-bottom)); transform:translateX(50%); width:min(calc(100% - 28px),480px); margin:0; padding:14px 15px; border:1px solid #ff727266; border-radius:16px; background:linear-gradient(135deg,#3c1d26,#211923); box-shadow:0 12px 28px #0007; }
     .connection-error-title { display:flex; align-items:center; gap:8px; color:#ffd9d9; font-size:14px; font-weight:900; }
     .connection-error-icon { font-size:19px; }
     .connection-error p { margin:8px 0 0; color:#fff0f0; font-size:12px; line-height:1.8; overflow-wrap:anywhere; }
     .connection-error small { display:block; margin-top:7px; color:#ffc7a6; font-size:10px; line-height:1.7; }
-    .account-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:12px 0; padding:5px; border:1px solid rgba(255,255,255,.2); border-radius:16px; background:rgba(29,31,42,.45); box-shadow:inset 0 1px #fff2,0 8px 22px #0002; backdrop-filter:blur(12px) saturate(125%); -webkit-backdrop-filter:blur(12px) saturate(125%); }
-    .account-tab { border:0; border-radius:10px; padding:11px 8px; color:var(--muted); background:transparent; font-weight:800; cursor:pointer; }
+    .account-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:12px 0; padding:5px; border:1px solid rgba(255,255,255,.2); border-radius:16px; background:rgba(28,30,41,.58); box-shadow:inset 0 1px rgba(255,255,255,.1),0 8px 24px #0002; backdrop-filter:blur(14px) saturate(130%); -webkit-backdrop-filter:blur(14px) saturate(130%); }
+    .account-tab { border:1px solid transparent; border-radius:11px; padding:10px 5px; color:var(--muted); background:transparent; font-size:11px; font-weight:800; cursor:pointer; }
     .account-tab.active { color:#ffe8a0; background:#ffc7461c; }
     .account-subpanel { display:none; }
     .account-subpanel.active { display:block; }
-    .account-info { display:grid; gap:9px; margin:12px 0; padding:15px; border:1px solid rgba(255,255,255,.22); border-radius:17px; background:rgba(28,30,41,.55); box-shadow:inset 0 1px #fff2,0 8px 24px #0003; backdrop-filter:blur(14px) saturate(125%); -webkit-backdrop-filter:blur(14px) saturate(125%); }
-    .account-info-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:9px 10px; border:1px solid rgba(255,255,255,.12); border-radius:11px; color:#dedce8; background:rgba(255,255,255,.045); font-size:12px; }
+    .account-info { display:grid; gap:8px; margin:12px 0; padding:11px; border:1px solid rgba(255,255,255,.22); border-radius:18px; background:rgba(26,29,40,.62); box-shadow:inset 0 1px rgba(255,255,255,.12),0 9px 26px #0002; backdrop-filter:blur(15px) saturate(130%); -webkit-backdrop-filter:blur(15px) saturate(130%); }
+    .account-info-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.12); border-radius:12px; color:#d8d6e0; background:rgba(255,255,255,.045); font-size:12px; line-height:1.6; }
     .account-info-row strong { color:#f5f2fa; text-align:left; }
     .self-grid { display:grid; direction:ltr; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:12px; }
     .self-grid-button { direction:rtl; min-height:72px; padding:12px 8px; border:1px solid #ffd45a2c; border-radius:15px; color:#f5e6bc; background:linear-gradient(145deg,#ffd45a12,#ffffff05); font-weight:800; cursor:pointer; }
@@ -368,6 +364,10 @@
     .upgrade-card .upgrade-status { padding:10px 11px; border-radius:12px; background:#0002; line-height:1.8; }
     .upgrade-button { width:100%; border:1px solid #ffdf7850; border-radius:13px; padding:12px; color:#271b08; background:linear-gradient(100deg,#ffe58b,#ffb933); box-shadow:0 7px 18px #ffbc3925; font-weight:900; cursor:pointer; }
     .upgrade-button:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
+    .loading-error { display:none; margin-top:12px; padding:10px 12px; border:1px solid #ff8b7c88; border-radius:13px; color:#ffe4df; background:#451a24d9; font-size:11px; line-height:1.8; overflow-wrap:anywhere; }
+    .loading-error.show { display:block; }
+    .loading-retry { display:none; width:100%; margin-top:8px; padding:10px; border:1px solid #ffe69b; border-radius:11px; color:#2b1b06; background:linear-gradient(100deg,#ffe78f,#ffb73a); font-size:11px; font-weight:900; cursor:pointer; }
+    .loading-retry.show { display:block; }
     .upgrade-footnote { color:var(--muted); font-size:10px; line-height:1.8; text-align:center; }
     .tab-button:focus-visible,.upgrade-button:focus-visible,.invite-actions button:focus-visible { outline:2px solid #ffe28b; outline-offset:2px; }
     footer { color:#656371; font-size:10px; text-align:center; padding-top:17px; }
@@ -404,20 +404,31 @@
     body.low-graphics #coinLeaves { display:none !important; }
     body.low-graphics .home-shortcut:before, body.low-graphics .home-shortcut:after,
     body.low-graphics .boost-button:before, body.low-graphics .balance-card:after { display:none !important; }
-    body.low-graphics .home-shortcut:not(.upgrade-home-button),
+    body.low-graphics .home-shortcut, body.low-graphics .boost-button,
     body.low-graphics .settings-button, body.low-graphics .tab-bar,
     body.low-graphics .balance-card, body.low-graphics .energy-card,
     body.low-graphics .home-level, body.low-graphics .mission-card,
     body.low-graphics .placeholder-card, body.low-graphics .upgrade-card,
     body.low-graphics .feature-dialog, body.low-graphics .connection-dialog,
-    body.low-graphics .season-chip {
+    body.low-graphics .season-chip, body.low-graphics .boost-count {
       background-image:none !important; background-color:rgba(30,27,35,.96) !important;
       border-color:rgba(255,255,255,.12) !important;
     }
-    body.low-graphics .home-shortcut:disabled,
-    body.low-graphics .boost-button:disabled,
-    body.low-graphics .upgrade-home-button:disabled { opacity:1 !important; filter:none !important; }
     body.low-graphics .scene-background { transform:none !important; }
+    body.low-graphics .home-shortcut.daily { color:#ffe9ae !important; background:#60491f !important; border-color:#a17a36 !important; }
+    body.low-graphics .home-shortcut.leaderboard { color:#d8f1ff !important; background:#23445a !important; border-color:#4c7891 !important; }
+    body.low-graphics .home-shortcut.season { color:#f0d7ff !important; background:#47285e !important; border-color:#79539a !important; }
+    body.low-graphics .home-shortcut.wheel { color:#baffdf !important; background:#1d5545 !important; border-color:#397b63 !important; }
+    body.low-graphics .home-shortcut.miner { color:#e2f6ff !important; background:#14577d !important; border-color:#328bb3 !important; }
+    body.low-graphics .home-shortcut.store { color:#fff0bd !important; background:#72501d !important; border-color:#aa8239 !important; }
+    body.low-graphics .boost-button { color:#fff !important; background:#7138a6 !important; border-color:#a36bd1 !important; opacity:1 !important; }
+    body.low-graphics .boost-button:disabled { opacity:.68 !important; }
+    body.low-graphics .boost-count { color:#f0dcff !important; background:#54316f !important; border-color:#976bb2 !important; }
+    body.low-graphics .upgrade-shortcut { color:#3b2107 !important; background:#f5a52d !important; border-color:#ffc05b !important; opacity:1 !important; }
+    body.low-graphics .account-info,.low-graphics .account-info-row,
+    body.low-graphics .invite-card,.low-graphics .invite-hero {
+      background:#1e1b23 !important; border-color:rgba(255,255,255,.18) !important;
+    }
   </style>
 </head>
 <body>
@@ -430,22 +441,18 @@
       <div class="loading-caption">در حال بارگذاری اطلاعات حساب...</div>
       <div class="loading-progress"><div id="loadingProgressFill" class="loading-progress-fill"></div></div>
       <div id="loadingPercent" class="loading-percent">0%</div>
+      <div id="loadingError" class="loading-error" role="alert"></div>
+      <button id="loadingRetryButton" class="loading-retry" type="button">تلاش دوباره</button>
     </div>
   </div>
   <main class="app">
     <header>
       <button id="settingsButton" class="settings-button" type="button" aria-label="تنظیمات" title="تنظیمات">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/><path d="m19.4 13.5 1.1.9-1.4 2.4-1.4-.5a7.9 7.9 0 0 1-1.5.9l-.2 1.5h-2.8l-.3-1.5a7.9 7.9 0 0 1-1.5-.9l-1.4.5-1.4-2.4 1.1-.9a7.4 7.4 0 0 1 0-1.8l-1.1-.9 1.4-2.4 1.4.5a7.9 7.9 0 0 1 1.5-.9l.3-1.5h2.8l.2 1.5a7.9 7.9 0 0 1 1.5.9l1.4-.5 1.4 2.4-1.1.9a7.4 7.4 0 0 1 0 1.8Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2.1"/><circle cx="15" cy="12" r="2.1"/><circle cx="8" cy="18" r="2.1"/></svg>
       </button>
       <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>F Coin</span></div>
       <div id="seasonBadge" class="season-chip">Season 1</div>
     </header>
-
-    <section id="connectionError" class="connection-error" role="alert" aria-live="assertive" hidden>
-      <div class="connection-error-title"><span class="connection-error-icon">⚠️</span><span id="connectionErrorTitle">اتصال حساب کامل نشد</span></div>
-      <p id="connectionErrorMessage">خطای اتصال نمایش داده می‌شود.</p>
-      <small>لطفاً اتصال VPN و اینترنت را بررسی کن و دوباره تلاش کن.</small>
-    </section>
 
     <section id="homePanel" class="tab-panel active" aria-label="خانه">
       <section class="balance-card" aria-label="موجودی F Coin">
@@ -453,7 +460,7 @@
           <div class="balance-label">موجودی F Coin شما</div>
           <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
         </div>
-        <div class="wallet-icon" aria-hidden="true">F</div>
+        <img class="wallet-icon" src="FCoin.png" alt="" aria-hidden="true">
       </section>
       <section class="home-level" aria-label="سطح و تجربه">
         <div class="home-level-top">
@@ -484,12 +491,11 @@
           <img id="coinImage" class="coin-face" src="FCoin.png" alt="" draggable="false">
         </button>
         <div class="tap-actions">
-          <div class="boost-control">
             <button id="boostButton" class="boost-button" type="button" disabled>
-              <span id="boostLabel">تقویت</span><span id="boostCount" class="boost-count">0/3</span>
-            </button>
-          </div>
-          <button id="upgradeHomeButton" class="upgrade-home-button" type="button">⚡ ارتقا</button>
+              <span id="boostLabel">تقویت</span>
+            <span id="boostCount" class="boost-count">0/3</span>
+          </button>
+          <button id="openUpgradeButton" class="upgrade-shortcut" type="button">ارتقا</button>
         </div>
       </section>
       <section class="energy-card" aria-label="انرژی">
@@ -595,18 +601,23 @@
           <p id="inviteNote" class="exchange-sub">پاداش پس از اولین ورود دوست از لینک دعوت ثبت می‌شود.</p>
         </section>
       </section>
-      <section id="accountSelfPanel" class="account-subpanel">
-        <div class="placeholder-card"><div class="placeholder-icon">🛡️</div><h1>پنل سلف</h1><p>یک قابلیت را انتخاب کن تا تنظیمات همان بخش را جداگانه مدیریت کنی.</p></div>
+      <section id="accountSelfPanel" class="account-subpanel" aria-label="پنل سلف">
+        <div class="placeholder-card"><div class="placeholder-icon">🛡️</div><h1>پنل سلف</h1><p>تنظیمات قابلیت‌های سلف را از این بخش مدیریت کن.</p></div>
         <div id="selfApp" class="mission-list">
           <div class="mission-card"><div class="mission-title">در حال دریافت وضعیت پنل سلف…</div></div>
         </div>
       </section>
     </section>
+    <section id="connectionError" class="connection-error" role="alert" aria-live="assertive" hidden>
+      <div class="connection-error-title"><span class="connection-error-icon">⚠️</span><span id="connectionErrorTitle">مشکل در اتصال یا انجام درخواست</span></div>
+      <p id="connectionErrorMessage">خطای اتصال نمایش داده می‌شود.</p>
+      <small>لطفاً اتصال VPN و اینترنت را بررسی کن.</small>
+    </section>
     <div id="status" class="status" role="status" aria-live="polite"></div>
     <nav class="tab-bar" aria-label="ناوبری اصلی">
       <button class="tab-button active" type="button" data-tab="homePanel" aria-current="page"><span>🏠</span>خانه</button>
       <button class="tab-button" type="button" data-tab="convertPanel"><span>🔄</span>تبدیل</button>
-      <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب کاربری / دعوت</button>
+      <button class="tab-button" type="button" data-tab="accountPanel"><span>👤</span>حساب / دعوت</button>
     </nav>
   </main>
 
@@ -842,9 +853,10 @@
 
       function showStatus(message, type) {
         if (type === "error") {
-          connectionError.hidden = true;
-          statusBox.textContent = message;
-          statusBox.className = "status show error";
+          $("connectionErrorTitle").textContent = "مشکل در اتصال یا انجام درخواست";
+          $("connectionErrorMessage").textContent = message;
+          connectionError.hidden = false;
+          hideStatus();
           return;
         }
         connectionError.hidden = true;
@@ -904,11 +916,9 @@
           upgrades_supported: tapPower !== null &&
             (reportedMaxEnergy !== null || energyLevel !== null)
         };
-        if (Number.isInteger(state.season_number) || typeof state.season_name === "string") {
+        if (typeof state.season_name === "string") {
           updateSeasonBadge({
-            season: state.season_number,
             name: state.season_name,
-            month: state.season_month,
             days_remaining: Number(state.season_days_remaining)
           });
         }
@@ -916,8 +926,25 @@
         syncBoostVisual();
         scheduleBoostTicker();
         updateWalletDisplay();
+        renderXp(state);
         renderAccount(serverState);
         updateButtons();
+      }
+
+      function renderXp(state) {
+        const level = Number(state.level) || 0;
+        const xp = Number(state.xp) || 0;
+        const target = Math.max(1, Number(state.level_target) || 100 + level * 100);
+        $("homeLevel").textContent = level.toLocaleString("en-US");
+        $("homeXpText").textContent = xp.toLocaleString("en-US") + " XP";
+        $("homeXpFill").style.width = Math.min(100, xp / target * 100) + "%";
+        $("missionLevel").textContent = level.toLocaleString("en-US");
+        $("missionXpText").textContent = xp.toLocaleString("en-US") + " XP";
+        document.querySelector(".mission-level small").textContent =
+          "جایزهٔ لول بعدی: +" + ((level + 1) * 250).toLocaleString("en-US") + " F Coin";
+        $("missionNext").textContent = "گام بعدی: " +
+          Math.max(0, target - xp).toLocaleString("en-US") + " XP تا سطح بعدی";
+        $("missionXpFill").style.width = Math.min(100, xp / target * 100) + "%";
       }
 
       function renderAccount(state) {
@@ -937,7 +964,7 @@
           ["💲 معادل تومانی", (state.bot_coin_balance * 50).toLocaleString("en-US") + " تومان"],
           ["💰 موجودی اف‌کوین", state.fcoin_balance.toLocaleString("en-US") + " F"],
           ["⭐ لول شما", Number(state.level || 0).toLocaleString("en-US")],
-          ["🌟 سطح XP", Number(state.xp || 0).toLocaleString("en-US") + " / " + Number(state.level_target || 200).toLocaleString("en-US")],
+          ["🌟 سطح XP", Number(state.xp || 0).toLocaleString("en-US") + " / " + Number(state.level_target || 100).toLocaleString("en-US")],
           ["🪙 وضعیت سلف", state.self_active ? "✅ فعال" : "⚪ غیرفعال"],
           ["⏱ نرخ مصرف ساعتی", state.self_active ? "۱ سکه" : "—"],
           ["⏳ انقضا تا", state.self_active ? expiry + " دیگر" : "—"],
@@ -1082,18 +1109,21 @@
           tapButtonUpgrade.disabled = true;
           return;
         }
-        const energyCosts = [2000, 3000, 4000, 5000];
-        const energyTargets = [2000, 3000, 4000, 5000];
+        const energyUpgrades = [
+          [2000, 1000], [3000, 2000], [4000, 4000], [5000, 8000],
+          [6000, 15000], [7000, 30000], [8000, 60000], [9000, 100000],
+          [10000, 200000]
+        ];
         const level = serverState.energy_level;
-        if (level >= energyCosts.length) {
+        if (level >= energyUpgrades.length) {
           $("energyUpgradeStatus").textContent = "ظرفیت فعلی: " + serverState.max_energy.toLocaleString("en-US") + " · حداکثر";
           $("energyUpgradeNote").textContent = "همهٔ سطح‌های ظرفیت انرژی را گرفته‌ای.";
           energyButton.textContent = "ظرفیت کامل شد ✓";
           energyButton.disabled = true;
         } else {
-          const cost = energyCosts[level];
+          const [target, cost] = energyUpgrades[level];
           $("energyUpgradeStatus").textContent = "ظرفیت فعلی: " + serverState.max_energy.toLocaleString("en-US") +
-            "  ←  ظرفیت بعدی: " + energyTargets[level].toLocaleString("en-US");
+            "  ←  ظرفیت بعدی: " + target.toLocaleString("en-US");
           $("energyUpgradeNote").textContent = serverState.fcoin_balance >= cost
             ? "هزینه: " + cost.toLocaleString("en-US") + " F Coin · موجودی کافی است."
             : "هزینه: " + cost.toLocaleString("en-US") + " F Coin · " +
@@ -1102,14 +1132,18 @@
           energyButton.disabled = busy || flushingTaps || queuedTaps > 0 || inFlightTaps > 0 ||
             serverState.fcoin_balance < cost;
         }
-        const nextPower = serverState.tap_power + 1;
-        if (nextPower > 10) {
+        const tapUpgradeCosts = {
+          2: 2000, 4: 4000, 6: 8000, 8: 15000, 10: 30000,
+          12: 60000, 14: 100000, 16: 200000, 18: 400000, 20: 800000
+        };
+        const nextPower = serverState.tap_power === 1 ? 2 : serverState.tap_power + 2;
+        if (nextPower > 20) {
           $("tapUpgradeStatus").textContent = "قدرت فعلی: +" + serverState.tap_power + " · حداکثر";
           $("tapUpgradeNote").textContent = "همهٔ سطح‌های قدرت ضربه را گرفته‌ای.";
           tapButtonUpgrade.textContent = "قدرت تپ کامل شد ✓";
           tapButtonUpgrade.disabled = true;
         } else {
-          const cost = nextPower * 1000;
+          const cost = tapUpgradeCosts[nextPower];
           $("tapUpgradeStatus").textContent = "قدرت فعلی: +" + serverState.tap_power +
             "  ←  قدرت بعدی: +" + nextPower;
           $("tapUpgradeNote").textContent = serverState.fcoin_balance >= cost
@@ -1191,17 +1225,7 @@
       }
 
       function renderMissions(state) {
-        $("missionLevel").textContent = state.level.toLocaleString("en-US");
-        $("missionXpText").textContent = state.xp.toLocaleString("en-US") + " XP";
-        $("homeLevel").textContent = state.level.toLocaleString("en-US");
-        $("homeXpText").textContent = state.xp.toLocaleString("en-US") + " XP";
-        document.querySelector(".mission-level small").textContent =
-          "جایزهٔ لول بعدی: +" + state.level_reward_fcoin.toLocaleString("en-US") + " F Coin";
-        $("missionNext").textContent = "گام بعدی: " +
-          Math.max(0, state.level_target - state.xp).toLocaleString("en-US") + " XP تا سطح بعدی";
-        const progress = Math.min(100, state.level_progress / state.level_target * 100);
-        $("missionXpFill").style.width = progress + "%";
-        $("homeXpFill").style.width = progress + "%";
+        renderXp(state);
         missionList.replaceChildren();
         state.missions.forEach((mission) => {
           const card = document.createElement("article");
@@ -1345,8 +1369,7 @@
       }
 
       function featureError(message, retry) {
-        showStatus(message, "error");
-        featureDialogBody.replaceChildren();
+        featureDialogBody.replaceChildren(featureMessage(message));
         if (retry) {
           const button = document.createElement("button");
           button.type = "button";
@@ -1414,11 +1437,14 @@
           renderDailyReward(result);
           showStatus(
             "🎉 روز " + result.claimed_day + " را گرفتی؛ +" +
-              Number(result.claimed_reward).toLocaleString("en-US") + " F Coin",
+              Number(result.claimed_reward).toLocaleString("en-US") + " F Coin و +25 XP",
             "info"
           );
-          request("state").catch((error) =>
+          await request("state").catch((error) =>
             showStatus(error && error.message ? error.message : "به‌روزرسانی موجودی ناموفق بود.", "error")
+          );
+          await refreshMissions().catch((error) =>
+            showStatus(error && error.message ? error.message : "به‌روزرسانی XP ناموفق بود.", "error")
           );
         } catch (error) {
           featureError(error && error.message ? error.message : "ثبت جایزه انجام نشد.", openDailyReward);
@@ -1469,68 +1495,50 @@
       }
 
       function updateSeasonBadge(state) {
-        const name = typeof state.name === "string" ? state.name :
-          typeof state.season_name === "string" ? state.season_name : "";
-        $("seasonBadge").textContent = name.trim()
-          ? name.trim()
-          : "Season " + String(state.season || state.number || 1);
+        $("seasonBadge").textContent = state.name || state.season_name || "Season 1";
       }
 
-      function renderSeason(state, levelState) {
+      function renderSeason(state) {
         updateSeasonBadge(state);
+        const seasonName = state.season_name || $("seasonBadge").textContent;
+        const daysRemaining = Math.max(0, Number(state.days_remaining) || 0);
         const countdown = document.createElement("div");
         countdown.className = "season-countdown";
-        countdown.dir = "ltr";
         const label = document.createElement("span");
-        label.textContent = state.season_name || "Season " + String(state.season || 1);
+        label.textContent = seasonName;
         const remaining = document.createElement("strong");
-        remaining.textContent = Math.max(0, Number(state.days_remaining) || 0) + "d";
-        countdown.append(remaining, label);
-
+        remaining.textContent = daysRemaining + "d";
+        countdown.append(label, remaining);
+        const level = Number(state.level) || 0;
+        const xp = Number(state.xp) || 0;
+        const target = Math.max(1, Number(state.level_target) || 100 + level * 100);
         const levelCard = document.createElement("section");
-        levelCard.className = "mission-hero";
-        const levelTop = document.createElement("div");
-        levelTop.className = "mission-hero-top";
-        const levelLabel = document.createElement("span");
-        levelLabel.textContent = "⭐ لول " + Number(levelState.level || 0).toLocaleString("en-US");
-        const xpLabel = document.createElement("span");
-        xpLabel.textContent = Number(levelState.xp || 0).toLocaleString("en-US") + " XP";
-        levelTop.append(levelLabel, xpLabel);
-        const levelText = document.createElement("div");
-        levelText.className = "mission-level";
-        levelText.textContent =
-          "لول " + Number(levelState.level || 0).toLocaleString("en-US") +
-          " · جایزهٔ لول بعدی: +" +
-          Number(levelState.level_reward_fcoin || 0).toLocaleString("en-US") + " F Coin";
-        const xpBar = document.createElement("div");
-        xpBar.className = "mission-xp-bar";
-        const xpFill = document.createElement("div");
-        xpFill.className = "mission-xp-fill";
-        const target = Math.max(1, Number(levelState.level_target) || 1);
-        xpFill.style.width = Math.min(100, Number(levelState.level_progress || 0) / target * 100) + "%";
-        xpBar.append(xpFill);
-        const remainingXp = document.createElement("div");
-        remainingXp.className = "mission-next";
-        remainingXp.textContent =
-          "مانده تا لول بعدی: " +
-          Math.max(0, target - Number(levelState.xp || 0)).toLocaleString("en-US") + " XP";
-        levelCard.append(levelTop, levelText, xpBar, remainingXp);
-
-        const placeholder = document.createElement("div");
-        placeholder.className = "feature-empty";
-        placeholder.textContent = "ماموریت‌ها به‌زودی اضافه می‌شوند!";
-        featureDialogBody.replaceChildren(countdown, levelCard, placeholder);
+        levelCard.className = "mission-hero season-level";
+        levelCard.innerHTML =
+          '<div class="mission-hero-top"><span>⭐ سطح فعلی</span><span>' +
+          xp.toLocaleString("en-US") + " / " + target.toLocaleString("en-US") +
+          ' XP</span></div><div class="mission-level">Level ' +
+          level.toLocaleString("en-US") + ' <small>جایزهٔ لول بعدی: +' +
+          ((level + 1) * 250).toLocaleString("en-US") +
+          ' F Coin</small></div><div class="mission-xp-bar"><div class="mission-xp-fill"></div></div>';
+        levelCard.querySelector(".mission-xp-fill").style.width =
+          Math.min(100, xp / target * 100) + "%";
+        const next = document.createElement("div");
+        next.className = "mission-next";
+        next.textContent = Math.max(0, target - xp).toLocaleString("en-US") + " XP تا سطح بعدی";
+        levelCard.append(next);
+        featureDialogBody.replaceChildren(
+          countdown,
+          levelCard,
+          featureMessage("ماموریت‌ها به‌زودی اضافه می‌شوند!")
+        );
       }
 
       async function openSeason() {
         openFeatureDialog("✦ ماموریت فصل");
         featureDialogBody.append(featureMessage("در حال دریافت ماموریت‌های فصل..."));
         try {
-          const [seasonState, levelState] = await Promise.all([
-            userApiRequest("features/season-state"),
-            userApiRequest("missions/state")
-          ]);
-          renderSeason(seasonState, levelState);
+          renderSeason(await userApiRequest("features/season-state"));
         } catch (error) {
           featureError(error && error.message ? error.message : "ماموریت‌های فصل دریافت نشد.", openSeason);
         }
@@ -1538,11 +1546,8 @@
 
       async function claimSeasonMission(missionId) {
         try {
-          const [result, levelState] = await Promise.all([
-            userApiRequest("features/season-claim", { mission_id: missionId }),
-            userApiRequest("missions/state")
-          ]);
-          renderSeason(result, levelState);
+          const result = await userApiRequest("features/season-claim", { mission_id: missionId });
+          renderSeason(result);
           const claimedMission = result.missions.find((mission) => mission.id === missionId);
           showStatus(
             "🎉 پاداش فصل دریافت شد: +" +
@@ -1628,7 +1633,10 @@
             await request("state").catch((error) =>
               showStatus(error && error.message ? error.message : "به‌روزرسانی موجودی ناموفق بود.", "error")
             );
-            showStatus("🎉 گردونه برایت «" + result.prize.label + "» آورد!", "info");
+            await refreshMissions().catch((error) =>
+              showStatus(error && error.message ? error.message : "به‌روزرسانی XP ناموفق بود.", "error")
+            );
+            showStatus("🎉 گردونه برایت «" + result.prize.label + "» آورد! +15 XP", "info");
           }, 4800);
         } catch (error) {
           spin.disabled = false;
@@ -1692,7 +1700,7 @@
           const result = await userApiRequest("missions/claim-daily");
           renderMissions(result);
           await request("state");
-          showStatus("🎉 " + result.daily_coins.toLocaleString("en-US") + " سکهٔ روزانه و ۵ XP گرفتی!", "info");
+          showStatus("🎉 " + result.daily_coins.toLocaleString("en-US") + " سکهٔ روزانه و ۲۵ XP گرفتی!", "info");
         } catch (error) {
           showStatus(error && error.message ? error.message : "دریافت ماموریت روزانه ناموفق بود.", "error");
           try {
@@ -2795,8 +2803,7 @@
           panel.classList.toggle("active", panel.id === panelId);
         });
         document.querySelectorAll(".tab-button").forEach((button) => {
-          const selected = button.dataset.tab === panelId ||
-            (panelId === "upgradePanel" && button.dataset.tab === "homePanel");
+          const selected = button.dataset.tab === (panelId === "upgradePanel" ? "homePanel" : panelId);
           button.classList.toggle("active", selected);
           if (selected) button.setAttribute("aria-current", "page");
           else button.removeAttribute("aria-current");
@@ -2804,6 +2811,12 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
         if (panelId === "missionsPanel") {
           refreshMissions().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.", "error"));
+        } else if (panelId === "accountSelfPanel") {
+          refreshSelf().catch((error) => {
+            selfApp.replaceChildren();
+            const card = selfCard("پنل سلف", error && error.message ? error.message : "وضعیت سلف دریافت نشد.");
+            selfApp.append(card);
+          });
         }
       }
 
@@ -2811,6 +2824,9 @@
         window.clearInterval(loadingTimer);
         loadingPercent = 0;
         loadingScreen.classList.remove("is-hidden");
+        $("loadingError").textContent = "";
+        $("loadingError").classList.remove("show");
+        $("loadingRetryButton").classList.remove("show");
         $("loadingProgressFill").style.width = "0%";
         $("loadingPercent").textContent = "0%";
         loadingTimer = window.setInterval(() => {
@@ -2820,17 +2836,52 @@
         }, 110);
       }
 
+      function setLoadingProgress(percent, caption) {
+        loadingPercent = Math.max(loadingPercent, Math.min(96, percent));
+        $("loadingProgressFill").style.width = loadingPercent + "%";
+        $("loadingPercent").textContent = Math.floor(loadingPercent) + "%";
+        if (caption) document.querySelector(".loading-caption").textContent = caption;
+      }
+
+      function showLoadingError(message) {
+        window.clearInterval(loadingTimer);
+        loadingTimer = 0;
+        $("loadingError").textContent = message;
+        $("loadingError").classList.add("show");
+        $("loadingRetryButton").classList.add("show");
+        document.querySelector(".loading-caption").textContent = "بارگذاری کامل نشد؛ برای ورود دوباره تلاش کن.";
+      }
+
+      async function preloadLocalAssets() {
+        const assets = ["home.png", "FCoin.png", "boost.png", "barg.png", "back.png"];
+        let completed = 0;
+        await Promise.all(assets.map((source) => new Promise((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => {
+            completed += 1;
+            setLoadingProgress(8 + completed / assets.length * 52, "در حال دریافت تصویرها...");
+            resolve();
+          };
+          image.onerror = () => reject(new Error("بارگذاری تصویر «" + source + "» انجام نشد."));
+          image.src = source;
+        })));
+      }
+
       function finishLoadingScreen() {
         window.clearInterval(loadingTimer);
         loadingTimer = 0;
         loadingPercent = 100;
         $("loadingProgressFill").style.width = "100%";
         $("loadingPercent").textContent = "100%";
+        $("loadingError").classList.remove("show");
+        $("loadingRetryButton").classList.remove("show");
+        document.querySelector(".loading-caption").textContent = "بارگذاری کامل شد.";
         window.setTimeout(() => loadingScreen.classList.add("is-hidden"), Math.max(260, 5000 - (performance.now() - introStartedAt)));
       }
 
       function showConnectionDialog(message) {
-        showStatus(message, "error");
+        $("connectionDialogMessage").textContent = message;
+        showDialog($("connectionDialog"));
       }
 
       async function loadInitialData() {
@@ -2840,35 +2891,29 @@
         if (!hasTelegramAuth()) {
           renderConnection(false);
           updateButtons();
-          finishLoadingScreen();
-          window.setTimeout(() => showConnectionDialog(
-            "اطلاعات حساب فقط از Mini App تلگرام دریافت می‌شود. از دکمهٔ مینی‌اپ داخل ربات وارد شو و اتصال اینترنت و VPN را بررسی کن."
-          ), 520);
+          showLoadingError("اطلاعات حساب فقط از Mini App تلگرام دریافت می‌شود. مینی‌اپ را از داخل ربات باز کن و اتصال اینترنت را بررسی کن.");
           initialLoadStarted = false;
           return;
         }
         try {
-          await request("state");
+          document.querySelector(".loading-caption").textContent = "در حال دریافت تصاویر و اطلاعات حساب...";
+          const results = await Promise.allSettled([
+            preloadLocalAssets(),
+            request("state"),
+            refreshMissions(),
+            refreshSelf()
+          ]);
+          const failed = results.find((result) => result.status === "rejected");
+          if (failed) throw failed.reason;
+          setLoadingProgress(96, "همهٔ بخش‌ها آماده‌اند...");
           finishLoadingScreen();
-          const results = await Promise.allSettled([refreshMissions(), refreshSelf()]);
-          results.forEach((result) => {
-            if (result.status === "rejected") {
-              showStatus(
-                result.reason && result.reason.message
-                  ? result.reason.message
-                  : "دریافت بخشی از اطلاعات کامل نشد.",
-                "error"
-              );
-            }
-          });
         } catch (error) {
           renderConnection(false);
           updateButtons();
-          finishLoadingScreen();
-          window.setTimeout(() => showConnectionDialog(
+          showLoadingError(
             (error && error.message ? error.message : "اطلاعات حساب از سرور دریافت نشد.") +
-              " اتصال اینترنت و VPN را بررسی کن و دوباره تلاش کن."
-          ), 520);
+              " اتصال اینترنت و VPN را بررسی کن."
+          );
         } finally {
           initialLoadStarted = false;
         }
@@ -2918,6 +2963,7 @@
         "قدرت تپ با موفقیت ارتقا یافت.",
         { kind: "tap" }
       ));
+      $("openUpgradeButton").addEventListener("click", () => selectTab("upgradePanel"));
       boostButton.addEventListener("click", () => {
         if (!serverState || boostButton.disabled) return;
         if (typeof boostDialog.showModal === "function") boostDialog.showModal();
@@ -2961,7 +3007,6 @@
       claimDailyButton.addEventListener("click", claimDailyMission);
       $("dailyRewardButton").addEventListener("click", openDailyReward);
       $("seasonButton").addEventListener("click", openSeason);
-      $("upgradeHomeButton").addEventListener("click", () => selectTab("upgradePanel"));
       $("leaderboardButton").addEventListener("click", openLeaderboard);
       $("wheelButton").addEventListener("click", openWheel);
       $("storeButton").addEventListener("click", openStore);
@@ -2977,6 +3022,7 @@
         closeDialog($("connectionDialog"));
         loadInitialData();
       });
+      $("loadingRetryButton").addEventListener("click", loadInitialData);
       document.querySelectorAll(".tab-button").forEach((button) => {
         button.addEventListener("click", () => selectTab(button.dataset.tab));
       });
@@ -2998,8 +3044,7 @@
           } else if (panelId === "accountSelfPanel") {
             refreshSelf().catch((error) => {
               selfApp.replaceChildren();
-              const card = selfCard("پنل سلف", error && error.message ? error.message : "وضعیت سلف دریافت نشد.");
-              selfApp.append(card);
+              selfApp.append(selfCard("پنل سلف", error && error.message ? error.message : "وضعیت سلف دریافت نشد."));
             });
           }
         });
@@ -3019,8 +3064,7 @@
           if (document.getElementById("missionsPanel").classList.contains("active")) {
             refreshMissions().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.", "error"));
           }
-          if (document.getElementById("accountPanel").classList.contains("active") &&
-              document.getElementById("accountSelfPanel").classList.contains("active")) {
+          if (document.getElementById("accountSelfPanel").classList.contains("active")) {
             refreshSelf().catch((error) => showStatus(error && error.message ? error.message : "به‌روزرسانی سلف ناموفق بود.", "error"));
           }
         }
@@ -3086,19 +3130,95 @@
   </script>
 
   <script>
-    /* Separate lightweight leaf layer over home.png while the 5-second intro is visible. */
+    /* Reuse the same barg.png particles on the loading screen and home coin. */
     (() => {
       const canvas = document.getElementById("loadingLeaves");
       const screen = document.getElementById("loadingScreen");
       if (!canvas || !screen || !canvas.getContext || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const ctx = canvas.getContext("2d", { alpha: true }); if (!ctx) return;
-      const palette = ["rgba(255,157,54,.78)","rgba(205,68,37,.72)","rgba(255,197,91,.78)","rgba(147,67,38,.70)"];
-      let w=0,h=0,raf=0,last=0,active=false; const leaves=[]; const rand=(a,b)=>a+Math.random()*(b-a);
-      function size(){w=innerWidth;h=innerHeight;const d=Math.min(devicePixelRatio||1,1.15);canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);if(!leaves.length)for(let i=0;i<32;i++)leaves.push(make(true));}
-      function make(initial){return {x:rand(-10,w+10),y:initial?rand(-h,h):rand(-70,-15),s:rand(9,15),v:rand(22,42),d:rand(10,24),a:rand(0,6.28),r:rand(-1.5,1.5),c:palette[(Math.random()*palette.length)|0]};}
-      function frame(t){raf=0;if(!active||document.hidden||screen.classList.contains('is-hidden'))return;if(t-last<32){raf=requestAnimationFrame(frame);return;}const dt=Math.min(.05,last?(t-last)/1000:.032);last=t;ctx.clearRect(0,0,w,h);for(let i=0;i<leaves.length;i++){const p=leaves[i];p.y+=p.v*dt;p.x+=Math.sin(t*.001+p.a)*p.d*dt;p.a+=p.r*dt;if(p.y>h+30){leaves[i]=make(false);continue;}ctx.save();ctx.translate(p.x,p.y);ctx.rotate(Math.sin(p.a)*.8);ctx.fillStyle=p.c;ctx.beginPath();ctx.moveTo(0,-p.s);ctx.quadraticCurveTo(p.s*1.1,-p.s*.3,p.s*.45,p.s*.55);ctx.quadraticCurveTo(0,p.s*1.15,-p.s*.45,p.s*.35);ctx.quadraticCurveTo(-p.s,-p.s*.35,0,-p.s);ctx.fill();ctx.strokeStyle='rgba(255,235,195,.4)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(0,-p.s*.65);ctx.lineTo(0,p.s*.55);ctx.stroke();ctx.restore();}raf=requestAnimationFrame(frame);}
-      function sync(){const should=!document.hidden&&!screen.classList.contains('is-hidden');if(should&&!active){active=true;last=0;raf=requestAnimationFrame(frame);}else if(!should&&active){active=false;if(raf)cancelAnimationFrame(raf);raf=0;ctx.clearRect(0,0,w,h);}}
-      size();sync();new MutationObserver(sync).observe(screen,{attributes:true,attributeFilter:['class']});addEventListener('resize',size,{passive:true});document.addEventListener('visibilitychange',sync);addEventListener('pagehide',()=>{active=false;if(raf)cancelAnimationFrame(raf);});
+      const ctx = canvas.getContext("2d", { alpha: true });
+      if (!ctx) return;
+      const leafImage = new Image();
+      leafImage.decoding = "async";
+      leafImage.src = "barg.png";
+      let width = 0, height = 0, raf = 0, last = 0, active = false;
+      const leaves = [];
+      const rand = (min, max) => min + Math.random() * (max - min);
+      function make(initial) {
+        const size = rand(17, 30);
+        return {
+          x: rand(-12, width + 12),
+          y: initial ? rand(-height, height) : rand(-size * 2, -size),
+          size, speed: rand(18, 34), drift: rand(10, 24),
+          phase: rand(0, Math.PI * 2), rotation: rand(0, Math.PI * 2),
+          rotationSpeed: rand(-.65, .65), alpha: rand(.65, .9)
+        };
+      }
+      function resize() {
+        width = Math.max(1, innerWidth);
+        height = Math.max(1, innerHeight);
+        const ratio = Math.min(devicePixelRatio || 1, 1.1);
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        if (!leaves.length) {
+          for (let i = 0; i < 18; i++) leaves.push(make(true));
+        }
+      }
+      function shouldRun() {
+        return !document.hidden && !screen.classList.contains("is-hidden") &&
+          leafImage.complete && leafImage.naturalWidth > 0;
+      }
+      function frame(now) {
+        raf = 0;
+        if (!active || !shouldRun()) return;
+        if (now - last < 32) {
+          raf = requestAnimationFrame(frame);
+          return;
+        }
+        const dt = Math.min(.05, last ? (now - last) / 1000 : .032);
+        last = now;
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < leaves.length; i++) {
+          const leaf = leaves[i];
+          leaf.y += leaf.speed * dt;
+          leaf.x += Math.sin(now * .001 + leaf.phase) * leaf.drift * dt;
+          leaf.phase += leaf.rotationSpeed * dt;
+          if (leaf.y > height + 35) {
+            leaves[i] = make(false);
+            continue;
+          }
+          ctx.save();
+          ctx.translate(leaf.x, leaf.y);
+          ctx.rotate(leaf.rotation + Math.sin(leaf.phase) * .7);
+          ctx.globalAlpha = leaf.alpha;
+          ctx.drawImage(leafImage, -leaf.size / 2, -leaf.size / 2, leaf.size, leaf.size);
+          ctx.restore();
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      function sync() {
+        const should = shouldRun();
+        if (should && !active) {
+          active = true;
+          last = 0;
+          raf = requestAnimationFrame(frame);
+        } else if (!should && active) {
+          active = false;
+          if (raf) cancelAnimationFrame(raf);
+          raf = 0;
+          ctx.clearRect(0, 0, width, height);
+        }
+      }
+      resize();
+      sync();
+      leafImage.addEventListener("load", sync, { once: true });
+      new MutationObserver(sync).observe(screen, { attributes: true, attributeFilter: ["class"] });
+      addEventListener("resize", resize, { passive: true });
+      document.addEventListener("visibilitychange", sync);
+      addEventListener("pagehide", () => {
+        active = false;
+        if (raf) cancelAnimationFrame(raf);
+      });
     })();
   </script>
 
