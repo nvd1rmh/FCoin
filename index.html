@@ -30,7 +30,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     /* Background image gets its own GPU-friendly layer for subtle device-tilt parallax. */
-    .scene-background { position:fixed; z-index:0; inset:-24px; pointer-events:none; overflow:hidden; transform:scale(1.02); transform-origin:center; background:url("back.png") center center / cover no-repeat; }
+    .scene-background { position:fixed; z-index:0; inset:-24px; pointer-events:none; overflow:hidden; transform:scale(1.02); transform-origin:center; background:url("back.png?v=halloween-s2") center center / cover no-repeat; }
     .scene-background::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(11,9,11,.32) 0%,rgba(16,14,18,.38) 58%,rgba(16,14,18,.43) 100%); }
     /* Lightweight atmosphere: stays behind all controls and never intercepts touches. */
     body::before {
@@ -126,6 +126,7 @@
     .boost-button { display:flex; align-items:center; justify-content:center; gap:8px; min-width:112px; border:1px solid #dd9dff70; border-radius:13px; padding:9px 12px; color:#fff; background:linear-gradient(120deg,#8e2de2,#4a00e0 55%,#b64cff); box-shadow:0 0 12px #9d45ff35,inset 0 1px #fff4; font-size:12px; font-weight:900; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
     .boost-button:active { transform:scale(.98); }
     .boost-button:disabled { opacity:.48; cursor:not-allowed; filter:saturate(.55); }
+    .boost-button.needs-daily-check:not(:disabled) { border-color:#ffe18c; filter:brightness(1.2); box-shadow:0 0 18px #ffc04c66,inset 0 1px #fff8; animation:daily-check-nudge 1.7s ease-in-out infinite; }
     .boost-count { min-width:28px; padding:3px 5px; border:1px solid #ffffff35; border-radius:8px; color:#f0dcff; background:#ffffff16; direction:ltr; text-align:center; font-size:9px; font-weight:900; font-variant-numeric:tabular-nums; }
     .boost-button.is-active { box-shadow:0 0 14px #bd62ff70,inset 0 1px #fff9; }
     @keyframes boost-shine { 0%,70% { left:-35%; } 100% { left:130%; } }
@@ -198,6 +199,9 @@
     .home-shortcut:before { position:absolute; z-index:-1; inset:-40% auto -40% -35%; width:28px; content:""; transform:rotate(24deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent); opacity:.45; }
     .home-shortcut:active { transform:scale(.97); }
     .home-shortcut:disabled { opacity:.5; cursor:not-allowed; }
+    .home-shortcut.needs-daily-check:not(:disabled) { border-color:#ffe18c; filter:brightness(1.2); box-shadow:0 0 18px #ffc04c66,inset 0 1px #fff8; animation:daily-check-nudge 1.7s ease-in-out infinite; }
+    @keyframes daily-check-nudge { 0%,100% { transform:translateY(0) scale(1); } 50% { transform:translateY(-4px) scale(1.045); } }
+    @media (prefers-reduced-motion:reduce) { .home-shortcut.needs-daily-check:not(:disabled),.boost-button.needs-daily-check:not(:disabled) { animation:none; } }
     .home-shortcut .shortcut-icon { font-size:22px; line-height:1; }
     .home-shortcut .shortcut-label { font-size:9px; font-weight:900; line-height:1.2; white-space:nowrap; }
     .home-shortcut.daily { border-color:#ffcb5a4f; color:#ffe9ae; }
@@ -233,6 +237,12 @@
     .daily-day.is-current { border-color:#ffd45a99; color:#fff0b4; background:linear-gradient(145deg,#ba781f5c,#2d2117dd); box-shadow:0 0 16px #ffb52f33; }
     .feature-primary { width:100%; margin-top:13px; padding:13px; border:1px solid #ffe99c8a; border-radius:13px; color:#291b06; background:linear-gradient(105deg,#ffe88d,#ffb833); box-shadow:0 8px 20px #ffb52f24; font-weight:900; cursor:pointer; }
     .feature-primary:disabled { opacity:.48; cursor:not-allowed; }
+    .miner-card { padding:16px; border:1px solid #62caff55; border-radius:17px; background:radial-gradient(ellipse at 85% 0,#42b9ff23,transparent 58%),linear-gradient(145deg,#162333,#111722); }
+    .miner-rate { color:#91dcff; font-size:25px; font-weight:1000; text-align:center; text-shadow:0 0 16px #48baff55; direction:ltr; }
+    .miner-status { margin:10px 0 0; color:#d4e8f4; font-size:12px; line-height:1.9; text-align:center; }
+    .miner-progress { height:9px; margin-top:13px; overflow:hidden; border-radius:99px; background:#ffffff16; }
+    .miner-progress-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,#38aaf0,#8de2ff); box-shadow:0 0 12px #44c5ff88; transition:width .3s ease; }
+    .miner-meta { margin-top:9px; color:#aab8c7; font-size:10px; line-height:1.8; text-align:center; }
     .home-shortcut.store { width:62px; height:62px; border-color:#ffe08a; color:#fff0bd; background:linear-gradient(145deg,#f6d778,#9b5b14 52%,#3a2410); box-shadow:0 5px 15px #d9952b30,inset 0 1px #fff9; }
     .home-shortcut.store:active { transform:scale(.97); }
     .home-shortcut.miner { width:62px; height:62px; border-color:#43baffaa; color:#e2f6ff; background:radial-gradient(ellipse at 20% 0,#50c8ff66,transparent 60%),linear-gradient(145deg,#0879c8,#123c79 58%,#0b193b); box-shadow:0 5px 18px #168eff45,inset 0 1px #d8f5ff55,0 0 12px #1e9dff20; }
@@ -434,7 +444,7 @@
 <body>
   <div class="scene-background" id="sceneBackground" aria-hidden="true"></div>
   <div id="loadingScreen" class="loading-screen" aria-live="polite">
-    <img class="loading-art" src="home.png" alt="">
+    <img class="loading-art" src="home.png?v=halloween-s2" alt="">
     <div class="loading-shade" aria-hidden="true"></div>
     <canvas id="loadingLeaves" class="loading-leaves" aria-hidden="true"></canvas>
     <div class="loading-status">
@@ -460,7 +470,7 @@
           <div class="balance-label">موجودی F Coin شما</div>
           <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
         </div>
-        <img class="wallet-icon" src="FCoin.png" alt="" aria-hidden="true">
+        <img class="wallet-icon" src="FCoin.png?v=halloween-s2" alt="" aria-hidden="true">
       </section>
       <section class="home-level" aria-label="سطح و تجربه">
         <div class="home-level-top">
@@ -472,26 +482,26 @@
       <section class="coin-area">
         <canvas id="coinLeaves" class="coin-leaves" aria-hidden="true"></canvas>
         <section class="home-shortcuts" aria-label="جایزه‌ها و امکانات فصل">
-          <button id="dailyRewardButton" class="home-shortcut daily" type="button" disabled>
+          <button id="dailyRewardButton" class="home-shortcut daily" data-daily-feature="daily" type="button" disabled>
             <span class="shortcut-icon" aria-hidden="true">🎁</span><span class="shortcut-label">جایزه روزانه</span>
           </button>
-          <button id="leaderboardButton" class="home-shortcut leaderboard" type="button" disabled>
+          <button id="leaderboardButton" class="home-shortcut leaderboard" data-daily-feature="leaderboard" type="button" disabled>
             <span class="shortcut-icon" aria-hidden="true">🏆</span><span class="shortcut-label">لیدربورد</span>
           </button>
-          <button id="wheelButton" class="home-shortcut wheel" type="button" disabled>
+          <button id="wheelButton" class="home-shortcut wheel" data-daily-feature="wheel" type="button" disabled>
             <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
           </button>
-          <button id="seasonButton" class="home-shortcut season" type="button" disabled>
+          <button id="seasonButton" class="home-shortcut season" data-daily-feature="season" type="button" disabled>
             <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ماموریت فصل</span>
           </button>
           <button id="minerButton" class="home-shortcut miner" type="button" aria-label="ماینر"><span class="shortcut-icon" aria-hidden="true">⛏️</span><span class="shortcut-label">ماینر</span></button>
-          <button id="storeButton" class="home-shortcut store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
+          <button id="storeButton" class="home-shortcut store" data-daily-feature="store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
         </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
-          <img id="coinImage" class="coin-face" src="FCoin.png" alt="" draggable="false">
+          <img id="coinImage" class="coin-face" src="FCoin.png?v=halloween-s2" alt="" draggable="false">
         </button>
         <div class="tap-actions">
-            <button id="boostButton" class="boost-button" type="button" disabled>
+            <button id="boostButton" class="boost-button" data-daily-feature="boost" type="button" disabled>
               <span id="boostLabel">تقویت</span>
             <span id="boostCount" class="boost-count">0/3</span>
           </button>
@@ -821,7 +831,7 @@
       const boostButton = $("boostButton");
       const boostDialog = $("boostDialog");
       const boostConfirmButton = $("boostConfirmButton");
-      new Image().src = "boost.png";
+      new Image().src = "boost.png?v=halloween-s2";
       const inviteLink = $("inviteLink");
       const copyInviteButton = $("copyInviteButton");
       const shareInviteButton = $("shareInviteButton");
@@ -832,6 +842,7 @@
         $("dailyRewardButton"), $("seasonButton"),
         $("leaderboardButton"), $("wheelButton"), $("storeButton")
       ];
+      const pendingFeatureVisits = new Set();
       let serverState = null;
       let busy = false;
       let queuedTaps = 0;
@@ -848,7 +859,6 @@
       let loadingPercent = 0;
       let loadingTimer = 0;
       let initialLoadStarted = false;
-      const introStartedAt = performance.now();
       const tapLabels = new Set();
 
       function showStatus(message, type) {
@@ -867,6 +877,19 @@
       function hideStatus() {
         statusBox.textContent = "";
         statusBox.className = "status";
+      }
+
+      function applyDailyFeatureVisits(visited) {
+        const visitedSet = new Set(Array.isArray(visited) ? visited : []);
+        document.querySelectorAll("[data-daily-feature]").forEach((button) => {
+          button.classList.toggle(
+            "needs-daily-check",
+            !visitedSet.has(button.dataset.dailyFeature)
+          );
+        });
+        if (serverState) {
+          serverState.daily_feature_visits = Array.from(visitedSet);
+        }
       }
 
       function render(state) {
@@ -913,9 +936,13 @@
             ? state.boost_multiplier
             : 2,
           boost_until: Number.isFinite(Number(state.boost_until)) ? Number(state.boost_until) : 0,
+          daily_feature_visits: Array.isArray(state.daily_feature_visits)
+            ? state.daily_feature_visits
+            : [],
           upgrades_supported: tapPower !== null &&
             (reportedMaxEnergy !== null || energyLevel !== null)
         };
+        applyDailyFeatureVisits(serverState.daily_feature_visits);
         if (typeof state.season_name === "string") {
           updateSeasonBadge({
             name: state.season_name,
@@ -1016,7 +1043,9 @@
 
       function syncBoostVisual() {
         const image = $("coinImage");
-        const source = isBoostActive() ? "boost.png" : (normalCoinImage || "FCoin.png");
+        const source = isBoostActive()
+          ? "boost.png?v=halloween-s2"
+          : (normalCoinImage || "FCoin.png?v=halloween-s2");
         if (image.getAttribute("src") !== source) image.setAttribute("src", source);
         tapButton.classList.toggle("is-boosted", isBoostActive());
       }
@@ -1214,6 +1243,20 @@
           throw new Error("مینی‌اپ را از داخل تلگرام باز کن تا اطلاعات حسابت دریافت شود.");
         }
         return apiRequest(endpoint, { ...body, init_data: tg.initData });
+      }
+
+      function markFeatureVisited(featureId) {
+        if (!hasUserAccount() ||
+            (serverState && serverState.daily_feature_visits.includes(featureId)) ||
+            pendingFeatureVisits.has(featureId)) return;
+        pendingFeatureVisits.add(featureId);
+        userApiRequest("features/feature-visit", { feature_id: featureId })
+          .then((result) => applyDailyFeatureVisits(result.daily_feature_visits))
+          .catch((error) => showStatus(
+            error && error.message ? error.message : "ثبت بازدید امروز انجام نشد.",
+            "error"
+          ))
+          .finally(() => pendingFeatureVisits.delete(featureId));
       }
 
       async function request(endpoint, body = {}, beforeRender = null) {
@@ -1690,6 +1733,100 @@
         const balance = document.createElement("div"); balance.className = "bot-balance";
         balance.textContent = "موجودی فعلی F Coin: " + Number(state.balance || 0).toLocaleString("en-US");
         featureDialogBody.replaceChildren(hero,grid,balance);
+      }
+
+      function renderMiner(state) {
+        const level = Number(state.level) || 0;
+        const requiredLevel = Number(state.required_level) || 7;
+        const rate = Number(state.rate_per_hour) || 300;
+        const duration = Number(state.duration_seconds) || 12 * 60 * 60;
+        const startedAt = Number(state.started_at) || 0;
+        const endsAt = Number(state.ends_at) || 0;
+        const active = state.active === true;
+        const card = document.createElement("section");
+        card.className = "miner-card";
+        const rateLabel = document.createElement("div");
+        rateLabel.className = "miner-rate";
+        rateLabel.textContent = rate.toLocaleString("en-US") + " F Coin / h";
+        const description = document.createElement("div");
+        description.className = "miner-status";
+        description.textContent = level < requiredLevel
+          ? "برای فعال‌کردن این قابلیت باید حداقل لول " + requiredLevel + " باشی. لول فعلی تو: " + level + "."
+          : active
+            ? "ماینر روشن است و بدون مصرف انرژی، هر ساعت ۳۰۰ F Coin به حسابت اضافه می‌کند."
+            : "ماینر خاموش است. با فعال‌کردنش تا ۱۲ ساعت، هر ساعت ۳۰۰ F Coin جمع می‌شود.";
+        const progress = document.createElement("div");
+        progress.className = "miner-progress";
+        const fill = document.createElement("div");
+        fill.className = "miner-progress-fill";
+        const elapsed = active ? Math.max(0, Date.now() / 1000 - startedAt) : duration;
+        fill.style.width = Math.min(100, elapsed / duration * 100) + "%";
+        progress.append(fill);
+        const meta = document.createElement("div");
+        meta.className = "miner-meta";
+        if (active) {
+          const nextClaim = Number(state.next_claim_at) || 0;
+          meta.textContent = "ساعت‌های پرداخت‌شده: " + Number(state.claimed_hours || 0) +
+            " از ۱۲ · پرداخت بعدی: " +
+            (nextClaim ? new Date(nextClaim * 1000).toLocaleTimeString("fa-IR", {
+              hour: "2-digit", minute: "2-digit"
+            }) : "—") +
+            " · خاموش‌شدن: " +
+            new Date(endsAt * 1000).toLocaleTimeString("fa-IR", {
+              hour: "2-digit", minute: "2-digit"
+            });
+        } else if (startedAt) {
+          meta.textContent = "دورهٔ قبلی تمام شده است؛ برای شروع ۱۲ ساعت بعدی دوباره فعالش کن.";
+        } else {
+          meta.textContent = "هر فعال‌سازی فقط ۱۲ ساعت اعتبار دارد و برای ادامه باید دوباره وارد مینی‌اپ شوی.";
+        }
+        card.append(rateLabel, description, progress, meta);
+        const activate = document.createElement("button");
+        activate.type = "button";
+        activate.className = "feature-primary";
+        activate.disabled = level < requiredLevel || active || !hasUserAccount();
+        activate.textContent = active
+          ? "ماینر فعال است ✓"
+          : "فعال‌سازی ماینر · ۱۲ ساعت";
+        activate.addEventListener("click", () => activateMiner(activate));
+        const nodes = [card];
+        if (Number(state.collected_now) > 0) {
+          nodes.push(featureMessage(
+            "⛏️ ماینر " + Number(state.collected_now).toLocaleString("en-US") +
+              " F Coin را از آخرین بازدیدت جمع کرد."
+          ));
+        }
+        nodes.push(activate);
+        featureDialogBody.replaceChildren(...nodes);
+        if (serverState && Number.isInteger(state.fcoin_balance)) {
+          serverState.fcoin_balance = state.fcoin_balance;
+          updateWalletDisplay();
+          renderAccount(serverState);
+        }
+      }
+
+      async function openMiner() {
+        openFeatureDialog("⛏️ ماینر خودکار");
+        featureDialogBody.append(featureMessage("در حال بررسی لول و وضعیت ماینر..."));
+        try {
+          renderMiner(await userApiRequest("features/miner-state"));
+        } catch (error) {
+          featureError(error && error.message ? error.message : "وضعیت ماینر دریافت نشد.", openMiner);
+        }
+      }
+
+      async function activateMiner(button) {
+        button.disabled = true;
+        button.textContent = "در حال فعال‌سازی...";
+        try {
+          const state = await userApiRequest("features/miner-activate");
+          renderMiner(state);
+          if (state.activated) {
+            showStatus("⛏️ ماینر برای ۱۲ ساعت فعال شد؛ هر ساعت ۳۰۰ F Coin جمع می‌کند.", "info");
+          }
+        } catch (error) {
+          featureError(error && error.message ? error.message : "فعال‌سازی ماینر انجام نشد.", openMiner);
+        }
       }
 
       async function claimDailyMission() {
@@ -2795,7 +2932,7 @@
           }
         };
         image.onerror = () => showStatus("تصویر اصلی سکه بارگذاری نشد.", "error");
-        image.src = "FCoin.png";
+        image.src = "FCoin.png?v=halloween-s2";
       }
 
       function selectTab(panelId) {
@@ -2853,7 +2990,11 @@
       }
 
       async function preloadLocalAssets() {
-        const assets = ["home.png", "FCoin.png", "boost.png", "barg.png", "back.png"];
+        const assets = [
+          "home.png?v=halloween-s2", "FCoin.png?v=halloween-s2",
+          "boost.png?v=halloween-s2", "barg.png?v=halloween-s2",
+          "back.png?v=halloween-s2"
+        ];
         let completed = 0;
         await Promise.all(assets.map((source) => new Promise((resolve, reject) => {
           const image = new Image();
@@ -2876,7 +3017,7 @@
         $("loadingError").classList.remove("show");
         $("loadingRetryButton").classList.remove("show");
         document.querySelector(".loading-caption").textContent = "بارگذاری کامل شد.";
-        window.setTimeout(() => loadingScreen.classList.add("is-hidden"), Math.max(260, 5000 - (performance.now() - introStartedAt)));
+        window.setTimeout(() => loadingScreen.classList.add("is-hidden"), 260);
       }
 
       function showConnectionDialog(message) {
@@ -2966,6 +3107,7 @@
       $("openUpgradeButton").addEventListener("click", () => selectTab("upgradePanel"));
       boostButton.addEventListener("click", () => {
         if (!serverState || boostButton.disabled) return;
+        markFeatureVisited("boost");
         if (typeof boostDialog.showModal === "function") boostDialog.showModal();
         else boostDialog.setAttribute("open", "");
       });
@@ -3005,15 +3147,27 @@
         }
       });
       claimDailyButton.addEventListener("click", claimDailyMission);
-      $("dailyRewardButton").addEventListener("click", openDailyReward);
-      $("seasonButton").addEventListener("click", openSeason);
-      $("leaderboardButton").addEventListener("click", openLeaderboard);
-      $("wheelButton").addEventListener("click", openWheel);
-      $("storeButton").addEventListener("click", openStore);
-      $("minerButton").addEventListener("click", () => {
-        openFeatureDialog("⛏️ ماینر");
-        featureDialogBody.append(featureMessage("این قابلیت به‌زودی با شروع سیزن ۲ هالووین فعال خواهد شد ..."));
+      $("dailyRewardButton").addEventListener("click", () => {
+        markFeatureVisited("daily");
+        openDailyReward();
       });
+      $("seasonButton").addEventListener("click", () => {
+        markFeatureVisited("season");
+        openSeason();
+      });
+      $("leaderboardButton").addEventListener("click", () => {
+        markFeatureVisited("leaderboard");
+        openLeaderboard();
+      });
+      $("wheelButton").addEventListener("click", () => {
+        markFeatureVisited("wheel");
+        openWheel();
+      });
+      $("storeButton").addEventListener("click", () => {
+        markFeatureVisited("store");
+        openStore();
+      });
+      $("minerButton").addEventListener("click", openMiner);
       document.querySelectorAll("[data-close-dialog]").forEach((button) => {
         button.addEventListener("click", () => closeDialog($(button.dataset.closeDialog)));
       });
@@ -3139,18 +3293,18 @@
       if (!ctx) return;
       const leafImage = new Image();
       leafImage.decoding = "async";
-      leafImage.src = "barg.png";
+      leafImage.src = "barg.png?v=halloween-s2";
       let width = 0, height = 0, raf = 0, last = 0, active = false;
       const leaves = [];
       const rand = (min, max) => min + Math.random() * (max - min);
       function make(initial) {
-        const size = rand(17, 30);
+        const size = rand(24, 40);
         return {
           x: rand(-12, width + 12),
           y: initial ? rand(-height, height) : rand(-size * 2, -size),
           size, speed: rand(18, 34), drift: rand(10, 24),
           phase: rand(0, Math.PI * 2), rotation: rand(0, Math.PI * 2),
-          rotationSpeed: rand(-.65, .65), alpha: rand(.65, .9)
+          rotationSpeed: rand(-.65, .65), alpha: rand(.82, .98)
         };
       }
       function resize() {
@@ -3161,7 +3315,7 @@
         canvas.height = Math.round(height * ratio);
         ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
         if (!leaves.length) {
-          for (let i = 0; i < 18; i++) leaves.push(make(true));
+          for (let i = 0; i < 10; i++) leaves.push(make(true));
         }
       }
       function shouldRun() {
@@ -3224,7 +3378,7 @@
 
 
   <script>
-    /* Efficient coin-screen autumn leaves: one shared image, 9 particles, capped DPR, ~30fps. */
+    /* Efficient coin-screen autumn leaves: one shared image, 10 particles, capped DPR, ~30fps. */
     (() => {
       const canvas = document.getElementById("coinLeaves");
       const area = document.querySelector(".coin-area");
@@ -3234,10 +3388,10 @@
       if (!ctx) return;
       const leafImage = new Image();
       leafImage.decoding = "async";
-      leafImage.src = "barg.png";
+      leafImage.src = "barg.png?v=halloween-s2";
       const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const leaves = [];
-      const COUNT = 18;
+      const COUNT = 10;
       let width = 1, height = 1, dpr = 1, raf = 0, lastFrame = 0, running = false;
       const rand = (min, max) => min + Math.random() * (max - min);
       function resize() {
@@ -3250,10 +3404,10 @@
         if (!leaves.length) for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
       }
       function makeLeaf(initial) {
-        const size = rand(19, 34);
+        const size = rand(27, 46);
         return { x: rand(-12, width + 12), y: initial ? rand(-height, height) : rand(-size * 2, -size), size,
           speed: rand(17, 31), drift: rand(12, 27), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
-          rotation: rand(0, Math.PI * 2), rotationSpeed: rand(-.65, .65), alpha: rand(.65, .9) };
+          rotation: rand(0, Math.PI * 2), rotationSpeed: rand(-.65, .65), alpha: rand(.82, .98) };
       }
       function shouldRun() {
         return !reduceMotion && !document.hidden && !document.body.classList.contains("low-graphics") &&

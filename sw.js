@@ -1,17 +1,17 @@
 /* F Coin cache strategy: stable assets and season artwork are stored separately. */
-const STATIC_CACHE_NAME = "fcoin-static-v3";
-const SEASON_CACHE_NAME = "fcoin-season-s1-v1";
+const STATIC_CACHE_NAME = "fcoin-static-v4";
+const SEASON_CACHE_NAME = "fcoin-season-s2-v1";
 const STATIC_ASSETS = [
   "./",
   "./index.html",
-  "./home.png",
-  "./FCoin.png",
-  "./boost.png",
+  "./home.png?v=halloween-s2",
+  "./FCoin.png?v=halloween-s2",
+  "./boost.png?v=halloween-s2",
   "./farno-qr.png",
   "./music.mp3",
-  "./barg.png"
+  "./barg.png?v=halloween-s2"
 ];
-const SEASON_ASSETS = ["./back.png"];
+const SEASON_ASSETS = ["./back.png?v=halloween-s2"];
 
 async function cacheOptionalAssets(cacheName, assets) {
   const cache = await caches.open(cacheName);
