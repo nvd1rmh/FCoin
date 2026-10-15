@@ -62,7 +62,7 @@
     .mission-xp-fill { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#ff724d,#ffd45a); box-shadow:0 0 14px #ffbd3b78; transition:width .35s ease; }
     .mission-next { margin-top:8px; color:var(--muted); font-size:10px; }
     .mission-list { display:grid; gap:11px; margin-top:15px; }
-    .mission-card { padding:15px; border:1px solid var(--border); border-radius:18px; background:linear-gradient(145deg,#ffffff0c,#ffffff04); }
+    .mission-card { padding:15px; border:1px solid var(--border); border-radius:18px; background:linear-gradient(145deg,#ffffff0c,#ffffff04); contain:content; }
     .mission-card.is-complete { border-color:#70e5af40; background:linear-gradient(145deg,#39c98a13,#ffffff04); }
     .mission-card-top { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
     .mission-title { font-size:13px; font-weight:800; line-height:1.7; }
@@ -269,7 +269,7 @@
     .leader-balance { direction:ltr; unicode-bidi:isolate; color:#ffdf7c; font-size:11px; font-weight:900; white-space:nowrap; }
     .season-countdown { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; border-color:#f0867b4d; color:#ffccc7; background:linear-gradient(110deg,#ff63401d,#ff20200c); }
     .season-countdown strong { direction:ltr; color:#ff8379; font-size:20px; text-shadow:0 0 14px #ff3d3999; }
-    .season-task { padding:12px; border:1px solid #ffffff18; border-radius:15px; background:linear-gradient(145deg,#ffffff0d,#ffffff04); }
+    .season-task { padding:12px; border:1px solid #ffffff18; border-radius:15px; background:linear-gradient(145deg,#ffffff0d,#ffffff04); contain:content; }
     .season-task.is-complete { border-color:#63e4a35c; background:linear-gradient(145deg,#2bc78017,#ffffff04); }
     .season-task-top,.season-task-progress { display:flex; justify-content:space-between; align-items:center; gap:10px; }
     .season-task-title { font-size:12px; font-weight:800; line-height:1.7; }
@@ -304,11 +304,12 @@
     .connection-dialog .feature-dialog-head h2 { color:#ffd5d2; }
     .connection-copy { color:#e8dbe0; font-size:12px; line-height:2; }
     /* restrained iOS-like glass: translucent neutral tint, never opaque black or yellow */
-    .placeholder-card,.mission-hero,.mission-card,.energy-card,.exchange-card,.home-level,.daily-day,.leader-row,.season-task,.feature-dialog,.upgrade-card,.invite-card,.self-grid-button {
+    .placeholder-card,.mission-hero,.energy-card,.exchange-card,.home-level,.daily-day,.leader-row,.feature-dialog,.upgrade-card,.invite-card,.self-grid-button {
       background-color:rgba(28,30,41,.48); border-color:rgba(255,255,255,.15);
       box-shadow:inset 0 1px rgba(255,255,255,.10),0 8px 24px rgba(0,0,0,.10);
       -webkit-backdrop-filter:blur(15px) saturate(125%); backdrop-filter:blur(15px) saturate(125%);
     }
+    .mission-card,.season-task { background:rgba(32,29,36,.88); box-shadow:none; }
     .home-shortcut { transition:transform .1s ease; }
     .home-shortcut:active { transform:scale(.98); }
     .wheel-slot { direction:rtl; unicode-bidi:plaintext; writing-mode:horizontal-tb; }
@@ -596,7 +597,6 @@
       <div id="missionList" class="mission-list">
         <div class="mission-card"><div class="mission-title">برای دیدن ماموریت‌ها، حسابت را وصل کن.</div></div>
       </div>
-      <button id="claimDailyButton" class="mission-claim" type="button" disabled>دریافت سکهٔ روزانه و +۲۵ XP</button>
     </section>
     <section id="accountPanel" class="tab-panel" aria-label="حساب کاربری">
       <div class="placeholder-card profile-card"><div class="placeholder-icon">👤</div><h1>حساب من</h1><p id="profileStatus">اطلاعات حساب تلگرامت به‌صورت خودکار دریافت می‌شود.</p></div>
@@ -644,7 +644,7 @@
     </nav>
   </main>
 
-  <audio id="backgroundMusic" src="music.mp3?v=halloween-s2-audio2" preload="auto" autoplay playsinline></audio>
+  <audio id="backgroundMusic" src="music.mp3?v=halloween-s2-audio2" preload="none" autoplay playsinline></audio>
   <dialog id="settingsDialog" class="feature-dialog settings-dialog" aria-labelledby="settingsDialogTitle">
     <div class="feature-dialog-inner">
       <div class="feature-dialog-head"><h2 id="settingsDialogTitle">⚙ تنظیمات بازی</h2><button class="dialog-close" type="button" data-close-dialog="settingsDialog" aria-label="بستن">×</button></div>
@@ -745,7 +745,6 @@
       // Attempt playback immediately and retry throughout loading. Browsers may
       // still require a genuine user gesture; never fake coin taps or award coins
       // just to unlock media/haptics.
-      try { music.load(); } catch (_) {}
       tryPlayMusic();
       music.addEventListener("canplay", () => {
         if (musicEnabled && music.paused) tryPlayMusic();
@@ -840,7 +839,6 @@
       const connectionError = $("connectionError");
       const selfApp = $("selfApp");
       const missionList = $("missionList");
-      const claimDailyButton = $("claimDailyButton");
       const boostButton = $("boostButton");
       const boostDialog = $("boostDialog");
       const boostConfirmButton = $("boostConfirmButton");
@@ -857,6 +855,7 @@
       ];
       const pendingFeatureVisits = new Set();
       let serverState = null;
+      let serverClockOffsetMs = 0;
       let missionDialogDailyState = null;
       let missionDialogSeasonState = null;
       let busy = false;
@@ -913,6 +912,10 @@
       function render(state) {
         if (!state || state.ok !== true) {
           throw new Error("پاسخ دریافتی از سرور معتبر نیست.");
+        }
+        const serverTime = Number(state.server_time);
+        if (Number.isFinite(serverTime) && serverTime > 0) {
+          serverClockOffsetMs = serverTime * 1000 - Date.now();
         }
         const readInteger = (keys) => {
           for (const key of keys) {
@@ -1050,7 +1053,11 @@
       }
 
       function isBoostActive() {
-        return !!serverState && serverState.boost_until * 1000 > Date.now();
+        return !!serverState && serverState.boost_until * 1000 > Date.now() + serverClockOffsetMs;
+      }
+
+      function serverNowSeconds() {
+        return (Date.now() + serverClockOffsetMs) / 1000;
       }
 
       function effectiveTapPower() {
@@ -1088,7 +1095,7 @@
         if (!serverState) return 0;
         const updatedAt = Number(serverState.energy_updated_at);
         const elapsed = Number.isFinite(updatedAt)
-          ? Math.max(0, Date.now() / 1000 - updatedAt)
+          ? Math.max(0, serverNowSeconds() - updatedAt)
           : 0;
         const regenerated = elapsed * 10 / 60;
         const energy = Math.min(serverState.max_energy, serverState.energy + regenerated);
@@ -1208,7 +1215,7 @@
         const limit = serverState ? serverState.boost_limit : 3;
         const active = isBoostActive();
         const remaining = active
-          ? Math.max(1, Math.ceil(serverState.boost_until - Date.now() / 1000))
+          ? Math.max(1, Math.ceil(serverState.boost_until - serverNowSeconds()))
           : 0;
         $("boostCount").textContent = Math.min(uses, limit) + "/" + limit;
         $("boostLabel").textContent = active ? "فعال · " + remaining + " ثانیه" : "تقویت";
@@ -1327,49 +1334,42 @@
             lottery: "قرعه‌کشی",
             random: "بازی شانسی"
           }[mission.id] || "مرحله";
-          status.textContent = mission.completed
-            ? "جایزهٔ این مأموریت را امروز گرفته‌ای."
+          status.textContent = mission.claimed
+            ? "پاداش خودکار دریافت شد ✓"
+            : mission.completed
+              ? "پاداش به‌صورت خودکار در حال ثبت است."
             : mission.id === "daily"
-              ? "با دکمهٔ پایین، سکهٔ روزانه و ۲۵ XP را بگیر."
-              : mission.progress >= mission.target
-                ? "پیشرفت کامل شد؛ جایزهٔ XP ثبت می‌شود."
-                : "برای تکمیل، " + remaining.toLocaleString("en-US") + " " +
-                  remainingUnit + (mission.id === "fcoin" ? " جمع کن." : " دیگر انجام بده.");
+              ? "با نوشتن «دریافت» در گپ، سکهٔ روزانه را بگیر."
+              : "برای تکمیل، " + remaining.toLocaleString("en-US") + " " +
+                remainingUnit + (mission.id === "fcoin" ? " جمع کن." : " دیگر انجام بده.");
           card.append(top, progress, bar, status);
-          if (mission.id === "daily") {
-            claimDailyButton.disabled = mission.completed || !hasUserAccount();
-            claimDailyButton.textContent = mission.completed
-              ? "سکهٔ روزانهٔ امروز دریافت شد ✓"
-              : "دریافت سکهٔ روزانه و +۲۵ XP";
-          } else {
-            const link = document.createElement("a");
-            link.className = "connect-button";
-            link.style.marginTop = "12px";
-            const isTapMission = mission.id === "fcoin";
-            link.href = isTapMission ? "#homePanel" : "https://t.me/FarnoGP";
-            if (!isTapMission) {
-              link.target = "_blank";
-              link.rel = "noopener";
-            }
-            link.textContent = mission.completed
-              ? "چالش کامل شد ✓"
-              : isTapMission
-                ? "رفتن به خانه و جمع‌آوری F Coin"
-                : "رفتن به گپ و انجام مأموریت";
-            link.setAttribute("aria-disabled", mission.completed ? "true" : "false");
-            link.addEventListener("click", (event) => {
-              if (mission.completed) event.preventDefault();
-              else if (isTapMission) {
-                event.preventDefault();
-                selectTab("homePanel");
-              }
-              else if (tg && typeof tg.openTelegramLink === "function") {
-                event.preventDefault();
-                tg.openTelegramLink("https://t.me/FarnoGP");
-              }
-            });
-            card.append(link);
+          const link = document.createElement("a");
+          link.className = "connect-button";
+          link.style.marginTop = "12px";
+          const isTapMission = mission.id === "fcoin";
+          link.href = isTapMission ? "#homePanel" : "https://t.me/FarnoGP";
+          if (!isTapMission) {
+            link.target = "_blank";
+            link.rel = "noopener";
           }
+          link.textContent = mission.claimed
+            ? "ماموریت کامل شد ✓"
+            : isTapMission
+              ? "رفتن به خانه و جمع‌آوری F Coin"
+              : "رفتن به گپ و انجام مأموریت";
+          link.setAttribute("aria-disabled", mission.claimed ? "true" : "false");
+          link.addEventListener("click", (event) => {
+            if (mission.claimed) event.preventDefault();
+            else if (isTapMission) {
+              event.preventDefault();
+              selectTab("homePanel");
+            }
+            else if (tg && typeof tg.openTelegramLink === "function") {
+              event.preventDefault();
+              tg.openTelegramLink("https://t.me/FarnoGP");
+            }
+          });
+          card.append(link);
           missionList.append(card);
         });
       }
@@ -1562,7 +1562,7 @@
         $("seasonBadge").textContent = state.name || state.season_name || "Season 1";
       }
 
-      function appendMissionCards(parent, missions, scope) {
+      function appendMissionCards(parent, missions) {
         if (!Array.isArray(missions) || missions.length === 0) {
           parent.append(featureMessage("فعلاً ماموریتی برای این فصل وجود ندارد."));
           return;
@@ -1595,19 +1595,11 @@
           fill.style.width = Math.min(100, Number(mission.progress) / Math.max(1, Number(mission.target)) * 100) + "%";
           bar.append(fill);
           card.append(top, progress, bar);
-          if (mission.claimed) {
-            card.append(featureMessage("پاداش این ماموریت دریافت شده ✓"));
-          } else {
-            const claim = document.createElement("button");
-            claim.type = "button";
-            claim.className = "feature-primary";
-            claim.disabled = !mission.completed;
-            claim.textContent = mission.completed ? "دریافت پاداش" : "هنوز کامل نشده";
-            claim.addEventListener("click", () => scope === "daily"
-              ? claimDailyFeatureMission(mission.id)
-              : claimSeasonMission(mission.id));
-            card.append(claim);
-          }
+          card.append(featureMessage(mission.claimed
+            ? "پاداش خودکار دریافت شد ✓"
+            : mission.completed
+              ? "پاداش به‌صورت خودکار در حال ثبت است."
+              : "با تکمیل ماموریت، پاداش خودکار به حسابت اضافه می‌شود."));
           parent.append(card);
         });
       }
@@ -1643,7 +1635,7 @@
         const missions = document.createElement("div");
         missions.className = "season-mission-list";
         if (activeTab === "daily") {
-          appendMissionCards(missions, dailyState && dailyState.missions, "daily");
+          appendMissionCards(missions, dailyState && dailyState.missions);
         } else {
           const level = Number(state.level) || 0;
           const xp = Number(state.xp) || 0;
@@ -1653,7 +1645,7 @@
             xp.toLocaleString("en-US") + " / " + target.toLocaleString("en-US") + " XP"
           );
           missions.append(levelNote);
-          appendMissionCards(missions, state.missions, "season");
+          appendMissionCards(missions, state.missions);
         }
         featureDialogBody.replaceChildren(countdown, tabs, missions);
       }
@@ -1669,40 +1661,6 @@
           renderSeason(seasonState, dailyState, "daily");
         } catch (error) {
           featureError(error && error.message ? error.message : "ماموریت‌ها دریافت نشد.", openSeason);
-        }
-      }
-
-      async function claimDailyFeatureMission(missionId) {
-        try {
-          const result = await userApiRequest("missions/claim", { mission_id: missionId });
-          missionDialogDailyState = result;
-          renderSeason(missionDialogSeasonState, result, "daily");
-          const mission = result.missions.find((item) => item.id === missionId);
-          showStatus(
-            "🎉 ماموریت انجام شد: +" + Number(mission ? mission.reward : 0).toLocaleString("en-US") +
-            " F Coin و +" + Number(mission ? mission.xp_reward : 0).toLocaleString("en-US") + " XP",
-            "info"
-          );
-          await request("state");
-        } catch (error) {
-          featureError(error && error.message ? error.message : "دریافت پاداش ماموریت ناموفق بود.", openSeason);
-        }
-      }
-
-      async function claimSeasonMission(missionId) {
-        try {
-          const result = await userApiRequest("features/season-claim", { mission_id: missionId });
-          missionDialogSeasonState = result;
-          renderSeason(result, missionDialogDailyState, "season");
-          const mission = result.missions.find((item) => item.id === missionId);
-          showStatus(
-            "🎉 پاداش سیزن: +" + Number(mission ? mission.reward : 0).toLocaleString("en-US") +
-            " F Coin و +" + Number(mission ? mission.xp_reward : 0).toLocaleString("en-US") + " XP",
-            "info"
-          );
-          await request("state");
-        } catch (error) {
-          featureError(error && error.message ? error.message : "دریافت پاداش سیزن ناموفق بود.", openSeason);
         }
       }
 
@@ -1941,33 +1899,6 @@
           }
         } catch (error) {
           featureError(error && error.message ? error.message : "فعال‌سازی ماینر انجام نشد.", openMiner);
-        }
-      }
-
-      async function claimDailyMission() {
-        if (busy || !hasUserAccount()) return;
-        claimDailyButton.disabled = true;
-        claimDailyButton.textContent = "در حال ثبت جایزه…";
-        try {
-          const result = await userApiRequest("missions/claim-daily");
-          renderMissions(result);
-          await request("state");
-          showStatus("🎉 " + result.daily_coins.toLocaleString("en-US") + " سکهٔ روزانه و ۲۵ XP گرفتی!", "info");
-        } catch (error) {
-          showStatus(error && error.message ? error.message : "دریافت ماموریت روزانه ناموفق بود.", "error");
-          try {
-            await refreshMissions();
-          } catch (refreshError) {
-            showStatus(
-              (error && error.message ? error.message : "دریافت ماموریت روزانه ناموفق بود.") +
-                " به‌روزرسانی وضعیت هم انجام نشد: " +
-                (refreshError && refreshError.message ? refreshError.message : "خطای ارتباط."),
-              "error"
-            );
-          }
-        } finally {
-          claimDailyButton.disabled =
-            claimDailyButton.textContent.includes("دریافت شد") || !hasUserAccount();
         }
       }
 
@@ -3094,6 +3025,7 @@
       function beginLoadingScreen() {
         window.clearInterval(loadingTimer);
         loadingPercent = 0;
+        const startedAt = performance.now();
         loadingScreen.classList.remove("is-hidden");
         $("loadingError").textContent = "";
         $("loadingError").classList.remove("show");
@@ -3101,17 +3033,10 @@
         $("loadingProgressFill").style.width = "0%";
         $("loadingPercent").textContent = "0%";
         loadingTimer = window.setInterval(() => {
-          loadingPercent = Math.min(92, loadingPercent + 3 + Math.floor(Math.random() * 5));
+          loadingPercent = Math.min(99, Math.floor((performance.now() - startedAt) / 680 * 100));
           $("loadingProgressFill").style.width = loadingPercent + "%";
           $("loadingPercent").textContent = loadingPercent + "%";
-        }, 110);
-      }
-
-      function setLoadingProgress(percent, caption) {
-        loadingPercent = Math.max(loadingPercent, Math.min(96, percent));
-        $("loadingProgressFill").style.width = loadingPercent + "%";
-        $("loadingPercent").textContent = Math.floor(loadingPercent) + "%";
-        if (caption) document.querySelector(".loading-caption").textContent = caption;
+        }, 24);
       }
 
       function showLoadingError(message) {
@@ -3123,60 +3048,27 @@
         document.querySelector(".loading-caption").textContent = "بارگذاری کامل نشد؛ برای ورود دوباره تلاش کن.";
       }
 
-      async function preloadLocalAssets() {
-        const assets = [
-          "home.png?v=halloween-s2", "FCoin.png?v=halloween-s2",
-          "boost.png?v=halloween-s2", "barg.png?v=halloween-s2",
-          "back.png?v=halloween-s2"
-        ];
-        let completed = 0;
-        const updateProgress = (caption) => {
-          completed += 1;
-          setLoadingProgress(8 + completed / (assets.length + 1) * 52, caption);
-        };
-        const imageLoads = assets.map((source) => new Promise((resolve, reject) => {
-          const image = new Image();
-          image.onload = () => {
-            updateProgress("در حال دریافت تصویرهای فصل...");
-            resolve();
-          };
-          image.onerror = () => reject(new Error("بارگذاری تصویر «" + source + "» انجام نشد."));
-          image.src = source;
-        }));
-        const musicLoad = (async () => {
-          const source = "music.mp3?v=halloween-s2-audio2";
+      async function cacheSeasonAudio() {
+        if (!("caches" in window)) return;
+        const source = "music.mp3?v=halloween-s2-audio2";
+        const cacheName = "fcoin-static-v6";
+        try {
+          const cache = await caches.open(cacheName);
+          if (await cache.match(source)) return;
+          const controller = new AbortController();
+          const timeout = window.setTimeout(() => controller.abort(), 10000);
           try {
-            const response = await fetch(source, { cache: "reload" });
-            if (!response.ok) throw new Error("HTTP " + response.status);
-            const audioBlob = await response.blob();
-            if (music.getAttribute("src") !== source) {
-              music.src = source;
-              music.load();
-            }
-            let cached = false;
-            if ("caches" in window) {
-              try {
-                const cache = await caches.open("fcoin-static-v5");
-                await cache.put(source, new Response(audioBlob, {
-                  status: 200,
-                  headers: response.headers
-                }));
-                cached = true;
-              } catch (cacheError) {
-                showStatus("موسیقی دریافت شد، اما ذخیرهٔ پایدار در این مرورگر ممکن نشد.", "error");
-              }
-            } else {
-              showStatus("موسیقی دریافت شد، اما حافظهٔ کش در این مرورگر پشتیبانی نمی‌شود.", "error");
-            }
-            updateProgress(cached
-              ? "موسیقی فصل دریافت و برای استفادهٔ بعدی ذخیره شد."
-              : "موسیقی دریافت شد؛ ذخیرهٔ پایدار در این مرورگر در دسترس نبود.");
-          } catch (audioError) {
-            showStatus("دریافت موسیقی انجام نشد؛ سایر بخش‌های مینی‌اپ همچنان آماده می‌شوند.", "error");
-            updateProgress("دریافت تصویرها کامل شد؛ موسیقی در دسترس نبود.");
+            const response = await fetch(source, {
+              cache: "force-cache",
+              signal: controller.signal
+            });
+            if (response.ok) await cache.put(source, response.clone());
+          } finally {
+            window.clearTimeout(timeout);
           }
-        })();
-        await Promise.all([...imageLoads, musicLoad]);
+        } catch (error) {
+          console.warn("Optional season audio cache failed:", error);
+        }
       }
 
       function finishLoadingScreen() {
@@ -3207,28 +3099,33 @@
           initialLoadStarted = false;
           return;
         }
-        try {
-          document.querySelector(".loading-caption").textContent = "در حال دریافت تصاویر و اطلاعات حساب...";
-          const results = await Promise.allSettled([
-            preloadLocalAssets(),
-            request("state"),
-            refreshMissions(),
-            refreshSelf()
-          ]);
-          const failed = results.find((result) => result.status === "rejected");
-          if (failed) throw failed.reason;
-          setLoadingProgress(96, "همهٔ بخش‌ها آماده‌اند...");
-          finishLoadingScreen();
-        } catch (error) {
+        document.querySelector(".loading-caption").textContent = "در حال آماده‌سازی مینی‌اپ...";
+        const stateRequest = request("state");
+        await new Promise((resolve) => window.setTimeout(resolve, 680));
+        finishLoadingScreen();
+        initialLoadStarted = false;
+        void cacheSeasonAudio();
+        stateRequest.then(() => {
+          refreshMissions().catch((error) => showStatus(
+            error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.",
+            "error"
+          ));
+          refreshSelf().catch((error) => {
+            selfApp.replaceChildren();
+            selfApp.append(selfCard(
+              "پنل سلف",
+              error && error.message ? error.message : "وضعیت سلف دریافت نشد."
+            ));
+          });
+        }).catch((error) => {
           renderConnection(false);
           updateButtons();
-          showLoadingError(
+          showStatus(
             (error && error.message ? error.message : "اطلاعات حساب از سرور دریافت نشد.") +
-              " اتصال اینترنت و VPN را بررسی کن."
+              " اتصال اینترنت و VPN را بررسی کن.",
+            "error"
           );
-        } finally {
-          initialLoadStarted = false;
-        }
+        });
       }
 
       $("settingsButton").addEventListener("click", () => {
@@ -3317,7 +3214,6 @@
           showStatus(error && error.message ? error.message : "اشتراک‌گذاری لینک انجام نشد.", "error");
         }
       });
-      claimDailyButton.addEventListener("click", claimDailyMission);
       $("dailyRewardButton").addEventListener("click", () => {
         markFeatureVisited("daily");
         openDailyReward();
