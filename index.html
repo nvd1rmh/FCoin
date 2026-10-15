@@ -279,12 +279,18 @@
     .season-task-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,#9a57ff,#f0bdff); box-shadow:0 0 10px #ba6cff88; }
     .season-task .feature-primary { margin-top:9px; padding:10px; }
     .wheel-wrap { position:relative; width:min(76vw,310px); aspect-ratio:1; margin:18px auto; }
-    .wheel-disc { position:absolute; inset:0; overflow:hidden; border:7px solid #f7d47b; border-radius:50%; background:conic-gradient(#a04424 0deg 51.43deg,#17684f 51.43deg 102.86deg,#245596 102.86deg 154.29deg,#703c98 154.29deg 205.72deg,#247786 205.72deg 257.15deg,#ad6425 257.15deg 308.58deg,#6d3a7e 308.58deg 360deg); box-shadow:0 0 0 4px #3b2818,0 0 25px #ffbe4d66,inset 0 0 26px #0008; transition:transform 4.7s cubic-bezier(.11,.67,.08,1); }
-    .wheel-disc:before { position:absolute; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff5 0deg 1.2deg,transparent 1.2deg 51.43deg); content:""; }
-    .wheel-slot { position:absolute; z-index:1; width:74px; transform:translate(-50%,-50%); color:#fff7dd; text-align:center; text-shadow:0 1px 4px #000; font-size:9px; font-weight:900; line-height:1.4; }
+    .wheel-disc { position:absolute; inset:0; overflow:hidden; border:7px solid #f7d47b; border-radius:50%; background:conic-gradient(#a04424 0deg 45deg,#17684f 45deg 90deg,#245596 90deg 135deg,#703c98 135deg 180deg,#247786 180deg 225deg,#ad6425 225deg 270deg,#6d3a7e 270deg 315deg,#17684f 315deg 360deg); box-shadow:0 0 0 4px #3b2818,0 0 25px #ffbe4d66,inset 0 0 26px #0008; transition:transform 4.7s cubic-bezier(.11,.67,.08,1); }
+    .wheel-disc:before { position:absolute; inset:0; border-radius:50%; background:repeating-conic-gradient(from 0deg,#fff5 0deg 1.2deg,transparent 1.2deg 45deg); content:""; }
+    .wheel-slot { position:absolute; z-index:1; width:66px; transform:translate(-50%,-50%); color:#fff7dd; text-align:center; text-shadow:0 1px 4px #000; font-size:8px; font-weight:900; line-height:1.35; }
+    .wheel-slot.is-winner { z-index:4; padding:5px 4px; border:1px solid #fff1a8; border-radius:9px; color:#321c03; background:#ffe88b; box-shadow:0 0 18px #ffe167; text-shadow:none; transform:translate(-50%,-50%) scale(1.3); }
     .wheel-center { position:absolute; z-index:2; left:50%; top:50%; width:58px; height:58px; display:grid; place-items:center; transform:translate(-50%,-50%); border:4px solid #ffe3a0; border-radius:50%; color:#432509; background:radial-gradient(circle at 35% 25%,#fff3bd,#ffbf39 65%,#b65d13); box-shadow:0 0 17px #ffc24b99; font-size:20px; font-weight:1000; }
     .wheel-pointer { position:absolute; z-index:3; top:-13px; left:50%; width:0; height:0; transform:translateX(-50%); border-right:13px solid transparent; border-left:13px solid transparent; border-top:27px solid #fff1bb; filter:drop-shadow(0 3px 4px #000); }
     .wheel-result { min-height:24px; color:#ffe69d; text-align:center; font-size:12px; font-weight:900; }
+    .wheel-winner { margin-top:10px; padding:14px; border:1px solid #ffe084a6; border-radius:16px; color:#fff0b2; background:radial-gradient(ellipse at 50% 0,#ffe06c2e,transparent 75%),#ffffff0a; text-align:center; box-shadow:0 0 22px #ffc84424; }
+    .wheel-winner strong { display:block; margin-top:5px; color:#ffe98c; font-size:22px; text-shadow:0 0 15px #ffbf45a6; }
+    .mission-tabs { display:flex; direction:rtl; gap:8px; margin:0 0 12px; padding:4px; border:1px solid #ffffff16; border-radius:14px; background:#ffffff08; }
+    .mission-tab { flex:1; padding:10px 6px; border:1px solid transparent; border-radius:10px; color:#c7c1d1; background:transparent; font-size:11px; font-weight:900; cursor:pointer; }
+    .mission-tab.active { border-color:#ffd45a55; color:#fff0b4; background:linear-gradient(110deg,#ffd45a20,#ff9d1410); }
     .loading-screen { position:fixed; z-index:30; inset:0; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:18px; background:#070608; transition:opacity .4s ease,visibility .4s ease; }
     .loading-screen.is-hidden { visibility:hidden; opacity:0; pointer-events:none; }
     .loading-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
@@ -492,7 +498,7 @@
             <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
           </button>
           <button id="seasonButton" class="home-shortcut season" data-daily-feature="season" type="button" disabled>
-            <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ماموریت فصل</span>
+            <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ماموریت</span>
           </button>
           <button id="minerButton" class="home-shortcut miner" type="button" aria-label="ماینر"><span class="shortcut-icon" aria-hidden="true">⛏️</span><span class="shortcut-label">ماینر</span></button>
           <button id="storeButton" class="home-shortcut store" data-daily-feature="store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
@@ -524,6 +530,13 @@
           <button id="boostCancelButton" type="button">فعلاً نه</button>
           <button id="boostConfirmButton" class="boost-confirm" type="button">بله، فعال کن</button>
         </div>
+      </div>
+    </dialog>
+    <dialog id="wheelPrizeDialog" class="connection-dialog" aria-labelledby="wheelPrizeTitle">
+      <div class="feature-dialog-inner">
+        <div class="feature-dialog-head"><h2 id="wheelPrizeTitle">🎉 جایزهٔ گردونه</h2></div>
+        <div id="wheelPrizeCopy" class="wheel-winner"></div>
+        <button id="wheelPrizeCloseButton" class="feature-primary" type="button">عالیه!</button>
       </div>
     </dialog>
     <section id="convertPanel" class="tab-panel" aria-label="تبدیل">
@@ -631,7 +644,7 @@
     </nav>
   </main>
 
-  <audio id="backgroundMusic" src="music.mp3" preload="auto" autoplay playsinline></audio>
+  <audio id="backgroundMusic" src="music.mp3?v=halloween-s2-audio2" preload="auto" autoplay playsinline></audio>
   <dialog id="settingsDialog" class="feature-dialog settings-dialog" aria-labelledby="settingsDialogTitle">
     <div class="feature-dialog-inner">
       <div class="feature-dialog-head"><h2 id="settingsDialogTitle">⚙ تنظیمات بازی</h2><button class="dialog-close" type="button" data-close-dialog="settingsDialog" aria-label="بستن">×</button></div>
@@ -844,9 +857,14 @@
       ];
       const pendingFeatureVisits = new Set();
       let serverState = null;
+      let missionDialogDailyState = null;
+      let missionDialogSeasonState = null;
       let busy = false;
       let queuedTaps = 0;
       let inFlightTaps = 0;
+      const queuedTapValues = [];
+      let queuedTapReward = 0;
+      let inFlightTapReward = 0;
       let flushingTaps = false;
       let tapFlushTimer = 0;
       let tapDisplayFrame = 0;
@@ -1017,7 +1035,7 @@
         syncBoostVisual();
         const tapPower = effectiveTapPower();
         $("fcoinBalance").replaceChildren(document.createTextNode(
-          (serverState.fcoin_balance + (queuedTaps + inFlightTaps) * tapPower).toLocaleString("en-US")
+          (serverState.fcoin_balance + queuedTapReward + inFlightTapReward).toLocaleString("en-US")
         ));
         const unit = document.createElement("span");
         unit.className = "balance-unit";
@@ -1446,7 +1464,9 @@
           const dayTitle = document.createElement("strong");
           dayTitle.textContent = "روز " + day;
           const amount = document.createElement("span");
-          amount.textContent = Number(reward).toLocaleString("en-US") + " F Coin";
+          const xpReward = Array.isArray(state.xp_rewards) ? Number(state.xp_rewards[index] || 0) : 0;
+          amount.textContent = Number(reward).toLocaleString("en-US") +
+            " F Coin · +" + xpReward.toLocaleString("en-US") + " XP";
           card.append(dayTitle, amount);
           track.append(card);
         });
@@ -1480,7 +1500,8 @@
           renderDailyReward(result);
           showStatus(
             "🎉 روز " + result.claimed_day + " را گرفتی؛ +" +
-              Number(result.claimed_reward).toLocaleString("en-US") + " F Coin و +25 XP",
+              Number(result.claimed_reward).toLocaleString("en-US") + " F Coin و +" +
+              Number(result.xp_awarded || 0).toLocaleString("en-US") + " XP",
             "info"
           );
           await request("state").catch((error) =>
@@ -1541,75 +1562,154 @@
         $("seasonBadge").textContent = state.name || state.season_name || "Season 1";
       }
 
-      function renderSeason(state) {
+      function appendMissionCards(parent, missions, scope) {
+        if (!Array.isArray(missions) || missions.length === 0) {
+          parent.append(featureMessage("فعلاً ماموریتی برای این فصل وجود ندارد."));
+          return;
+        }
+        missions.forEach((mission) => {
+          const card = document.createElement("article");
+          card.className = "season-task" + (mission.completed ? " is-complete" : "");
+          const top = document.createElement("div");
+          top.className = "season-task-top";
+          const title = document.createElement("div");
+          title.className = "season-task-title";
+          title.textContent = mission.title;
+          const reward = document.createElement("div");
+          reward.className = "season-task-reward";
+          reward.textContent = "+" + Number(mission.reward).toLocaleString("en-US") +
+            " F · +" + Number(mission.xp_reward).toLocaleString("en-US") + " XP";
+          top.append(title, reward);
+          const progress = document.createElement("div");
+          progress.className = "season-task-progress";
+          const progressLabel = document.createElement("span");
+          progressLabel.textContent = "پیشرفت";
+          const count = document.createElement("strong");
+          count.textContent = Number(mission.progress).toLocaleString("en-US") +
+            " / " + Number(mission.target).toLocaleString("en-US");
+          progress.append(progressLabel, count);
+          const bar = document.createElement("div");
+          bar.className = "season-task-bar";
+          const fill = document.createElement("div");
+          fill.className = "season-task-fill";
+          fill.style.width = Math.min(100, Number(mission.progress) / Math.max(1, Number(mission.target)) * 100) + "%";
+          bar.append(fill);
+          card.append(top, progress, bar);
+          if (mission.claimed) {
+            card.append(featureMessage("پاداش این ماموریت دریافت شده ✓"));
+          } else {
+            const claim = document.createElement("button");
+            claim.type = "button";
+            claim.className = "feature-primary";
+            claim.disabled = !mission.completed;
+            claim.textContent = mission.completed ? "دریافت پاداش" : "هنوز کامل نشده";
+            claim.addEventListener("click", () => scope === "daily"
+              ? claimDailyFeatureMission(mission.id)
+              : claimSeasonMission(mission.id));
+            card.append(claim);
+          }
+          parent.append(card);
+        });
+      }
+
+      function renderSeason(state, dailyState = missionDialogDailyState, activeTab = "daily") {
         updateSeasonBadge(state);
+        missionDialogSeasonState = state;
+        missionDialogDailyState = dailyState;
         const seasonName = state.season_name || $("seasonBadge").textContent;
-        const daysRemaining = Math.max(0, Number(state.days_remaining) || 0);
         const countdown = document.createElement("div");
         countdown.className = "season-countdown";
         const label = document.createElement("span");
         label.textContent = seasonName;
         const remaining = document.createElement("strong");
-        remaining.textContent = daysRemaining + "d";
+        remaining.textContent = Math.max(0, Number(state.days_remaining) || 0) + " روز";
         countdown.append(label, remaining);
-        const level = Number(state.level) || 0;
-        const xp = Number(state.xp) || 0;
-        const target = Math.max(1, Number(state.level_target) || 100 + level * 100);
-        const levelCard = document.createElement("section");
-        levelCard.className = "mission-hero season-level";
-        levelCard.innerHTML =
-          '<div class="mission-hero-top"><span>⭐ سطح فعلی</span><span>' +
-          xp.toLocaleString("en-US") + " / " + target.toLocaleString("en-US") +
-          ' XP</span></div><div class="mission-level">Level ' +
-          level.toLocaleString("en-US") + ' <small>جایزهٔ لول بعدی: +' +
-          ((level + 1) * 250).toLocaleString("en-US") +
-          ' F Coin</small></div><div class="mission-xp-bar"><div class="mission-xp-fill"></div></div>';
-        levelCard.querySelector(".mission-xp-fill").style.width =
-          Math.min(100, xp / target * 100) + "%";
-        const next = document.createElement("div");
-        next.className = "mission-next";
-        next.textContent = Math.max(0, target - xp).toLocaleString("en-US") + " XP تا سطح بعدی";
-        levelCard.append(next);
-        featureDialogBody.replaceChildren(
-          countdown,
-          levelCard,
-          featureMessage("ماموریت‌ها به‌زودی اضافه می‌شوند!")
-        );
+        const tabs = document.createElement("div");
+        tabs.className = "mission-tabs";
+        tabs.setAttribute("role", "tablist");
+        [
+          ["daily", "ماموریت‌های روزانه"],
+          ["season", "ماموریت‌های سیزن"]
+        ].forEach(([tabId, text]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "mission-tab" + (activeTab === tabId ? " active" : "");
+          button.setAttribute("role", "tab");
+          button.setAttribute("aria-selected", String(activeTab === tabId));
+          button.textContent = text;
+          button.addEventListener("click", () => renderSeason(state, dailyState, tabId));
+          tabs.append(button);
+        });
+        const missions = document.createElement("div");
+        missions.className = "season-mission-list";
+        if (activeTab === "daily") {
+          appendMissionCards(missions, dailyState && dailyState.missions, "daily");
+        } else {
+          const level = Number(state.level) || 0;
+          const xp = Number(state.xp) || 0;
+          const target = Math.max(1, Number(state.level_target) || 100 + level * 100);
+          const levelNote = featureMessage(
+            "⭐ لول " + level.toLocaleString("en-US") + " · " +
+            xp.toLocaleString("en-US") + " / " + target.toLocaleString("en-US") + " XP"
+          );
+          missions.append(levelNote);
+          appendMissionCards(missions, state.missions, "season");
+        }
+        featureDialogBody.replaceChildren(countdown, tabs, missions);
       }
 
       async function openSeason() {
-        openFeatureDialog("✦ ماموریت فصل");
-        featureDialogBody.append(featureMessage("در حال دریافت ماموریت‌های فصل..."));
+        openFeatureDialog("✦ ماموریت");
+        featureDialogBody.append(featureMessage("در حال دریافت ماموریت‌ها..."));
         try {
-          renderSeason(await userApiRequest("features/season-state"));
+          const [dailyState, seasonState] = await Promise.all([
+            userApiRequest("missions/state"),
+            userApiRequest("features/season-state")
+          ]);
+          renderSeason(seasonState, dailyState, "daily");
         } catch (error) {
-          featureError(error && error.message ? error.message : "ماموریت‌های فصل دریافت نشد.", openSeason);
+          featureError(error && error.message ? error.message : "ماموریت‌ها دریافت نشد.", openSeason);
+        }
+      }
+
+      async function claimDailyFeatureMission(missionId) {
+        try {
+          const result = await userApiRequest("missions/claim", { mission_id: missionId });
+          missionDialogDailyState = result;
+          renderSeason(missionDialogSeasonState, result, "daily");
+          const mission = result.missions.find((item) => item.id === missionId);
+          showStatus(
+            "🎉 ماموریت انجام شد: +" + Number(mission ? mission.reward : 0).toLocaleString("en-US") +
+            " F Coin و +" + Number(mission ? mission.xp_reward : 0).toLocaleString("en-US") + " XP",
+            "info"
+          );
+          await request("state");
+        } catch (error) {
+          featureError(error && error.message ? error.message : "دریافت پاداش ماموریت ناموفق بود.", openSeason);
         }
       }
 
       async function claimSeasonMission(missionId) {
         try {
           const result = await userApiRequest("features/season-claim", { mission_id: missionId });
-          renderSeason(result);
-          const claimedMission = result.missions.find((mission) => mission.id === missionId);
+          missionDialogSeasonState = result;
+          renderSeason(result, missionDialogDailyState, "season");
+          const mission = result.missions.find((item) => item.id === missionId);
           showStatus(
-            "🎉 پاداش فصل دریافت شد: +" +
-              (claimedMission ? Number(claimedMission.reward).toLocaleString("en-US") : "") +
-              " F Coin",
+            "🎉 پاداش سیزن: +" + Number(mission ? mission.reward : 0).toLocaleString("en-US") +
+            " F Coin و +" + Number(mission ? mission.xp_reward : 0).toLocaleString("en-US") + " XP",
             "info"
           );
-          request("state").catch((error) =>
-              showStatus(error && error.message ? error.message : "به‌روزرسانی موجودی ناموفق بود.", "error")
-          );
+          await request("state");
         } catch (error) {
-          featureError(error && error.message ? error.message : "دریافت پاداش فصل ناموفق بود.", openSeason);
+          featureError(error && error.message ? error.message : "دریافت پاداش سیزن ناموفق بود.", openSeason);
         }
       }
 
       function renderWheel(state) {
         const wheelOptions = [
-          "500 F Coin", "5 سکه", "شارژ تقویت", "شارژ دایموند",
-          "شارژ بریج", "1,000 F Coin", "10 سکه"
+          "شانس دوباره", "5 سکه", "10 سکه", "شارژ دایموند",
+          "شارژ بریج", "5,000 F Coin", "10,000 F Coin", "شارژ تقویت"
         ];
         const wrapper = document.createElement("div");
         wrapper.className = "wheel-wrap";
@@ -1637,8 +1737,8 @@
         result.className = "wheel-result";
         result.id = "wheelResult";
         result.textContent = state.spun_today
-          ? "امروز چرخاندی؛ فردا دوباره شانس داری."
-          : "هر روز یک چرخش رایگان";
+          ? "چرخش رایگان امروز استفاده شده؛ فردا دوباره شانس داری."
+          : "هر روز یک چرخش رایگان داری.";
         const spin = document.createElement("button");
         spin.type = "button";
         spin.className = "feature-primary";
@@ -1662,24 +1762,39 @@
         const spin = featureDialogBody.querySelector(".feature-primary");
         const disc = $("wheelDisc");
         if (!spin || !disc) return;
+        disc.querySelectorAll(".wheel-slot").forEach((slot) => slot.classList.remove("is-winner"));
         spin.disabled = true;
         $("wheelResult").textContent = "در حال چرخش...";
         try {
           const result = await userApiRequest("features/wheel-spin");
-          const centerAngle = result.prize_index * 360 / 7 + 180 / 7;
-          const targetRotation = 360 * 6 + (360 - centerAngle);
+          const segmentCount = 8;
+          const centerAngle = result.prize_index * 360 / segmentCount + 180 / segmentCount;
+          const previousRotation = Number(disc.dataset.rotation || 0);
+          const currentAngle = ((previousRotation % 360) + 360) % 360;
+          const delta = (360 - centerAngle - currentAngle + 360) % 360;
+          const targetRotation = previousRotation + 360 * 6 + delta;
+          disc.dataset.rotation = String(targetRotation);
           disc.style.transform = "rotate(" + targetRotation + "deg)";
           window.setTimeout(async () => {
-            $("wheelResult").textContent = "🎉 جایزه: " + result.prize.label;
-            spin.textContent = "چرخش امروز استفاده شد ✓";
-            spin.disabled = true;
+            const winningSlot = disc.querySelectorAll(".wheel-slot")[result.prize_index];
+            if (winningSlot) winningSlot.classList.add("is-winner");
+            const prizeLabel = String(result.prize.label);
+            $("wheelResult").textContent = "🎉 جایزه: " + prizeLabel;
+            $("wheelPrizeCopy").replaceChildren(
+              document.createTextNode("جایزهٔ تو"),
+              Object.assign(document.createElement("strong"), { textContent: prizeLabel }),
+              document.createTextNode("با موفقیت به حسابت اضافه شد. ازش لذت ببر!")
+            );
+            showDialog($("wheelPrizeDialog"));
+            spin.disabled = !!result.spun_today;
+            spin.textContent = result.spun_today ? "چرخش امروز استفاده شد ✓" : "چرخش دوباره";
             await request("state").catch((error) =>
               showStatus(error && error.message ? error.message : "به‌روزرسانی موجودی ناموفق بود.", "error")
             );
             await refreshMissions().catch((error) =>
               showStatus(error && error.message ? error.message : "به‌روزرسانی XP ناموفق بود.", "error")
             );
-            showStatus("🎉 گردونه برایت «" + result.prize.label + "» آورد! +15 XP", "info");
+            showStatus("🎉 گردونه برایت «" + prizeLabel + "» آورد!", "info");
           }, 4800);
         } catch (error) {
           spin.disabled = false;
@@ -1692,9 +1807,9 @@
 
       const SHOP_ITEMS = [
         {id:"diamond", name:"شارژ دایموند", cost:10000, icon:"💎", note:"یک شارژ برای بازی دایموند"},
-        {id:"bridge", name:"شارژ بریج", cost:20000, icon:"🌉", note:"یک شارژ برای بازی بریج"},
+        {id:"bridge", name:"شارژ بریج", cost:7500, icon:"🌉", note:"یک شارژ برای بازی بریج"},
         {id:"wheel", name:"شارژ گردونه شانس", cost:5000, icon:"☸️", note:"یک شارژ اضافه برای گردونه"},
-        {id:"boost", name:"شارژ تقویت", cost:7500, icon:"⚡", note:"یک شارژ تقویت اضافه"}
+        {id:"boost", name:"شارژ تقویت", cost:20000, icon:"⚡", note:"یک شارژ تقویت اضافه"}
       ];
       async function openStore() {
         openFeatureDialog("♛ فروشگاه طلایی");
@@ -2812,22 +2927,38 @@
         hideStatus();
         while (queuedTaps > 0) {
           const count = Math.min(queuedTaps, 50);
+          const batchValues = queuedTapValues.splice(0, count);
+          const batchReward = batchValues.reduce((total, value) => total + value, 0);
           queuedTaps -= count;
+          queuedTapReward -= batchReward;
           inFlightTaps += count;
+          inFlightTapReward = batchReward;
           updateWalletDisplay();
           updateButtons();
           try {
-            await request("tap", { count }, () => { inFlightTaps = 0; });
+            await request("tap", { count }, () => {
+              inFlightTaps = 0;
+              inFlightTapReward = 0;
+            });
             updateWalletDisplay();
             updateButtons();
           } catch (error) {
             inFlightTaps = 0;
+            inFlightTapReward = 0;
             queuedTaps = 0;
+            queuedTapValues.length = 0;
+            queuedTapReward = 0;
             updateWalletDisplay();
             updateButtons();
-            showStatus(error && error.message ? error.message : "ذخیرهٔ سکه‌ها ناموفق بود.", "error");
+            const energyExhausted = !!(error && error.message && error.message.includes("انرژی کافی"));
+            if (!energyExhausted) {
+              showStatus(error && error.message ? error.message : "ذخیرهٔ سکه‌ها ناموفق بود.", "error");
+            }
             try {
               await request("state");
+              if (energyExhausted) {
+                showStatus("انرژی به پایان رسید؛ همهٔ ضربه‌های ثبت‌شده ذخیره شدند.", "info");
+              }
             } catch (refreshError) {
               showStatus((error && error.message ? error.message : "ذخیرهٔ سکه‌ها ناموفق بود.") +
                 " موجودی همگام نشد: " + (refreshError && refreshError.message ? refreshError.message : "خطای ارتباط."), "error");
@@ -2846,7 +2977,10 @@
         if (!serverState ||
             (!isBoostActive() && Math.floor(availableEnergy() + 1e-9) < serverState.tap_power)) return;
         vibrate("coin");
+        const tapPower = effectiveTapPower();
         queuedTaps += 1;
+        queuedTapValues.push(tapPower);
+        queuedTapReward += tapPower;
         const keyboardTap = event.type === "click" && event.detail === 0;
         const normalizedX = keyboardTap ? 0.5 :
           Math.max(0, Math.min(1, event.offsetX / tapButton.clientWidth));
@@ -2868,7 +3002,7 @@
             updateButtons();
           });
         }
-        showTapFeedback(normalizedX, normalizedY);
+        showTapFeedback(normalizedX, normalizedY, tapPower);
         if (!tapFlushTimer) {
           tapFlushTimer = window.setTimeout(() => {
             tapFlushTimer = 0;
@@ -2877,7 +3011,7 @@
         }
       }
 
-      function showTapFeedback(normalizedX, normalizedY) {
+      function showTapFeedback(normalizedX, normalizedY, tapPower) {
         if (tapLabels.size >= 10) {
           const oldest = tapLabels.values().next().value;
           if (oldest) {
@@ -2887,7 +3021,7 @@
         }
         const label = document.createElement("span");
         label.className = "tap-float";
-        label.textContent = "+" + effectiveTapPower();
+        label.textContent = "+" + tapPower;
         label.style.left = (normalizedX * 100) + "%";
         label.style.top = (normalizedY * 100) + "%";
         tapButton.append(label);
@@ -2996,16 +3130,53 @@
           "back.png?v=halloween-s2"
         ];
         let completed = 0;
-        await Promise.all(assets.map((source) => new Promise((resolve, reject) => {
+        const updateProgress = (caption) => {
+          completed += 1;
+          setLoadingProgress(8 + completed / (assets.length + 1) * 52, caption);
+        };
+        const imageLoads = assets.map((source) => new Promise((resolve, reject) => {
           const image = new Image();
           image.onload = () => {
-            completed += 1;
-            setLoadingProgress(8 + completed / assets.length * 52, "در حال دریافت تصویرها...");
+            updateProgress("در حال دریافت تصویرهای فصل...");
             resolve();
           };
           image.onerror = () => reject(new Error("بارگذاری تصویر «" + source + "» انجام نشد."));
           image.src = source;
-        })));
+        }));
+        const musicLoad = (async () => {
+          const source = "music.mp3?v=halloween-s2-audio2";
+          try {
+            const response = await fetch(source, { cache: "reload" });
+            if (!response.ok) throw new Error("HTTP " + response.status);
+            const audioBlob = await response.blob();
+            if (music.getAttribute("src") !== source) {
+              music.src = source;
+              music.load();
+            }
+            let cached = false;
+            if ("caches" in window) {
+              try {
+                const cache = await caches.open("fcoin-static-v5");
+                await cache.put(source, new Response(audioBlob, {
+                  status: 200,
+                  headers: response.headers
+                }));
+                cached = true;
+              } catch (cacheError) {
+                showStatus("موسیقی دریافت شد، اما ذخیرهٔ پایدار در این مرورگر ممکن نشد.", "error");
+              }
+            } else {
+              showStatus("موسیقی دریافت شد، اما حافظهٔ کش در این مرورگر پشتیبانی نمی‌شود.", "error");
+            }
+            updateProgress(cached
+              ? "موسیقی فصل دریافت و برای استفادهٔ بعدی ذخیره شد."
+              : "موسیقی دریافت شد؛ ذخیرهٔ پایدار در این مرورگر در دسترس نبود.");
+          } catch (audioError) {
+            showStatus("دریافت موسیقی انجام نشد؛ سایر بخش‌های مینی‌اپ همچنان آماده می‌شوند.", "error");
+            updateProgress("دریافت تصویرها کامل شد؛ موسیقی در دسترس نبود.");
+          }
+        })();
+        await Promise.all([...imageLoads, musicLoad]);
       }
 
       function finishLoadingScreen() {
@@ -3172,6 +3343,7 @@
         button.addEventListener("click", () => closeDialog($(button.dataset.closeDialog)));
       });
       $("connectionCloseButton").addEventListener("click", () => closeDialog($("connectionDialog")));
+      $("wheelPrizeCloseButton").addEventListener("click", () => closeDialog($("wheelPrizeDialog")));
       $("connectionRetryButton").addEventListener("click", () => {
         closeDialog($("connectionDialog"));
         loadInitialData();
