@@ -1,6 +1,7 @@
 /* F Coin cache strategy: stable assets and season artwork are stored separately. */
-const STATIC_CACHE_NAME = "fcoin-static-v6";
+const STATIC_CACHE_NAME = "fcoin-static-v7";
 const SEASON_CACHE_NAME = "fcoin-season-s2-v2";
+const AUDIO_CACHE_NAME = "fcoin-audio-v1";
 const STATIC_ASSETS = ["./", "./index.html"];
 const SEASON_ASSETS = [];
 
@@ -24,7 +25,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    const keep = new Set([STATIC_CACHE_NAME, SEASON_CACHE_NAME]);
+    const keep = new Set([STATIC_CACHE_NAME, SEASON_CACHE_NAME, AUDIO_CACHE_NAME]);
     await Promise.all(keys
       .filter((key) => (key.startsWith("fcoin-static-") || key.startsWith("fcoin-season-")) && !keep.has(key))
       .map((key) => caches.delete(key)));
@@ -47,7 +48,10 @@ self.addEventListener("fetch", (event) => {
 
   if (!/\.(png|jpe?g|webp|svg|mp3|woff2?|css|js)$/i.test(url.pathname)) return;
   const isSeasonAsset = /\/back\.png$/i.test(url.pathname);
-  const cacheName = isSeasonAsset ? SEASON_CACHE_NAME : STATIC_CACHE_NAME;
+  const isAudioAsset = /\.mp3$/i.test(url.pathname);
+  const cacheName = isAudioAsset
+    ? AUDIO_CACHE_NAME
+    : isSeasonAsset ? SEASON_CACHE_NAME : STATIC_CACHE_NAME;
   event.respondWith((async () => {
     const cache = await caches.open(cacheName);
     const cached = await cache.match(request);

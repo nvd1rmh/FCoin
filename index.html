@@ -644,7 +644,7 @@
     </nav>
   </main>
 
-  <audio id="backgroundMusic" src="music.mp3?v=halloween-s2-audio2" preload="none" autoplay playsinline></audio>
+  <audio id="backgroundMusic" preload="auto" playsinline loop></audio>
   <dialog id="settingsDialog" class="feature-dialog settings-dialog" aria-labelledby="settingsDialogTitle">
     <div class="feature-dialog-inner">
       <div class="feature-dialog-head"><h2 id="settingsDialogTitle">⚙ تنظیمات بازی</h2><button class="dialog-close" type="button" data-close-dialog="settingsDialog" aria-label="بستن">×</button></div>
@@ -709,11 +709,13 @@
       let musicEnabled = true;
       let vibrationEnabled = true;
       let musicStarted = false;
+      let musicReady = false;
       let playRetryTimer = 0;
       let loadingMusicRetryTimer = 0;
+      let musicObjectUrl = "";
 
       function tryPlayMusic(fromGesture = false) {
-        if (!music || !musicEnabled) return;
+        if (!music || !musicEnabled || !musicReady) return;
         // A real user gesture is the most reliable opportunity to unlock audio
         // in Telegram/iOS WebViews. Restart from zero only if playback is stopped.
         if (fromGesture && music.paused) {
@@ -779,14 +781,6 @@
           navigator.serviceWorker.register("./sw.js").catch(() => {});
         }, { once: true });
       }
-      music.addEventListener("ended", () => {
-        if (!musicEnabled) return;
-        window.setTimeout(() => {
-          if (!musicEnabled) return;
-          try { music.currentTime = 0; } catch (_) {}
-          tryPlayMusic();
-        }, 5000);
-      });
       function setMusicEnabled(enabled) {
         musicEnabled = Boolean(enabled);
         musicToggle.checked = musicEnabled;
@@ -3022,21 +3016,22 @@
         }
       }
 
+      function updateLoadingProgress(percent, caption) {
+        loadingPercent = Math.max(loadingPercent, Math.min(99, Math.floor(percent)));
+        $("loadingProgressFill").style.width = loadingPercent + "%";
+        $("loadingPercent").textContent = loadingPercent + "%";
+        if (caption) document.querySelector(".loading-caption").textContent = caption;
+      }
+
       function beginLoadingScreen() {
         window.clearInterval(loadingTimer);
         loadingPercent = 0;
-        const startedAt = performance.now();
         loadingScreen.classList.remove("is-hidden");
         $("loadingError").textContent = "";
         $("loadingError").classList.remove("show");
         $("loadingRetryButton").classList.remove("show");
         $("loadingProgressFill").style.width = "0%";
         $("loadingPercent").textContent = "0%";
-        loadingTimer = window.setInterval(() => {
-          loadingPercent = Math.min(99, Math.floor((performance.now() - startedAt) / 680 * 100));
-          $("loadingProgressFill").style.width = loadingPercent + "%";
-          $("loadingPercent").textContent = loadingPercent + "%";
-        }, 24);
       }
 
       function showLoadingError(message) {
@@ -3049,26 +3044,105 @@
       }
 
       async function cacheSeasonAudio() {
-        if (!("caches" in window)) return;
-        const source = "music.mp3?v=halloween-s2-audio2";
-        const cacheName = "fcoin-static-v6";
-        try {
-          const cache = await caches.open(cacheName);
-          if (await cache.match(source)) return;
+        const source = new URL("music.mp3?v=halloween-s2-audio2", document.baseURI).href;
+        const cacheName = "fcoin-audio-v1";
+        let audioBlob;
+        let audioCache = null;
+
+        if ("caches" in window) {
+          try {
+            audioCache = await caches.open(cacheName);
+            const cached = await audioCache.match(source);
+            if (cached) {
+              updateLoadingProgress(92, "در حال آماده‌سازی موسیقی ذخیره‌شده...");
+              audioBlob = await cached.blob();
+              updateLoadingProgress(98, "موسیقی آمادهٔ پخش است...");
+            }
+          } catch (error) {
+            console.warn("Persistent season audio cache unavailable:", error);
+          }
+        }
+
+        if (!audioBlob) {
           const controller = new AbortController();
-          const timeout = window.setTimeout(() => controller.abort(), 10000);
+          const timeout = window.setTimeout(() => controller.abort(), 90000);
           try {
             const response = await fetch(source, {
               cache: "force-cache",
               signal: controller.signal
             });
-            if (response.ok) await cache.put(source, response.clone());
+            if (!response.ok || !response.body) {
+              throw new Error("فایل موسیقی دریافت نشد.");
+            }
+
+            const contentLength = Number(response.headers.get("content-length")) || 0;
+            const contentType = response.headers.get("content-type") || "audio/mpeg";
+            const chunks = [];
+            let received = 0;
+            const reader = response.body.getReader();
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+              received += value.byteLength;
+              const fraction = contentLength > 0
+                ? Math.min(1, received / contentLength)
+                : Math.min(85 / 90, received / (24 * 1024 * 1024));
+              const downloadedMb = (received / (1024 * 1024)).toFixed(1);
+              updateLoadingProgress(
+                fraction * 90,
+                "در حال دانلود و ذخیرهٔ موسیقی… " +
+                  (contentLength > 0
+                    ? Math.floor(fraction * 100) + "%"
+                    : downloadedMb + " مگابایت")
+              );
+            }
+            audioBlob = new Blob(chunks, { type: contentType });
+            if (!audioBlob.size) throw new Error("فایل موسیقی خالی دریافت شد.");
+
+            if (audioCache) {
+              try {
+                await audioCache.put(source, new Response(audioBlob, {
+                  headers: { "Content-Type": contentType }
+                }));
+              } catch (error) {
+                console.warn("Season audio could not be saved for later:", error);
+              }
+            }
           } finally {
             window.clearTimeout(timeout);
           }
-        } catch (error) {
-          console.warn("Optional season audio cache failed:", error);
         }
+
+        if (musicObjectUrl) URL.revokeObjectURL(musicObjectUrl);
+        musicObjectUrl = URL.createObjectURL(audioBlob);
+        musicReady = false;
+        const readyPromise = new Promise((resolve, reject) => {
+          if (music.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+            resolve();
+            return;
+          }
+          const onReady = () => {
+            cleanup();
+            resolve();
+          };
+          const onError = () => {
+            cleanup();
+            reject(new Error("موسیقی بارگیری‌شده پخش‌پذیر نیست."));
+          };
+          const cleanup = () => {
+            music.removeEventListener("canplay", onReady);
+            music.removeEventListener("error", onError);
+          };
+          music.addEventListener("canplay", onReady, { once: true });
+          music.addEventListener("error", onError, { once: true });
+        });
+        music.src = musicObjectUrl;
+        music.load();
+        await readyPromise;
+        musicReady = true;
+        updateLoadingProgress(99, "موسیقی آماده شد؛ در حال ورود به بازی...");
+        tryPlayMusic();
       }
 
       function finishLoadingScreen() {
@@ -3099,12 +3173,21 @@
           initialLoadStarted = false;
           return;
         }
-        document.querySelector(".loading-caption").textContent = "در حال آماده‌سازی مینی‌اپ...";
+        document.querySelector(".loading-caption").textContent = "در حال آماده‌سازی موسیقی و بازی...";
         const stateRequest = request("state");
-        await new Promise((resolve) => window.setTimeout(resolve, 680));
+        stateRequest.catch(() => {});
+        try {
+          await cacheSeasonAudio();
+        } catch (error) {
+          console.error("Season audio preparation failed:", error);
+          showLoadingError(
+            "دانلود کامل موسیقی انجام نشد. اتصال اینترنت را بررسی کن و دوباره تلاش کن."
+          );
+          initialLoadStarted = false;
+          return;
+        }
         finishLoadingScreen();
         initialLoadStarted = false;
-        void cacheSeasonAudio();
         stateRequest.then(() => {
           refreshMissions().catch((error) => showStatus(
             error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.",
