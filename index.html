@@ -30,7 +30,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     /* Background image gets its own GPU-friendly layer for subtle device-tilt parallax. */
-    .scene-background { position:fixed; z-index:0; inset:-24px; pointer-events:none; overflow:hidden; transform:scale(1.02); transform-origin:center; background:url("back.png?v=halloween-s2-v3.0.7") center center / cover no-repeat; }
+    .scene-background { position:fixed; z-index:0; inset:-24px; pointer-events:none; overflow:hidden; transform:scale(1.02); transform-origin:center; background:url("back.png?v=halloween-s2") center center / cover no-repeat; }
     .scene-background::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(11,9,11,.32) 0%,rgba(16,14,18,.38) 58%,rgba(16,14,18,.43) 100%); }
     /* Lightweight atmosphere: stays behind all controls and never intercepts touches. */
     body::before {
@@ -95,7 +95,7 @@
     .settings-button { flex:none; width:39px; height:39px; display:grid; place-items:center; border:1px solid #ffd45a75; border-radius:14px; color:#ffe6a0; background:radial-gradient(circle at 30% 20%,#ffffff25,transparent 55%),linear-gradient(145deg,#47321b,#17131a); box-shadow:0 0 15px #ffbd3930,inset 0 1px #fff3; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
     .settings-button svg { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
     .settings-button:active { transform:scale(.92) rotate(12deg); filter:brightness(1.25); }
-    .upgrade-shortcut { flex:1; min-width:0; height:38px; border:1px solid #ffc05b; border-radius:13px; padding:0 10px; color:#3b2107; background:#f5a52d; font-size:12px; font-weight:900; cursor:pointer; }
+    .upgrade-shortcut { min-width:78px; border:1px solid #ffc05b; border-radius:13px; padding:9px 13px; color:#3b2107; background:#f5a52d; font-size:12px; font-weight:900; cursor:pointer; }
     .upgrade-shortcut:active { filter:brightness(.94); }
     .brand { display:flex; align-items:center; gap:8px; font-weight:900; font-size:15px; letter-spacing:-.3px; }
     .brand-mark { width:15px; height:15px; border-radius:50%; display:block; background:radial-gradient(circle at 32% 28%,#fff4a8,#ffd34f 42%,#d68517 78%,#8c470c); box-shadow:0 0 0 3px #ffd45a16,0 0 15px #ffc64a52,inset 0 1px 2px #fff9; }
@@ -115,15 +115,15 @@
     .coin-button:disabled { cursor:wait; filter:saturate(.9) brightness(.94); }
     .coin-face { position:absolute; z-index:1; inset:0; width:100%; height:100%; border-radius:50%; pointer-events:none; object-fit:contain; }
     .coin-engraving,.coin-letter,.coin-glint { display:none; }
-    .tap-float { position:absolute; z-index:4; color:#fff8dc; font-size:36px; font-weight:1000; text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0; pointer-events:none; white-space:nowrap; animation:tap-rise 1.08s cubic-bezier(.2,.7,.25,1) forwards; will-change:transform,opacity; }
-    @keyframes tap-rise { 0% { opacity:0; transform:translate(-50%,7px) scale(.88); } 14% { opacity:1; transform:translate(-50%,0) scale(1); } 100% { opacity:0; transform:translate(-50%,-170px) scale(1.02); } }
+    .tap-float { position:absolute; z-index:4; color:#fff8dc; font-size:40px; font-weight:1000; text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0; pointer-events:none; white-space:nowrap; animation:tap-rise .95s cubic-bezier(.2,.7,.25,1) forwards; will-change:transform,opacity; }
+    @keyframes tap-rise { 0% { opacity:0; transform:translate(-50%,7px) scale(.88); } 14% { opacity:1; transform:translate(-50%,0) scale(1); } 100% { opacity:0; transform:translate(-50%,-155px) scale(1.02); } }
     .coin-button:not(:disabled) { animation:none; }
     @keyframes coin-float { 0%,100% { translate:0 0; } 50% { translate:0 -5px; } }
     .tap-hint { margin-top:22px; color:#c5c2d0; font-size:13px; }
     .tap-hint strong { color:var(--gold); }
     .tap-hint strong { display:inline-block; padding:5px 10px; margin-right:3px; border:1px solid #ffd45a28; border-radius:999px; background:linear-gradient(135deg,#ffd45a16,#ffad3208); box-shadow:inset 0 1px #fff2,0 4px 14px #0002; }
-    .tap-actions { display:flex; direction:ltr; align-items:center; justify-content:center; gap:9px; width:min(100%,270px); margin-top:12px; }
-    .boost-button { display:flex; flex:1; align-items:center; justify-content:center; gap:8px; min-width:0; height:38px; border:1px solid #dd9dff70; border-radius:13px; padding:0 8px; color:#fff; background:linear-gradient(120deg,#8e2de2,#4a00e0 55%,#b64cff); box-shadow:0 0 12px #9d45ff35,inset 0 1px #fff4; font-size:12px; font-weight:900; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
+    .tap-actions { display:flex; direction:ltr; align-items:center; justify-content:center; gap:9px; margin-top:12px; }
+    .boost-button { display:flex; align-items:center; justify-content:center; gap:8px; min-width:112px; border:1px solid #dd9dff70; border-radius:13px; padding:9px 12px; color:#fff; background:linear-gradient(120deg,#8e2de2,#4a00e0 55%,#b64cff); box-shadow:0 0 12px #9d45ff35,inset 0 1px #fff4; font-size:12px; font-weight:900; cursor:pointer; transition:transform .15s ease,filter .15s ease; }
     .boost-button:active { transform:scale(.98); }
     .boost-button:disabled { opacity:.48; cursor:not-allowed; filter:saturate(.55); }
     .boost-button.needs-daily-check:not(:disabled) { border-color:#ffe18c; filter:brightness(1.2); box-shadow:0 0 18px #ffc04c66,inset 0 1px #fff8; animation:daily-check-nudge 1.7s ease-in-out infinite; }
@@ -133,7 +133,7 @@
     @keyframes boost-pulse { to { filter:brightness(1.3); } }
     @media (max-width:380px) {
       .tap-actions { gap:6px; }
-      .boost-button { min-width:0; padding:0 6px; }
+      .boost-button { min-width:104px; padding:9px 9px; }
       .boost-count { min-width:26px; padding:3px 4px; }
       .tap-hint { font-size:11px; }
       .tap-hint strong { padding:5px 7px; }
@@ -151,14 +151,14 @@
     .boost-dialog-actions button { border:1px solid var(--border); border-radius:12px; padding:12px 8px; background:#ffffff0c; cursor:pointer; font-size:12px; font-weight:800; }
     .boost-dialog-actions .boost-confirm { border-color:#d2a0ff66; color:#fff; background:linear-gradient(110deg,#a143ee,#6922bd); }
     .boost-dialog-actions button:disabled { opacity:.5; cursor:wait; }
-    .energy-card { width: min(100%, 430px); margin:8px auto 0; background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.018) 55%,rgba(180,205,235,.045)); border:1px solid rgba(255,255,255,.24); border-radius:18px; padding:8px 14px; box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 1px rgba(255,255,255,.32),inset 0 -1px rgba(255,255,255,.05); backdrop-filter:blur(7px) saturate(140%); -webkit-backdrop-filter:blur(7px) saturate(140%); }
+    .energy-card { width: min(100%, 430px); margin-inline:auto; background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.018) 55%,rgba(180,205,235,.045)); border:1px solid rgba(255,255,255,.24); border-radius:18px; padding:12px 14px; box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 1px rgba(255,255,255,.32),inset 0 -1px rgba(255,255,255,.05); backdrop-filter:blur(7px) saturate(140%); -webkit-backdrop-filter:blur(7px) saturate(140%); }
     .energy-top { display:flex; justify-content:space-between; align-items:center; font-size:13px; }
     .energy-top span:first-child { color:#e9e7f0; }
     .energy-count { direction:ltr; color:var(--mint); font-weight:700; }
     .energy-count em { color:#aaa8b5; font-style:normal; font-weight:400; }
-    .bar { margin-top:8px; height:8px; background:#ffffff12; border-radius:99px; overflow:hidden; }
+    .bar { margin-top:12px; height:8px; background:#ffffff12; border-radius:99px; overflow:hidden; }
     .bar-fill { width:0%; height:100%; border-radius:inherit; background:linear-gradient(90deg,#ff9627,#ffe36a); box-shadow:0 0 10px #ffb73b80; transition:width .3s; }
-    .energy-note { color:#898795; font-size:10px; margin-top:6px; }
+    .energy-note { color:#898795; font-size:10px; margin-top:9px; }
     .exchange-card { margin-top:14px; padding:17px; border-radius:20px; border:1px solid #ffd45a27; background:linear-gradient(135deg,#ffd45a0c,#ffffff04); }
     .exchange-heading { display:flex; align-items:stretch; justify-content:space-between; flex-direction:column; gap:10px; text-align:right; }
     .exchange-heading strong { font-size:14px; }
@@ -405,7 +405,7 @@
       text-shadow:none !important; scroll-behavior:auto !important;
     }
     body.low-graphics .tap-float {
-      animation:tap-rise 1.08s cubic-bezier(.2,.7,.25,1) forwards !important;
+      animation:tap-rise .95s cubic-bezier(.2,.7,.25,1) forwards !important;
       text-shadow:0 2px 0 #8b3315,0 5px 16px #ffb82fe0 !important;
       will-change:transform,opacity;
     }
@@ -451,7 +451,7 @@
 <body>
   <div class="scene-background" id="sceneBackground" aria-hidden="true"></div>
   <div id="loadingScreen" class="loading-screen" aria-live="polite">
-    <img class="loading-art" src="home.png?v=halloween-s2-v3.0.7" alt="">
+    <img class="loading-art" src="home.png?v=halloween-s2" alt="">
     <div class="loading-shade" aria-hidden="true"></div>
     <canvas id="loadingLeaves" class="loading-leaves" aria-hidden="true"></canvas>
     <div class="loading-status">
@@ -477,7 +477,7 @@
           <div class="balance-label">موجودی F Coin شما</div>
           <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
         </div>
-        <img class="wallet-icon" src="FCoin.png?v=halloween-s2-v3.0.7" alt="" aria-hidden="true">
+        <img class="wallet-icon" src="FCoin.png?v=halloween-s2" alt="" aria-hidden="true">
       </section>
       <section class="home-level" aria-label="سطح و تجربه">
         <div class="home-level-top">
@@ -505,7 +505,7 @@
           <button id="storeButton" class="home-shortcut store" data-daily-feature="store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
         </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
-          <img id="coinImage" class="coin-face" src="FCoin.png?v=halloween-s2-v3.0.7" alt="" draggable="false">
+          <img id="coinImage" class="coin-face" src="FCoin.png?v=halloween-s2" alt="" draggable="false">
         </button>
         <div class="tap-actions">
             <button id="boostButton" class="boost-button" data-daily-feature="boost" type="button" disabled>
@@ -526,7 +526,7 @@
       <div class="boost-dialog-content">
         <div class="boost-dialog-icon" aria-hidden="true">⚡</div>
         <h2 id="boostDialogTitle">تقویت ویژه</h2>
-        <p>با فعال‌سازی، قدرت هر ضربه‌ات ۲ برابر می‌شود و به‌مدت ۱۵ ثانیه بدون مصرف انرژی می‌توانی ضربه بزنی؛ حتی اگر انرژی‌ات صفر باشد. این قابلیت روزانه ۳ بار قابل استفاده است.<br><br>الان فعالش می‌کنی؟</p>
+        <p>با فعال‌سازی، قدرت هر ضربه‌ات ۲ برابر می‌شود و به‌مدت ۱۰ ثانیه بدون مصرف انرژی می‌توانی ضربه بزنی؛ حتی اگر انرژی‌ات صفر باشد. این قابلیت روزانه ۳ بار قابل استفاده است.<br><br>الان فعالش می‌کنی؟</p>
         <div class="boost-dialog-actions">
           <button id="boostCancelButton" type="button">فعلاً نه</button>
           <button id="boostConfirmButton" class="boost-confirm" type="button">بله، فعال کن</button>
@@ -836,7 +836,7 @@
       const boostButton = $("boostButton");
       const boostDialog = $("boostDialog");
       const boostConfirmButton = $("boostConfirmButton");
-      new Image().src = "boost.png?v=halloween-s2-v3.0.7";
+      new Image().src = "boost.png?v=halloween-s2";
       const inviteLink = $("inviteLink");
       const copyInviteButton = $("copyInviteButton");
       const shareInviteButton = $("shareInviteButton");
@@ -1063,8 +1063,8 @@
       function syncBoostVisual() {
         const image = $("coinImage");
         const source = isBoostActive()
-          ? "boost.png?v=halloween-s2-v3.0.7"
-          : (normalCoinImage || "FCoin.png?v=halloween-s2-v3.0.7");
+          ? "boost.png?v=halloween-s2"
+          : (normalCoinImage || "FCoin.png?v=halloween-s2");
         if (image.getAttribute("src") !== source) image.setAttribute("src", source);
         tapButton.classList.toggle("is-boosted", isBoostActive());
       }
@@ -2834,7 +2834,7 @@
           } else if (endpoint === "boost") {
             if (typeof boostDialog.close === "function") boostDialog.close();
             else boostDialog.removeAttribute("open");
-            showStatus("تقویت فعال شد؛ ۱۵ ثانیه فرصت داری!", "info");
+            showStatus("تقویت فعال شد؛ ۱۰ ثانیه فرصت داری!", "info");
           } else {
             showStatus(successMessage, "info");
           }
@@ -2861,24 +2861,10 @@
           updateWalletDisplay();
           updateButtons();
           try {
-            const result = await request("tap", { count }, () => {
+            await request("tap", { count }, () => {
               inFlightTaps = 0;
               inFlightTapReward = 0;
             });
-            if (Number.isInteger(result.accepted_taps) && result.accepted_taps < count) {
-              queuedTaps = 0;
-              queuedTapValues.length = 0;
-              queuedTapReward = 0;
-              showStatus(
-                result.accepted_taps > 0
-                  ? `${result.accepted_taps} از ${count} ضربه ذخیره شد؛ بقیه به‌دلیل تغییر انرژی یا پایان تقویت ثبت نشد.`
-                  : "این ضربه‌ها به‌دلیل تمام‌شدن انرژی یا تقویت ثبت نشدند.",
-                "info"
-              );
-              updateWalletDisplay();
-              updateButtons();
-              break;
-            }
             updateWalletDisplay();
             updateButtons();
           } catch (error) {
@@ -3005,7 +2991,7 @@
           }
         };
         image.onerror = () => showStatus("تصویر اصلی سکه بارگذاری نشد.", "error");
-        image.src = "FCoin.png?v=halloween-s2-v3.0.7";
+        image.src = "FCoin.png?v=halloween-s2";
       }
 
       function selectTab(panelId) {
@@ -3058,8 +3044,8 @@
       }
 
       async function cacheSeasonAudio() {
-        const source = new URL("music.mp3?v=halloween-s2-v3.0.7", document.baseURI).href;
-        const cacheName = "fcoin-audio-v2";
+        const source = new URL("music.mp3?v=halloween-s2-audio2", document.baseURI).href;
+        const cacheName = "fcoin-audio-v1";
         let audioBlob;
         let audioCache = null;
 
@@ -3282,7 +3268,7 @@
       });
       boostConfirmButton.addEventListener("click", () => runAction(
         "boost",
-        "تقویت فعال شد؛ ۱۵ ثانیه فرصت داری!"
+        "تقویت فعال شد؛ ۱۰ ثانیه فرصت داری!"
       ));
       copyInviteButton.addEventListener("click", async () => {
         if (!inviteLink.dataset.link) return;
@@ -3458,12 +3444,12 @@
       if (!ctx) return;
       const leafImage = new Image();
       leafImage.decoding = "async";
-      leafImage.src = "barg.png?v=halloween-s2-v3.0.7";
+      leafImage.src = "barg.png?v=halloween-s2";
       let width = 0, height = 0, raf = 0, last = 0, active = false;
       const leaves = [];
       const rand = (min, max) => min + Math.random() * (max - min);
       function make(initial) {
-        const size = rand(30, 50);
+        const size = rand(24, 40);
         return {
           x: rand(-12, width + 12),
           y: initial ? rand(-height, height) : rand(-size * 2, -size),
@@ -3480,7 +3466,7 @@
         canvas.height = Math.round(height * ratio);
         ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
         if (!leaves.length) {
-          for (let i = 0; i < 18; i++) leaves.push(make(true));
+          for (let i = 0; i < 10; i++) leaves.push(make(true));
         }
       }
       function shouldRun() {
@@ -3543,7 +3529,7 @@
 
 
   <script>
-    /* Coin-screen chocolate particles use one cached image and a capped frame rate. */
+    /* Efficient coin-screen autumn leaves: one shared image, 10 particles, capped DPR, ~30fps. */
     (() => {
       const canvas = document.getElementById("coinLeaves");
       const area = document.querySelector(".coin-area");
@@ -3553,10 +3539,10 @@
       if (!ctx) return;
       const leafImage = new Image();
       leafImage.decoding = "async";
-      leafImage.src = "barg.png?v=halloween-s2-v3.0.7";
+      leafImage.src = "barg.png?v=halloween-s2";
       const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const leaves = [];
-      const COUNT = 18;
+      const COUNT = 10;
       let width = 1, height = 1, dpr = 1, raf = 0, lastFrame = 0, running = false;
       const rand = (min, max) => min + Math.random() * (max - min);
       function resize() {
@@ -3569,9 +3555,9 @@
         if (!leaves.length) for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
       }
       function makeLeaf(initial) {
-        const size = rand(32, 54);
-        return { x: rand(-18, width + 18), y: initial ? rand(-height, height) : rand(-size * 2, -size), size,
-          speed: rand(18, 35), drift: rand(18, 34), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
+        const size = rand(27, 46);
+        return { x: rand(-12, width + 12), y: initial ? rand(-height, height) : rand(-size * 2, -size), size,
+          speed: rand(17, 31), drift: rand(12, 27), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
           rotation: rand(0, Math.PI * 2), rotationSpeed: rand(-.65, .65), alpha: rand(.82, .98) };
       }
       function shouldRun() {
@@ -3597,11 +3583,7 @@
           ctx.globalAlpha = leaf.alpha;
           ctx.translate(leaf.x, leaf.y);
           ctx.rotate(leaf.rotation + Math.sin(leaf.phase) * .22);
-          ctx.shadowColor = "rgba(35, 12, 4, .65)";
-          ctx.shadowBlur = leaf.size * .16;
-          ctx.shadowOffsetX = leaf.size * .08;
-          ctx.shadowOffsetY = leaf.size * .12;
-          ctx.scale(Math.max(.28, Math.abs(flutter)), .92 + Math.abs(flutter) * .08);
+          ctx.scale(flutter, 1); // gentle left-right flip to imitate a leaf fluttering
           const aspect = leafImage.naturalHeight / Math.max(1, leafImage.naturalWidth);
           ctx.drawImage(leafImage, -leaf.size / 2, -leaf.size * aspect / 2, leaf.size, leaf.size * aspect);
           ctx.restore();
