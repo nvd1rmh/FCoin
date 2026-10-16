@@ -1,15 +1,9 @@
 /* F Coin cache strategy: stable assets and season artwork are stored separately. */
-const STATIC_CACHE_NAME = "fcoin-static-v8";
-const SEASON_CACHE_NAME = "fcoin-season-s2-v3";
-const AUDIO_CACHE_NAME = "fcoin-audio-v2";
+const STATIC_CACHE_NAME = "fcoin-static-v7";
+const SEASON_CACHE_NAME = "fcoin-season-s2-v2";
+const AUDIO_CACHE_NAME = "fcoin-audio-v1";
 const STATIC_ASSETS = ["./", "./index.html"];
-const SEASON_ASSETS = [
-  "./back.png?v=halloween-s2-v3.0.7",
-  "./home.png?v=halloween-s2-v3.0.7",
-  "./FCoin.png?v=halloween-s2-v3.0.7",
-  "./boost.png?v=halloween-s2-v3.0.7",
-  "./barg.png?v=halloween-s2-v3.0.7"
-];
+const SEASON_ASSETS = [];
 
 async function cacheOptionalAssets(cacheName, assets) {
   const cache = await caches.open(cacheName);
@@ -33,12 +27,7 @@ self.addEventListener("activate", (event) => {
     const keys = await caches.keys();
     const keep = new Set([STATIC_CACHE_NAME, SEASON_CACHE_NAME, AUDIO_CACHE_NAME]);
     await Promise.all(keys
-      .filter((key) =>
-        (key.startsWith("fcoin-static-") ||
-          key.startsWith("fcoin-season-") ||
-          key.startsWith("fcoin-audio-")) &&
-        !keep.has(key)
-      )
+      .filter((key) => (key.startsWith("fcoin-static-") || key.startsWith("fcoin-season-")) && !keep.has(key))
       .map((key) => caches.delete(key)));
     await self.clients.claim();
   })());
@@ -58,7 +47,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (!/\.(png|jpe?g|webp|svg|mp3|woff2?|css|js)$/i.test(url.pathname)) return;
-  const isSeasonAsset = /\/(back|home|FCoin|boost|barg)\.png$/i.test(url.pathname);
+  const isSeasonAsset = /\/back\.png$/i.test(url.pathname);
   const isAudioAsset = /\.mp3$/i.test(url.pathname);
   const cacheName = isAudioAsset
     ? AUDIO_CACHE_NAME
