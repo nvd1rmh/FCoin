@@ -3510,6 +3510,7 @@
           }
           ctx.save();
           ctx.translate(leaf.x, leaf.y);
+          ctx.rotate(Math.sin(leaf.phase) * .22);
           ctx.globalAlpha = leaf.alpha;
           ctx.shadowColor = "rgba(35,16,7,.62)";
           ctx.shadowBlur = 0;
@@ -3610,6 +3611,7 @@
           ctx.save();
           ctx.globalAlpha = leaf.alpha;
           ctx.translate(leaf.x, leaf.y);
+          ctx.rotate(Math.sin(leaf.phase) * .22);
           const aspect = leafImage.naturalHeight / Math.max(1, leafImage.naturalWidth);
           ctx.shadowColor = "rgba(35,16,7,.7)";
           ctx.shadowBlur = 0;
