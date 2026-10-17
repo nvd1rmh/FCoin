@@ -1,6 +1,6 @@
 /* F Coin cache strategy: stable assets and season artwork are stored separately. */
-const STATIC_CACHE_NAME = "fcoin-static-v9";
-const SEASON_CACHE_NAME = "fcoin-season-s2-v2";
+const STATIC_CACHE_NAME = "fcoin-static-v3.0.7";
+const SEASON_CACHE_NAME = "fcoin-season-s2-v3.0.7";
 const AUDIO_CACHE_NAME = "fcoin-audio-v1";
 const STATIC_ASSETS = ["./", "./index.html"];
 const SEASON_ASSETS = [];
