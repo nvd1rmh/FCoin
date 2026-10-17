@@ -3455,31 +3455,34 @@
       if (!canvas || !screen || !canvas.getContext || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const ctx = canvas.getContext("2d", { alpha: true });
       if (!ctx) return;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       const leafImage = new Image();
       leafImage.decoding = "async";
-      leafImage.src = "barg.png?v=halloween-s2";
+      leafImage.src = "barg.png?v=chocolate-s3";
       let width = 0, height = 0, raf = 0, last = 0, active = false;
       const leaves = [];
       const rand = (min, max) => min + Math.random() * (max - min);
       function make(initial) {
-        const size = rand(30, 52);
+        const size = rand(36, 54);
         return {
           x: width * .5 + rand(-width * .46, width * .46),
           y: initial ? rand(-height, height) : rand(-size * 2, -size),
-          size, speed: rand(18, 34), drift: rand(10, 24),
-          phase: rand(0, Math.PI * 2), rotation: rand(0, Math.PI * 2),
-          rotationSpeed: rand(-.65, .65), alpha: rand(.82, .98)
+          size, speed: rand(18, 34), drift: rand(7, 16),
+          phase: rand(0, Math.PI * 2), alpha: rand(.88, .98)
         };
       }
       function resize() {
         width = Math.max(1, innerWidth);
         height = Math.max(1, innerHeight);
-        const ratio = Math.min(devicePixelRatio || 1, .8);
+        const ratio = Math.min(devicePixelRatio || 1, 1.25);
         canvas.width = Math.round(width * ratio);
         canvas.height = Math.round(height * ratio);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
         ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
         if (!leaves.length) {
-          for (let i = 0; i < 14; i++) leaves.push(make(true));
+          for (let i = 0; i < 10; i++) leaves.push(make(true));
         }
       }
       function shouldRun() {
@@ -3499,20 +3502,19 @@
         for (let i = 0; i < leaves.length; i++) {
           const leaf = leaves[i];
           leaf.y += leaf.speed * dt;
-          leaf.x += Math.sin(now * .001 + leaf.phase) * leaf.drift * dt;
-          leaf.phase += leaf.rotationSpeed * dt;
+          leaf.x += Math.sin(now * .00075 + leaf.phase) * leaf.drift * dt;
+          leaf.phase += dt;
           if (leaf.y > height + 35) {
             leaves[i] = make(false);
             continue;
           }
           ctx.save();
           ctx.translate(leaf.x, leaf.y);
-          ctx.rotate(leaf.rotation + Math.sin(leaf.phase) * .7);
           ctx.globalAlpha = leaf.alpha;
-          ctx.shadowColor = "rgba(35,16,7,.7)";
+          ctx.shadowColor = "rgba(35,16,7,.62)";
           ctx.shadowBlur = 0;
           ctx.shadowOffsetX = 2;
-          ctx.shadowOffsetY = 5;
+          ctx.shadowOffsetY = 4;
           ctx.drawImage(leafImage, -leaf.size / 2, -leaf.size / 2, leaf.size, leaf.size);
           ctx.shadowColor = "transparent";
           ctx.shadowBlur = 0;
@@ -3555,7 +3557,7 @@
 
 
   <script>
-    /* Full-screen chocolate fall: 14 particles, low-resolution canvas, capped at ~24fps for mobile performance. */
+    /* Crisp, low-cost chocolate fall: keep each image upright and sway it gently side to side. */
     (() => {
       const canvas = document.getElementById("coinLeaves");
       const area = document.querySelector(".coin-area");
@@ -3563,27 +3565,30 @@
       if (!canvas || !area || !home || !canvas.getContext) return;
       const ctx = canvas.getContext("2d", { alpha: true });
       if (!ctx) return;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       const leafImage = new Image();
       leafImage.decoding = "async";
-      leafImage.src = "barg.png?v=halloween-s2";
+      leafImage.src = "barg.png?v=chocolate-s3";
       const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const leaves = [];
-      const COUNT = 14;
+      const COUNT = 10;
       let width = 1, height = 1, dpr = 1, raf = 0, lastFrame = 0, running = false;
       const rand = (min, max) => min + Math.random() * (max - min);
       function resize() {
         width = Math.max(1, window.innerWidth); height = Math.max(1, window.innerHeight);
-        dpr = Math.min(window.devicePixelRatio || 1, .72);
+        dpr = Math.min(window.devicePixelRatio || 1, 1.25);
         canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
         canvas.style.width = width + "px"; canvas.style.height = height + "px";
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         if (!leaves.length) for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
       }
       function makeLeaf(initial) {
-        const size = rand(28, 48);
+        const size = rand(40, 58);
         return { x: width * .5 + rand(-width * .46, width * .46), y: initial ? rand(-height, height) : rand(-size * 2, -size), size,
-          speed: rand(17, 31), drift: rand(12, 27), phase: rand(0, Math.PI * 2), spin: rand(.7, 1.5),
-          rotation: rand(0, Math.PI * 2), rotationSpeed: rand(-.65, .65), alpha: rand(.82, .98) };
+          speed: rand(17, 29), drift: rand(10, 22), phase: rand(0, Math.PI * 2), alpha: rand(.9, .99) };
       }
       function shouldRun() {
         return !reduceMotion && !document.hidden && !document.body.classList.contains("low-graphics") &&
@@ -3592,29 +3597,27 @@
       function frame(now) {
         raf = 0;
         if (!running || !shouldRun()) { stop(); return; }
-        if (now - lastFrame < 42) { raf = requestAnimationFrame(frame); return; }
+        if (now - lastFrame < 40) { raf = requestAnimationFrame(frame); return; }
         const dt = Math.min(.06, lastFrame ? (now - lastFrame) / 1000 : .042);
         lastFrame = now;
         ctx.clearRect(0, 0, width, height);
         for (let i = 0; i < leaves.length; i++) {
           const leaf = leaves[i];
           leaf.y += leaf.speed * dt;
-          leaf.x += Math.sin(now * .00055 + leaf.phase) * leaf.drift * dt;
-          leaf.phase += leaf.spin * dt;
-          leaf.rotation += leaf.rotationSpeed * dt;
+          leaf.x += Math.sin(now * .0007 + leaf.phase) * leaf.drift * dt;
+          leaf.phase += dt;
           if (leaf.y > height + leaf.size * 2) { leaves[i] = makeLeaf(false); continue; }
-          const flutter = Math.cos(leaf.phase * 1.7);
           ctx.save();
           ctx.globalAlpha = leaf.alpha;
           ctx.translate(leaf.x, leaf.y);
-          ctx.rotate(leaf.rotation + Math.sin(leaf.phase) * .22);
-          ctx.scale(flutter, 1); // gentle left-right flip to imitate a leaf fluttering
           const aspect = leafImage.naturalHeight / Math.max(1, leafImage.naturalWidth);
           ctx.shadowColor = "rgba(35,16,7,.7)";
           ctx.shadowBlur = 0;
           ctx.shadowOffsetX = 2;
-          ctx.shadowOffsetY = 5;
+          ctx.shadowOffsetY = 4;
           ctx.drawImage(leafImage, -leaf.size / 2, -leaf.size * aspect / 2, leaf.size, leaf.size * aspect);
+          ctx.shadowColor = "transparent";
+          ctx.shadowBlur = 0;
           ctx.shadowOffsetX = 0;
           ctx.shadowOffsetY = 0;
           ctx.restore();
