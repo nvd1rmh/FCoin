@@ -30,7 +30,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     /* Background image gets its own GPU-friendly layer for subtle device-tilt parallax. */
-    .scene-background { position:fixed; z-index:0; inset:-24px; pointer-events:none; overflow:hidden; transform:scale(1.02); transform-origin:center; background:url("back.png?v=halloween-s2") center center / cover no-repeat; }
+    .scene-background { position:fixed; z-index:0; inset:-24px; pointer-events:none; overflow:hidden; transform:scale(1.02); transform-origin:center; background:url("back.png?v=season-3-v3.0.9") center center / cover no-repeat; }
     .scene-background::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(11,9,11,.32) 0%,rgba(16,14,18,.38) 58%,rgba(16,14,18,.43) 100%); }
     /* Lightweight atmosphere: stays behind all controls and never intercepts touches. */
     body::before {
@@ -452,7 +452,7 @@
 <body>
   <div class="scene-background" id="sceneBackground" aria-hidden="true"></div>
   <div id="loadingScreen" class="loading-screen" aria-live="polite">
-    <img class="loading-art" src="home.png?v=halloween-s2" alt="">
+    <img class="loading-art" src="home.png?v=season-3-v3.0.9" alt="">
     <div class="loading-shade" aria-hidden="true"></div>
     <canvas id="loadingLeaves" class="loading-leaves" aria-hidden="true"></canvas>
     <div class="loading-status">
@@ -468,7 +468,7 @@
       <button id="settingsButton" class="settings-button" type="button" aria-label="تنظیمات" title="تنظیمات">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2.1"/><circle cx="15" cy="12" r="2.1"/><circle cx="8" cy="18" r="2.1"/></svg>
       </button>
-      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>F Coin</span></div>
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>F Coin v3.0.9</span></div>
       <div id="seasonBadge" class="season-chip">Season 1</div>
     </header>
 
@@ -478,7 +478,7 @@
           <div class="balance-label">موجودی F Coin شما</div>
           <div class="balance-value" id="fcoinBalance">—<span class="balance-unit">F</span></div>
         </div>
-        <img class="wallet-icon" src="FCoin.png?v=halloween-s2" alt="" aria-hidden="true">
+        <img class="wallet-icon" src="FCoin.png?v=season-3-v3.0.9" alt="" aria-hidden="true">
       </section>
       <section class="home-level" aria-label="سطح و تجربه">
         <div class="home-level-top">
@@ -500,13 +500,13 @@
             <span class="shortcut-icon" aria-hidden="true">☸</span><span class="shortcut-label">گردونه شانس</span>
           </button>
           <button id="seasonButton" class="home-shortcut season" data-daily-feature="season" type="button" disabled>
-            <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ماموریت</span>
+            <span class="shortcut-icon" aria-hidden="true">✦</span><span class="shortcut-label">ایونت</span>
           </button>
           <button id="minerButton" class="home-shortcut miner" type="button" aria-label="ماینر"><span class="shortcut-icon" aria-hidden="true">⛏️</span><span class="shortcut-label">ماینر</span></button>
           <button id="storeButton" class="home-shortcut store" data-daily-feature="store" type="button" disabled aria-label="فروشگاه"><span class="shortcut-icon" aria-hidden="true">♛</span><span class="shortcut-label">فروشگاه</span></button>
         </section>
         <button id="tapButton" class="coin-button" type="button" aria-label="جمع کردن یک F Coin" disabled>
-          <img id="coinImage" class="coin-face" src="FCoin.png?v=halloween-s2" alt="" draggable="false">
+          <img id="coinImage" class="coin-face" src="FCoin.png?v=season-3-v3.0.9" alt="" draggable="false">
         </button>
         <div class="tap-actions">
             <button id="boostButton" class="boost-button" data-daily-feature="boost" type="button" disabled>
@@ -586,8 +586,8 @@
       </section>
       <p class="upgrade-footnote">ارتقاها دائمی هستند و پس از تأیید سرور، هزینه از موجودی F Coin کسر می‌شود.</p>
     </section>
-    <section id="missionsPanel" class="tab-panel" aria-label="ماموریت‌ها">
-      <div class="placeholder-card"><div class="placeholder-icon">🎯</div><h1>ماموریت‌ها</h1><p>با بازی و فعالیت روزانه XP بگیر؛ پیشرفتت ثبت می‌شود و با هر لول‌آپ جایزهٔ F Coin می‌گیری.</p></div>
+    <section id="missionsPanel" class="tab-panel" aria-label="ایونت‌ها">
+      <div class="placeholder-card"><div class="placeholder-icon">🎯</div><h1>ایونت‌ها</h1><p>با بازی و فعالیت روزانه XP بگیر؛ پیشرفتت ثبت می‌شود و با هر لول‌آپ جایزهٔ F Coin می‌گیری.</p></div>
       <section class="mission-hero" aria-label="سطح و تجربه">
         <div class="mission-hero-top"><span>⭐ سطح فعلی</span><span id="missionXpText">— XP</span></div>
         <div class="mission-level">سطح <b id="missionLevel">—</b> <small>جایزهٔ لول بعدی: —</small></div>
@@ -837,7 +837,7 @@
       const boostButton = $("boostButton");
       const boostDialog = $("boostDialog");
       const boostConfirmButton = $("boostConfirmButton");
-      new Image().src = "boost.png?v=halloween-s2";
+      new Image().src = "boost.png?v=season-3-v3.0.9";
       const inviteLink = $("inviteLink");
       const copyInviteButton = $("copyInviteButton");
       const shareInviteButton = $("shareInviteButton");
@@ -1067,8 +1067,8 @@
       function syncBoostVisual() {
         const image = $("coinImage");
         const source = isBoostActive()
-          ? "boost.png?v=halloween-s2"
-          : (normalCoinImage || "FCoin.png?v=halloween-s2");
+          ? "boost.png?v=season-3-v3.0.9"
+          : (normalCoinImage || "FCoin.png?v=season-3-v3.0.9");
         if (image.getAttribute("src") !== source) image.setAttribute("src", source);
         tapButton.classList.toggle("is-boosted", isBoostActive());
       }
@@ -1311,7 +1311,7 @@
           title.textContent = (mission.completed ? "✅ " : "🎯 ") + mission.title;
           const reward = document.createElement("div");
           reward.className = "mission-reward";
-          reward.textContent = "+" + mission.xp_reward + " XP";
+          reward.textContent = "+" + Number(mission.reward).toLocaleString("en-US") + " F Coin · +" + mission.xp_reward + " XP";
           top.append(title, reward);
           const progress = document.createElement("div");
           progress.className = "mission-progress";
@@ -1626,8 +1626,8 @@
         tabs.className = "mission-tabs";
         tabs.setAttribute("role", "tablist");
         [
-          ["daily", "ماموریت‌های روزانه"],
-          ["season", "ماموریت‌های سیزن"]
+          ["daily", "ایونت‌های روزانه"],
+          ["season", "ایونت‌های سیزن"]
         ].forEach(([tabId, text]) => {
           const button = document.createElement("button");
           button.type = "button";
@@ -1657,7 +1657,7 @@
       }
 
       async function openSeason() {
-        openFeatureDialog("✦ ماموریت");
+        openFeatureDialog("✦ ایونت");
         featureDialogBody.append(featureMessage("در حال دریافت ماموریت‌ها..."));
         try {
           const [dailyState, seasonState] = await Promise.all([
@@ -1817,7 +1817,7 @@
       function renderMiner(state) {
         const level = Number(state.level) || 0;
         const requiredLevel = Number(state.required_level) || 7;
-        const rate = Number(state.rate_per_hour) || 300;
+        const rate = Number(state.rate_per_hour) || 200;
         const duration = Number(state.duration_seconds) || 12 * 60 * 60;
         const startedAt = Number(state.started_at) || 0;
         const endsAt = Number(state.ends_at) || 0;
@@ -3004,7 +3004,7 @@
           }
         };
         image.onerror = () => showStatus("تصویر اصلی سکه بارگذاری نشد.", "error");
-        image.src = "FCoin.png?v=halloween-s2";
+        image.src = "FCoin.png?v=season-3-v3.0.9";
       }
 
       function selectTab(panelId) {
@@ -3057,8 +3057,8 @@
       }
 
       async function cacheSeasonAudio() {
-        const source = new URL("music.mp3?v=halloween-s2-audio2", document.baseURI).href;
-        const cacheName = "fcoin-audio-v1";
+        const source = new URL("music.mp3?v=season-3-v3.0.9-audio2", document.baseURI).href;
+        const cacheName = "fcoin-audio-v2";
         let audioBlob;
         let audioCache = null;
 
@@ -3464,7 +3464,7 @@
       const leaves = [];
       const rand = (min, max) => min + Math.random() * (max - min);
       function make(initial) {
-        const size = rand(36, 54);
+        const size = rand(42, 60);
         return {
           x: width * .5 + rand(-width * .46, width * .46),
           y: initial ? rand(-height, height) : rand(-size * 2, -size),
@@ -3510,7 +3510,7 @@
           }
           ctx.save();
           ctx.translate(leaf.x, leaf.y);
-          ctx.rotate(Math.sin(leaf.phase) * .22);
+          ctx.rotate(Math.sin(leaf.phase) * .38);
           ctx.globalAlpha = leaf.alpha;
           ctx.shadowColor = "rgba(35,16,7,.62)";
           ctx.shadowBlur = 0;
@@ -3587,7 +3587,7 @@
         if (!leaves.length) for (let i = 0; i < COUNT; i++) leaves.push(makeLeaf(true));
       }
       function makeLeaf(initial) {
-        const size = rand(40, 58);
+        const size = rand(46, 64);
         return { x: width * .5 + rand(-width * .46, width * .46), y: initial ? rand(-height, height) : rand(-size * 2, -size), size,
           speed: rand(17, 29), drift: rand(10, 22), phase: rand(0, Math.PI * 2), alpha: rand(.9, .99) };
       }
@@ -3611,7 +3611,7 @@
           ctx.save();
           ctx.globalAlpha = leaf.alpha;
           ctx.translate(leaf.x, leaf.y);
-          ctx.rotate(Math.sin(leaf.phase) * .22);
+          ctx.rotate(Math.sin(leaf.phase) * .38);
           const aspect = leafImage.naturalHeight / Math.max(1, leafImage.naturalWidth);
           ctx.shadowColor = "rgba(35,16,7,.7)";
           ctx.shadowBlur = 0;
