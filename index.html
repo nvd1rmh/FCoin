@@ -3057,8 +3057,8 @@
       }
 
       async function cacheSeasonAudio() {
-        const source = new URL("music.mp3?v=fcoin-audio-v4", document.baseURI).href;
-        const cacheName = "fcoin-audio-v4";
+        const source = new URL("music.mp3?v=fcoin-audio-v5", document.baseURI).href;
+        const cacheName = "fcoin-audio-v5";
         let audioBlob;
         let audioCache = null;
         let audioPrepared = false;
@@ -3213,11 +3213,21 @@
           await cacheSeasonAudio();
         } catch (error) {
           console.error("Season audio preparation failed:", error);
-          showLoadingError(
-            "دانلود کامل موسیقی انجام نشد. اتصال اینترنت را بررسی کن و دوباره تلاش کن."
-          );
-          initialLoadStarted = false;
-          return;
+          // Audio is optional: keep the Mini App usable and try normal streaming
+          // when cache/download preparation fails.
+          try {
+            if (musicObjectUrl) URL.revokeObjectURL(musicObjectUrl);
+            musicObjectUrl = "";
+            musicReady = false;
+            music.src = new URL("music.mp3?v=fcoin-audio-v5", document.baseURI).href;
+            music.load();
+            music.addEventListener("canplay", () => {
+              musicReady = true;
+              tryPlayMusic();
+            }, { once: true });
+          } catch (fallbackError) {
+            console.warn("Direct season audio streaming is unavailable:", fallbackError);
+          }
         }
         finishLoadingScreen();
         initialLoadStarted = false;

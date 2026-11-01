@@ -1,7 +1,7 @@
 /* F Coin cache strategy: stable assets and season artwork are stored separately. */
-const STATIC_CACHE_NAME = "fcoin-static-v3.0.10";
-const SEASON_CACHE_NAME = "fcoin-season-s3-v3.0.10";
-const AUDIO_CACHE_NAME = "fcoin-audio-v4";
+const STATIC_CACHE_NAME = "fcoin-static-v3.0.11";
+const SEASON_CACHE_NAME = "fcoin-season-s3-v3.0.11";
+const AUDIO_CACHE_NAME = "fcoin-audio-v5";
 const STATIC_ASSETS = ["./", "./index.html"];
 const SEASON_ASSETS = ["./back.png", "./home.png", "./FCoin.png", "./boost.png", "./barg.png"];
 
@@ -52,6 +52,25 @@ self.addEventListener("fetch", (event) => {
   const cacheName = isAudioAsset
     ? AUDIO_CACHE_NAME
     : isSeasonAsset ? SEASON_CACHE_NAME : STATIC_CACHE_NAME;
+  if (isAudioAsset) {
+    event.respondWith((async () => {
+      const cache = await caches.open(cacheName);
+      try {
+        const response = await fetch(request, { cache: "no-store" });
+        // Never persist partial/range responses as a complete music file.
+        if (request.headers.has("range")) return response;
+        if (response && response.status === 200 && response.ok && !response.headers.has("content-range")) {
+          try { await cache.put(request, response.clone()); } catch (_) {}
+        }
+        return response;
+      } catch (error) {
+        const cached = await cache.match(request, { ignoreSearch: true });
+        if (cached) return cached;
+        throw error;
+      }
+    })());
+    return;
+  }
   event.respondWith((async () => {
     const cache = await caches.open(cacheName);
     const cached = await cache.match(request, { ignoreSearch: true });
