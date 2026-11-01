@@ -3057,10 +3057,42 @@
       }
 
       async function cacheSeasonAudio() {
-        const source = new URL("music.mp3?v=fcoin-audio-v3", document.baseURI).href;
-        const cacheName = "fcoin-audio-v3";
+        const source = new URL("music.mp3?v=fcoin-audio-v4", document.baseURI).href;
+        const cacheName = "fcoin-audio-v4";
         let audioBlob;
         let audioCache = null;
+        let audioPrepared = false;
+
+        async function setAudioSource(blob) {
+          if (musicObjectUrl) URL.revokeObjectURL(musicObjectUrl);
+          musicObjectUrl = URL.createObjectURL(blob);
+          musicReady = false;
+          await new Promise((resolve, reject) => {
+            let settled = false;
+            const timeout = window.setTimeout(() => finish(new Error("موسیقی در زمان مناسب آماده نشد.")), 30000);
+            const cleanup = () => {
+              window.clearTimeout(timeout);
+              music.removeEventListener("canplay", onReady);
+              music.removeEventListener("error", onError);
+            };
+            const finish = (error) => {
+              if (settled) return;
+              settled = true;
+              cleanup();
+              if (error) reject(error);
+              else resolve();
+            };
+            const onReady = () => finish();
+            const onError = () => finish(new Error("فایل موسیقی قابل پخش نیست."));
+            music.addEventListener("canplay", onReady);
+            music.addEventListener("error", onError);
+            music.src = musicObjectUrl;
+            music.load();
+            if (music.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) onReady();
+          });
+          musicReady = true;
+          audioPrepared = true;
+        }
 
         if ("caches" in window) {
           try {
@@ -3069,10 +3101,24 @@
             if (cached) {
               updateLoadingProgress(92, "در حال آماده‌سازی موسیقی ذخیره‌شده...");
               audioBlob = await cached.blob();
-              updateLoadingProgress(98, "موسیقی آمادهٔ پخش است...");
+              if (!audioBlob.size) throw new Error("نسخهٔ ذخیره‌شدهٔ موسیقی خالی است.");
+              try {
+                await setAudioSource(audioBlob);
+                updateLoadingProgress(98, "موسیقی آمادهٔ پخش است...");
+              } catch (error) {
+                console.warn("Cached season audio is invalid; downloading a fresh copy:", error);
+                await audioCache.delete(source);
+                if (musicObjectUrl) URL.revokeObjectURL(musicObjectUrl);
+                musicObjectUrl = "";
+                music.removeAttribute("src");
+                music.load();
+                audioPrepared = false;
+                audioBlob = null;
+              }
             }
           } catch (error) {
             console.warn("Persistent season audio cache unavailable:", error);
+            audioBlob = null;
           }
         }
 
@@ -3081,7 +3127,7 @@
           const timeout = window.setTimeout(() => controller.abort(), 90000);
           try {
             const response = await fetch(source, {
-              cache: "force-cache",
+              cache: "reload",
               signal: controller.signal
             });
             if (!response.ok || !response.body) {
@@ -3111,7 +3157,7 @@
               );
             }
             audioBlob = new Blob(chunks, { type: contentType });
-            if (!audioBlob.size) throw new Error("فایل موسیقی خالی دریافت شد.");
+            if (audioBlob.size < 1024) throw new Error("فایل موسیقی ناقص یا خالی دریافت شد.");
 
             if (audioCache) {
               try {
@@ -3127,33 +3173,7 @@
           }
         }
 
-        if (musicObjectUrl) URL.revokeObjectURL(musicObjectUrl);
-        musicObjectUrl = URL.createObjectURL(audioBlob);
-        musicReady = false;
-        const readyPromise = new Promise((resolve, reject) => {
-          if (music.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
-            resolve();
-            return;
-          }
-          const onReady = () => {
-            cleanup();
-            resolve();
-          };
-          const onError = () => {
-            cleanup();
-            reject(new Error("موسیقی بارگیری‌شده پخش‌پذیر نیست."));
-          };
-          const cleanup = () => {
-            music.removeEventListener("canplay", onReady);
-            music.removeEventListener("error", onError);
-          };
-          music.addEventListener("canplay", onReady, { once: true });
-          music.addEventListener("error", onError, { once: true });
-        });
-        music.src = musicObjectUrl;
-        music.load();
-        await readyPromise;
-        musicReady = true;
+        if (!audioPrepared) await setAudioSource(audioBlob);
         updateLoadingProgress(99, "موسیقی آماده شد؛ در حال ورود به بازی...");
         tryPlayMusic();
       }
