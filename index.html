@@ -859,7 +859,6 @@
       const queuedTapValues = [];
       let queuedTapReward = 0;
       let inFlightTapReward = 0;
-      const BOOST_TAP_SETTLEMENT_MARGIN_MS = 3000;
       let flushingTaps = false;
       let tapFlushTimer = 0;
       let requestSequence = 0;
@@ -1034,9 +1033,8 @@
 
       function updateWalletDisplay() {
         if (!serverState) return;
-        repriceQueuedTaps();
         syncBoostVisual();
-        const tapPower = tapPowerForNextBatch();
+        const tapPower = effectiveTapPower();
         $("fcoinBalance").replaceChildren(document.createTextNode(
           (serverState.fcoin_balance + queuedTapReward + inFlightTapReward).toLocaleString("en-US")
         ));
@@ -1060,26 +1058,10 @@
         return (Date.now() + serverClockOffsetMs) / 1000;
       }
 
-      function tapPowerForNextBatch() {
-        if (!serverState) return 1;
-        const boostRemainingMs = serverState.boost_until * 1000 - serverNowSeconds() * 1000;
-        // The API decides the multiplier when it receives a batch. Near the
-        // boost boundary, estimate queued taps at base power so network delay
-        // cannot make the optimistic balance jump down after server sync.
-        return boostRemainingMs > BOOST_TAP_SETTLEMENT_MARGIN_MS
-          ? serverState.tap_power * serverState.boost_multiplier
-          : serverState.tap_power;
-      }
-
-      function repriceQueuedTaps() {
-        if (queuedTaps <= 0) {
-          queuedTapReward = 0;
-          queuedTapValues.length = 0;
-          return;
-        }
-        const expectedTapPower = tapPowerForNextBatch();
-        queuedTapValues.fill(expectedTapPower);
-        queuedTapReward = queuedTaps * expectedTapPower;
+      function effectiveTapPower() {
+        return serverState
+          ? serverState.tap_power * (isBoostActive() ? serverState.boost_multiplier : 1)
+          : 1;
       }
 
       function syncBoostVisual() {
@@ -2881,7 +2863,6 @@
         flushingTaps = true;
         hideStatus();
         while (queuedTaps > 0) {
-          repriceQueuedTaps();
           const count = Math.min(queuedTaps, 50);
           const batchValues = queuedTapValues.splice(0, count);
           const batchReward = batchValues.reduce((total, value) => total + value, 0);
@@ -2934,7 +2915,7 @@
         if (!serverState ||
             (!isBoostActive() && Math.floor(availableEnergy() + 1e-9) < serverState.tap_power)) return;
         vibrate("coin");
-        const tapPower = tapPowerForNextBatch();
+        const tapPower = effectiveTapPower();
         queuedTaps += 1;
         queuedTapValues.push(tapPower);
         queuedTapReward += tapPower;
@@ -3228,19 +3209,6 @@
         document.querySelector(".loading-caption").textContent = "در حال آماده‌سازی موسیقی و بازی...";
         const stateRequest = request("state");
         stateRequest.catch(() => {});
-        // Load the first screen panels alongside the primary balance request;
-        // they do not depend on its response and can render as soon as ready.
-        refreshMissions().catch((error) => showStatus(
-          error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.",
-          "error"
-        ));
-        refreshSelf().catch((error) => {
-          selfApp.replaceChildren();
-          selfApp.append(selfCard(
-            "پنل سلف",
-            error && error.message ? error.message : "وضعیت سلف دریافت نشد."
-          ));
-        });
         try {
           await cacheSeasonAudio();
         } catch (error) {
@@ -3263,7 +3231,19 @@
         }
         finishLoadingScreen();
         initialLoadStarted = false;
-        stateRequest.catch((error) => {
+        stateRequest.then(() => {
+          refreshMissions().catch((error) => showStatus(
+            error && error.message ? error.message : "به‌روزرسانی ماموریت‌ها ناموفق بود.",
+            "error"
+          ));
+          refreshSelf().catch((error) => {
+            selfApp.replaceChildren();
+            selfApp.append(selfCard(
+              "پنل سلف",
+              error && error.message ? error.message : "وضعیت سلف دریافت نشد."
+            ));
+          });
+        }).catch((error) => {
           renderConnection(false);
           updateButtons();
           showStatus(
