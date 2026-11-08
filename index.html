@@ -64,7 +64,9 @@
     .profile-view{padding-top:0}
     .profile-top{height:46px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
     .back-button{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid #ffffff12;border-radius:999px;background:#ffffff09;color:#f1edf0;font-size:12px;cursor:pointer;backdrop-filter:blur(12px)}
-    .profile-top-spacer{width:65px}
+    .profile-message{display:inline-flex;align-items:center;justify-content:center;min-width:78px;padding:8px 13px;border:1px solid #ff91aa35;border-radius:999px;background:#ff91aa12;color:#ffc4d0;font-size:11px;font-weight:700;cursor:pointer}
+    .profile-message:disabled{border-color:#ffffff10;background:#ffffff05;color:#77727c;cursor:default}
+    .profile-message[hidden]{display:none!important}
     .profile-hero{padding:7px 0 18px;text-align:center}
     .avatar-wrap{position:relative;width:106px;height:106px;margin:0 auto 12px;padding:3px;border-radius:50%;background:linear-gradient(145deg,#ff829c,#9d3f60 58%,#efcc9a);box-shadow:0 0 30px #e6577933}
     .avatar{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;background:linear-gradient(145deg,#38242d,#111116);border:3px solid #100d10}
@@ -148,7 +150,7 @@
       <section class="view leaderboard-view" id="leaderboardView" aria-label="Leaderboard"><div class="home-heading"><div><div class="eyebrow">F Gift collectors</div><h1>Leaderboard</h1></div><div class="heading-note">Members with<br>gifts in their profile</div></div><div class="collector-list" id="collectorList"><div class="leaderboard-state">Open Leaderboard to load collectors.</div></div></section>
 
       <section class="view profile-view" id="profileView" aria-label="Profile">
-        <div class="profile-top"><button class="back-button" id="profileBack" type="button"><span>‹</span> Back</button><div class="profile-top-spacer"></div></div>
+        <div class="profile-top"><button class="back-button" id="profileBack" type="button"><span>‹</span> Back</button><button class="profile-message" id="profileMessage" type="button" hidden>Message</button></div>
         <div class="profile-hero">
           <div class="avatar-wrap" id="avatarWrap"><div class="avatar-fallback" id="avatarFallback">?</div></div>
           <div class="profile-name" id="profileName">Telegram user</div><div class="profile-sub" id="profileSubtitle"></div>
@@ -229,7 +231,7 @@
     const CATALOG = [
       {id:"myth-mask-58594",name:"Myth Mask",number:"58,594",tag:"#58,594",model:"Kaleidoscope",price:300000,asset:"mask",link:"https://t.me/nft/MythMask-58594"},
       {id:"chill-flame-284498",name:"Chill Flame",number:"284,498",tag:"#284,498",model:"Dungeon",price:75000,asset:"flame",link:"https://t.me/nft/ChillFlame-284498"},
-      {id:"ice-queen",name:"Ice Queen",number:"",tag:"NEW",model:"Ice Queen",price:400000,asset:"iceQueen",link:""}
+      {id:"ice-queen",name:"Liberty Figure",number:"3524",tag:"#3524",model:"Ice Queen",price:400000,asset:"iceQueen",link:"https://t.me/nft/LibertyFigure-3524"}
     ];
     const STORAGE_KEY = "farno-gift-market-v1";
     const state = {user:null,userId:0,balance:null,profile:null,gifts:[],items:[],online:false,view:"homeView",busy:false,selected:null,externalProfile:null,externalGifts:null,leaderboard:[],leaderboardLoading:false,leaderboardError:"",toastTimer:0,animators:new Map(),animationJson:new Map()};
@@ -296,6 +298,7 @@
     }
     function initials(name){return String(name||"?").trim().split(/\s+/).slice(0,2).map((part)=>part[0]||"").join("").toUpperCase()||"?"}
     function renderProfile(profile=ownProfile(),gifts=state.gifts,isOwn=true){
+      const messageButton=$("profileMessage");const messageUsername=String(profile.username||"").replace(/^@/,"").trim();messageButton.hidden=isOwn;messageButton.disabled=!messageUsername;messageButton.title=messageUsername?"Open this user's Telegram chat":"This account has no public username";messageButton.onclick=()=>{if(!messageUsername)return;const url=`https://t.me/${encodeURIComponent(messageUsername)}`;if(tg&&tg.openTelegramLink)tg.openTelegramLink(url);else window.open(url,"_blank","noopener")};
       const name=profile.first_name||"Telegram user";$("profileName").textContent=name;$("profileSubtitle").textContent=isOwn?"":"Telegram profile";$("profileBio").textContent=profile.bio||"Not set";$("profileUsername").textContent=profile.username?"@"+profile.username:"Not set";$("avatarWrap").replaceChildren();
       if(profile.photo_url){const img=document.createElement("img");img.className="avatar";img.src=profile.photo_url;img.alt="";img.onerror=()=>{const fallback=document.createElement("div");fallback.className="avatar-fallback";fallback.textContent=initials(name);img.replaceWith(fallback)};$("avatarWrap").append(img)}else{const fallback=document.createElement("div");fallback.className="avatar-fallback";fallback.textContent=initials(name);$("avatarWrap").append(fallback)}
       $("bioRow").style.display="flex";$("bioRow").onclick=isOwn?openBio:null;$("giftCount").textContent=gifts.length?String(gifts.length):"";
@@ -315,11 +318,16 @@
         card.append(rank,avatar,copy,count);card.addEventListener("click",()=>openPublicProfile(user.user_id,user));list.append(card);
       }
     }
+    function collectorsFromMarket(){
+      const byId=new Map();
+      for(const item of state.items){const userId=Number(item.owner_id);if(!userId)continue;let user=byId.get(userId);if(!user){user={user_id:userId,first_name:item.first_name||"Telegram user",username:item.username||"",photo_url:item.photo_url||"",bio:"",gift_count:0,gifts:[]};byId.set(userId,user)}user.gift_count++;user.gifts.push({...item,owner_id:userId})}
+      return Array.from(byId.values()).sort((a,b)=>b.gift_count-a.gift_count||a.user_id-b.user_id).map((user,index)=>({...user,rank:index+1}));
+    }
     async function loadLeaderboard(){
       if(state.leaderboardLoading)return;
       state.leaderboardLoading=true;state.leaderboardError="";renderLeaderboard();
-      try{const result=await api("leaderboard");state.leaderboard=Array.isArray(result.users)?result.users:[]}
-      catch(error){state.leaderboardError=error.message||"Could not load gift collectors."}
+      try{const result=await api("leaderboard");const users=Array.isArray(result.users)?result.users:[];state.leaderboard=users.length?users:collectorsFromMarket();state.leaderboardError=""}
+      catch(error){state.leaderboard=collectorsFromMarket();state.leaderboardError=state.leaderboard.length?"":(error.message||"Could not load gift collectors.")}
       finally{state.leaderboardLoading=false;renderLeaderboard()}
     }
     function setView(view){
@@ -348,9 +356,9 @@
       finally{state.busy=false}
     }
     async function openPublicProfile(userId,knownProfile=null){
-      if(knownProfile&&Array.isArray(knownProfile.gifts)){state.externalProfile=knownProfile;state.externalGifts=knownProfile.gifts;hideModal("giftModal");setView("profileView");return}
-      try{const result=await api("profile",{user_id:Number(userId)});state.externalProfile=result.profile;state.externalGifts=result.gifts||[];hideModal("giftModal");setView("profileView")}
-      catch(error){showToast(error.message||"Could not open profile.")}
+      try{const result=await api("profile",{user_id:Number(userId)});state.externalProfile=result.profile||knownProfile;state.externalGifts=Array.isArray(result.gifts)?result.gifts:(knownProfile&&Array.isArray(knownProfile.gifts)?knownProfile.gifts:[]);if(!state.externalProfile)throw new Error("Could not load this profile.")}
+      catch(error){if(!knownProfile){showToast(error.message||"Could not open profile.");return}state.externalProfile=knownProfile;state.externalGifts=Array.isArray(knownProfile.gifts)?knownProfile.gifts:[]}
+      hideModal("giftModal");setView("profileView")
     }
     function openBio(){if(!getInitData()){showToast("Open this Mini App from Telegram to edit your profile.");return}$("bioInput").value=ownProfile().bio||"";showModal("bioModal")}
     async function saveBio(){
@@ -374,10 +382,8 @@
       try{
         let json=state.animationJson.get(key);
         if(!json){const bytes=Uint8Array.from(atob(TGS_DATA[key]),(char)=>char.charCodeAt(0));json=window.pako.ungzip(bytes,{to:"string"});state.animationJson.set(key,json)}
-        const renderer=key==="iceQueen"?"svg":"canvas";
-        const rendererSettings=renderer==="svg"?{preserveAspectRatio:"xMidYMid meet",progressiveLoad:true}:{clearCanvas:true,preserveAspectRatio:"xMidYMid meet",dpr:1};
-        const instance=window.lottie.loadAnimation({container,renderer,loop:true,autoplay:false,animationData:JSON.parse(json),rendererSettings});
-        instance.setSubframe(false);instance.setSpeed(key==="iceQueen"?0.65:0.8);record.instance=instance;instance.play();
+        const instance=window.lottie.loadAnimation({container,renderer:"canvas",loop:true,autoplay:false,animationData:JSON.parse(json),rendererSettings:{clearCanvas:true,preserveAspectRatio:"xMidYMid meet",dpr:1}});
+        instance.setSubframe(false);instance.setSpeed(0.8);record.instance=instance;instance.play();
       }catch(_){container.classList.add("animation-unavailable")}
     }
     function loadAnimation(container,key){
