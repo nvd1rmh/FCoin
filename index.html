@@ -31,11 +31,10 @@
     .gift-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
     .gift-card{position:relative;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025) 58%,rgba(87,45,59,.09));box-shadow:0 12px 32px #0004,inset 0 1px #ffffff0b;cursor:pointer;transition:transform .16s ease,border-color .16s ease}
     .gift-card:active{transform:scale(.975);border-color:#ff8ba747}
-    .gift-art{height:164px;position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 65%,#d96b8226,transparent 60%),linear-gradient(160deg,#ffffff04,#ff91aa08)}
+    .gift-art{height:156px;position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 65%,#d96b8220,transparent 60%),linear-gradient(160deg,#ffffff04,#ff91aa08)}
     .gift-art:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 70%,#0c0b0eaa)}
-    .gift-animation{width:100%;height:100%;display:grid;place-items:center}
-    .gift-animation svg{width:100%;height:100%;max-width:185px;max-height:185px;overflow:visible}
-    .gift-placeholder{font-size:48px;filter:drop-shadow(0 8px 15px #0008)}
+    .gift-animation{width:min(100%,118px);height:min(100%,118px);flex:none;display:grid;place-items:center;overflow:hidden;contain:strict}
+    .gift-animation svg,.gift-animation canvas{display:block!important;width:100%!important;height:100%!important;max-width:100%;max-height:100%;overflow:hidden}
     .gift-index{position:absolute;z-index:1;top:10px;left:10px;padding:5px 8px;border:1px solid #ffffff18;border-radius:999px;background:#09090b80;backdrop-filter:blur(10px);font-size:9px;color:#e6dbe0}
     .gift-sold{position:absolute;z-index:2;top:10px;right:10px;padding:5px 8px;border-radius:999px;background:#ff789130;color:#ff9db0;font-size:9px;font-weight:750}
     .gift-info{padding:12px 12px 13px}
@@ -43,6 +42,7 @@
     .gift-model{font-size:10px;color:var(--muted);margin-top:4px}
     .gift-bottom{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-top:13px}
     .gift-price{font-size:11px;font-weight:800;color:#f4d38e;white-space:nowrap}
+    .gift-owner{margin-top:8px;color:#ffadbd;font-size:10px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .gift-open{width:27px;height:27px;display:grid;place-items:center;border:1px solid #ffffff18;border-radius:10px;color:#ded8dd;background:#ffffff09;font-size:16px;line-height:1}
     .market-status{margin:13px 2px 0;color:#777680;font-size:10px;line-height:1.6;min-height:14px}
     .soon-page{min-height:55vh;display:grid;place-items:center;text-align:center}
@@ -72,8 +72,8 @@
     .gifts-heading-icon{font-size:20px;color:#ff829a}
     .owned-gifts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
     .owned-gift{min-width:0;overflow:hidden;border:1px solid #ffffff12;border-radius:15px;background:#ffffff08;cursor:pointer}
-    .owned-art{height:112px;background:radial-gradient(ellipse at 50% 65%,#d96b8229,transparent 65%);display:grid;place-items:center}
-    .owned-art .gift-animation svg{max-width:125px;max-height:125px}
+    .owned-art{height:104px;background:radial-gradient(ellipse at 50% 65%,#d96b821b,transparent 65%);display:grid;place-items:center}
+    .owned-art .gift-animation{width:82px;height:82px}
     .owned-copy{padding:8px 9px 10px}
     .owned-title{font-size:11px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .owned-model{font-size:9px;color:var(--muted);margin-top:4px}
@@ -87,8 +87,8 @@
     .sheet{position:relative;width:min(100%,490px);max-height:calc(100dvh - 28px - env(safe-area-inset-top,0px));overflow:auto;border:1px solid #ffffff18;border-radius:26px;background:linear-gradient(160deg,#211a20,#121115 56%);box-shadow:0 20px 80px #000a;padding:15px 17px max(17px,var(--safe-bottom))}
     .sheet-handle{width:36px;height:4px;border-radius:99px;margin:0 auto 13px;background:#ffffff35}
     .sheet-close{position:absolute;top:13px;right:14px;width:31px;height:31px;border:1px solid #ffffff16;border-radius:50%;background:#ffffff0b;color:#ddd;font-size:19px;cursor:pointer;z-index:3}
-    .detail-art{height:min(34vh,250px);min-height:190px;display:grid;place-items:center;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 60%,#d96b8230,transparent 66%),linear-gradient(145deg,#ffffff06,#ffffff02)}
-    .detail-art .gift-animation svg{max-width:255px;max-height:255px}
+    .detail-art{height:min(32vh,225px);min-height:185px;display:grid;place-items:center;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 60%,#d96b8226,transparent 66%),linear-gradient(145deg,#ffffff06,#ffffff02)}
+    .detail-art .gift-animation{width:168px;height:168px}
     .detail-title{margin:16px 2px 3px;font-size:22px;font-weight:780;letter-spacing:-.45px}
     .detail-id{color:#aaa5af;font-size:11px;margin:0 2px}
     .detail-attributes{display:flex;gap:8px;margin-top:14px}
@@ -110,8 +110,8 @@
     .tab-button.active{color:#ff9caf;background:linear-gradient(145deg,#ff789522,#ff78950b);box-shadow:inset 0 1px #ffffff0b}
     .tab-button:active{transform:scale(.96)}
     .loading-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#d6a760;vertical-align:middle;margin-left:4px;box-shadow:0 0 0 3px #d6a76018}
-    @media(min-width:600px){.app-shell{padding-left:22px;padding-right:22px}.gift-art{height:190px}.gift-grid{gap:15px}}
-    @media(max-width:360px){.app-shell{padding-left:12px;padding-right:12px}.gift-grid{gap:9px}.gift-art{height:145px}.gift-info{padding:10px}.gift-title{font-size:12px}.balance-pill{min-width:120px;padding:8px 10px}.profile-row{padding:12px}.owned-art{height:98px}}
+    @media(min-width:600px){.app-shell{padding-left:22px;padding-right:22px}.gift-art{height:156px}.gift-grid{gap:15px}}
+    @media(max-width:360px){.app-shell{padding-left:12px;padding-right:12px}.gift-grid{gap:9px}.gift-art{height:140px}.gift-animation{width:108px;height:108px}.gift-info{padding:10px}.gift-title{font-size:12px}.balance-pill{min-width:120px;padding:8px 10px}.profile-row{padding:12px}.owned-art{height:94px}.owned-art .gift-animation{width:76px;height:76px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
   </style>
 </head>
@@ -213,12 +213,13 @@
     const API_BASE = "https://nvd2rmh.pythonanywhere.com";
     const API_ORIGIN = "https://nvd1rmh.github.io";
     const tg = window.Telegram && window.Telegram.WebApp;
+    if(window.lottie&&window.lottie.setQuality)window.lottie.setQuality("medium");
     const CATALOG = [
       {id:"myth-mask-58594",name:"Myth Mask",number:"58,594",model:"Kaleidoscope",price:300000,asset:"mask",link:"https://t.me/nft/MythMask-58594"},
       {id:"chill-flame-284498",name:"Chill Flame",number:"284,498",model:"Dungeon",price:75000,asset:"flame",link:"https://t.me/nft/ChillFlame-284498"}
     ];
     const STORAGE_KEY = "farno-gift-market-v1";
-    const state = {user:null,userId:0,balance:null,profile:null,gifts:[],items:[],online:false,view:"homeView",busy:false,selected:null,externalProfile:null,toastTimer:0,animators:new WeakMap()};
+    const state = {user:null,userId:0,balance:null,profile:null,gifts:[],items:[],online:false,view:"homeView",busy:false,selected:null,externalProfile:null,toastTimer:0,animators:new Map(),animationJson:new Map()};
     const $ = (id)=>document.getElementById(id);
     const formatCoins = (value)=>Number(value||0).toLocaleString("en-US");
     const profileKey = (id)=>`${STORAGE_KEY}:${id||"guest"}`;
@@ -265,12 +266,13 @@
     }
     function itemState(item){return state.items.find((x)=>x.id===item.id)||null}
     function renderMarket(){
-      const grid=$("giftGrid");grid.replaceChildren();
+      const grid=$("giftGrid");destroyAnimations(grid);grid.replaceChildren();
       for(const item of CATALOG){
         const record=itemState(item);const sold=!!(record&&record.owner_id);
         const card=document.createElement("article");card.className="gift-card";card.setAttribute("role","button");card.setAttribute("tabindex","0");card.setAttribute("aria-label",`${item.name} gift details`);
-        const art=document.createElement("div");art.className="gift-art";art.innerHTML=`<span class="gift-index">#${item.number}</span>${sold?'<span class="gift-sold">COLLECTED</span>':''}<div class="gift-animation" data-asset="${item.asset}"><span class="gift-placeholder">${item.asset==="mask"?"🎭":"🔥"}</span></div>`;
+        const art=document.createElement("div");art.className="gift-art";art.innerHTML=`<span class="gift-index">#${item.number}</span>${sold?'<span class="gift-sold">COLLECTED</span>':''}<div class="gift-animation" data-asset="${item.asset}"></div>`;
         const info=document.createElement("div");info.className="gift-info";info.innerHTML=`<div class="gift-title">${item.name}</div><div class="gift-model">Model · ${item.model}</div><div class="gift-bottom"><span class="gift-price">${formatCoins(item.price)} F</span><span class="gift-open">›</span></div>`;
+        if(sold){const owner=document.createElement("div");owner.className="gift-owner";owner.textContent=`Owner · ${record.first_name||"Telegram user"}`;info.insertBefore(owner,info.querySelector(".gift-bottom"))}
         card.append(art,info);card.addEventListener("click",()=>openGift(item));card.addEventListener("keydown",(event)=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openGift(item)}});grid.append(card);loadAnimation(art.querySelector(".gift-animation"),item.asset);
       }
       setStatus(state.online?"":(getInitData()?"Showing saved details. Reconnect to refresh the market.":"Open from Telegram to sync your balance and buy gifts."));
@@ -284,9 +286,9 @@
       const name=profile.first_name||"Telegram user";$("profileName").textContent=name;$("profileSubtitle").textContent=isOwn?"":"Telegram profile";$("profileBio").textContent=profile.bio||"Not set";$("profileUsername").textContent=profile.username?"@"+profile.username:"Not set";$("avatarWrap").replaceChildren();
       if(profile.photo_url){const img=document.createElement("img");img.className="avatar";img.src=profile.photo_url;img.alt="";img.onerror=()=>{const fallback=document.createElement("div");fallback.className="avatar-fallback";fallback.textContent=initials(name);img.replaceWith(fallback)};$("avatarWrap").append(img)}else{const fallback=document.createElement("div");fallback.className="avatar-fallback";fallback.textContent=initials(name);$("avatarWrap").append(fallback)}
       $("bioRow").style.display="flex";$("bioRow").onclick=isOwn?openBio:null;$("giftCount").textContent=gifts.length?String(gifts.length):"";
-      const owned=$("ownedGifts");owned.replaceChildren();
+      const owned=$("ownedGifts");destroyAnimations(owned);owned.replaceChildren();
       if(!gifts.length){owned.innerHTML='<div class="empty-gifts">This collection is empty for now.</div>';return}
-      for(const gift of gifts){const item=CATALOG.find((x)=>x.id===gift.id);if(!item)continue;const card=document.createElement("article");card.className="owned-gift";const art=document.createElement("div");art.className="owned-art";art.innerHTML=`<div class="gift-animation" data-asset="${item.asset}"><span class="gift-placeholder">${item.asset==="mask"?"🎭":"🔥"}</span></div>`;const copy=document.createElement("div");copy.className="owned-copy";copy.innerHTML=`<div class="owned-title">${item.name} #${item.number}</div><div class="owned-model">${item.model}</div>`;card.append(art,copy);card.addEventListener("click",()=>openGift(item,gift));owned.append(card);loadAnimation(art.querySelector(".gift-animation"),item.asset)}
+      for(const gift of gifts){const item=CATALOG.find((x)=>x.id===gift.id);if(!item)continue;const card=document.createElement("article");card.className="owned-gift";const art=document.createElement("div");art.className="owned-art";art.innerHTML=`<div class="gift-animation" data-asset="${item.asset}"></div>`;const copy=document.createElement("div");copy.className="owned-copy";copy.innerHTML=`<div class="owned-title">${item.name} #${item.number}</div><div class="owned-model">${item.model}</div>`;card.append(art,copy);card.addEventListener("click",()=>openGift(item,gift));owned.append(card);loadAnimation(art.querySelector(".gift-animation"),item.asset)}
     }
     function setView(view){
       state.view=view;for(const panel of document.querySelectorAll(".view"))panel.classList.toggle("active",panel.id===view);
@@ -294,9 +296,10 @@
       $("mainTopbar").style.display=view==="profileView"?"none":"flex";
       if(view==="profileView"&&tg&&tg.BackButton){tg.BackButton.show();}else if(tg&&tg.BackButton){tg.BackButton.hide();}
       if(view==="profileView")renderProfile(state.externalProfile||ownProfile(),state.externalProfile?state.externalGifts:state.gifts,!state.externalProfile);
+      syncAnimations();
     }
-    function showModal(id){$(id).classList.add("open");document.body.style.overflow="hidden"}
-    function hideModal(id){$(id).classList.remove("open");if(!document.querySelector(".modal-backdrop.open"))document.body.style.overflow=""}
+    function showModal(id){$(id).classList.add("open");document.body.style.overflow="hidden";syncAnimations()}
+    function hideModal(id){$(id).classList.remove("open");if(id==="giftModal")destroyAnimations($("detailAnimation"));if(!document.querySelector(".modal-backdrop.open"))document.body.style.overflow="";syncAnimations()}
     function openGift(item,purchased=null){
       state.selected={item,purchased};$("detailTitle").textContent=item.name;$("detailId").textContent=`Telegram Gift · #${item.number}`;$("detailModel").textContent=item.model;$("detailPrice").textContent=`${formatCoins(purchased?purchased.price_paid:item.price)} F`;
       const listing=itemState(item);const owner=purchased||((listing&&listing.owner_id)?listing:null);const ownerRow=$("detailOwner");ownerRow.hidden=!owner;
@@ -304,7 +307,7 @@
       }
       const nftLink=$("detailNftLink");nftLink.href=item.link;nftLink.hidden=!item.link;
       const action=$("giftAction");const sold=!!owner;const mine=owner&&Number(owner.owner_id)===Number(state.userId);action.textContent=sold?(mine?"In Your Collection":"Already Collected"):"Buy Gift · "+formatCoins(item.price)+" F";action.disabled=sold||state.busy||!getInitData();action.onclick=()=>buyGift(item);$("sheetNote").textContent=!getInitData()?"Open this Mini App from Telegram to buy gifts.":sold?(mine?"This gift is now part of your collection.":"This unique gift has already been collected."):"The gift price will be deducted from your F Coin balance.";
-      const anim=$("detailAnimation");anim.replaceChildren();const placeholder=document.createElement("span");placeholder.className="gift-placeholder";placeholder.textContent=item.asset==="mask"?"🎭":"🔥";anim.append(placeholder);anim.dataset.asset=item.asset;loadAnimation(anim,item.asset);showModal("giftModal");
+      const anim=$("detailAnimation");destroyAnimations(anim);anim.replaceChildren();anim.dataset.asset=item.asset;loadAnimation(anim,item.asset);showModal("giftModal");
     }
     async function buyGift(item){
       if(state.busy)return;if(!getInitData()){showToast("Open this Mini App from Telegram to buy gifts.");return}
@@ -324,10 +327,45 @@
       catch(error){showToast(error.message||"Could not save bio.")}
       finally{button.disabled=false;button.textContent="Save Bio"}
     }
-    async function loadAnimation(container,key){
-      if(!container||state.animators.has(container)||!window.lottie||!window.pako)return;
-      state.animators.set(container,true);try{const bytes=Uint8Array.from(atob(TGS_DATA[key]),(char)=>char.charCodeAt(0));const json=JSON.parse(window.pako.ungzip(bytes,{to:"string"}));const instance=window.lottie.loadAnimation({container,renderer:"svg",loop:true,autoplay:true,animationData:json,rendererSettings:{preserveAspectRatio:"xMidYMid meet",progressiveLoad:true}});state.animators.set(container,instance)}catch(_){state.animators.delete(container)}
+    function destroyAnimation(container){
+      const record=state.animators.get(container);if(!record)return;
+      if(record.observer)record.observer.disconnect();
+      if(record.instance){record.instance.stop();record.instance.destroy()}
+      state.animators.delete(container);
     }
+    function destroyAnimations(root){
+      for(const container of Array.from(state.animators.keys()))if(container===root||root.contains(container))destroyAnimation(container);
+    }
+    function mountAnimation(container,key,record){
+      if(record.instance||!container.isConnected||document.visibilityState==="hidden")return;
+      try{
+        let json=state.animationJson.get(key);
+        if(!json){const bytes=Uint8Array.from(atob(TGS_DATA[key]),(char)=>char.charCodeAt(0));json=window.pako.ungzip(bytes,{to:"string"});state.animationJson.set(key,json)}
+        const instance=window.lottie.loadAnimation({container,renderer:"canvas",loop:true,autoplay:false,animationData:JSON.parse(json),rendererSettings:{clearCanvas:true,preserveAspectRatio:"xMidYMid meet",dpr:1}});
+        instance.setSubframe(false);instance.setSpeed(.8);record.instance=instance;instance.play();
+      }catch(_){container.classList.add("animation-unavailable")}
+    }
+    function loadAnimation(container,key){
+      if(!container||state.animators.has(container)||!window.lottie||!window.pako)return;
+      const record={instance:null,observer:null};state.animators.set(container,record);
+      if("IntersectionObserver" in window){
+        record.observer=new IntersectionObserver((entries)=>{for(const entry of entries){if(entry.isIntersecting)syncAnimations();else if(record.instance)record.instance.pause()}},{rootMargin:"24px",threshold:.05});
+        record.observer.observe(container);
+      }else if(isAnimationVisible(container))mountAnimation(container,key,record);
+    }
+    function isAnimationVisible(container){
+      if(document.visibilityState==="hidden"||!container.isConnected)return false;
+      const containingModal=container.closest(".modal-backdrop");const openModal=document.querySelector(".modal-backdrop.open");
+      if(openModal?containingModal!==openModal:!!containingModal)return false;
+      const rect=container.getBoundingClientRect();return rect.width>0&&rect.height>0&&rect.bottom>0&&rect.right>0&&rect.top<window.innerHeight&&rect.left<window.innerWidth;
+    }
+    function syncAnimations(){
+      for(const [container,record] of state.animators){
+        if(isAnimationVisible(container)){if(record.instance)record.instance.play();else mountAnimation(container,container.dataset.asset,record)}
+        else if(record.instance)record.instance.pause();
+      }
+    }
+    document.addEventListener("visibilitychange",syncAnimations);
     async function loadMarket(){
       state.user=telegramUser();state.userId=Number(state.user&&state.user.id)||0;restoreCache();renderBalance();renderMarket();renderProfile();
       if(tg){try{tg.ready();tg.expand();if(tg.setHeaderColor)tg.setHeaderColor("#08080a");if(tg.setBackgroundColor)tg.setBackgroundColor("#08080a")}catch(_){}}
