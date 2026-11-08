@@ -55,9 +55,10 @@
     .collector-card:active{transform:scale(.985);border-color:#ff8ba747}
     .collector-rank{flex:none;width:25px;color:#c7a16c;font-size:11px;font-weight:800;text-align:center}
     .collector-avatar{width:43px;height:43px;flex:none;border-radius:50%;object-fit:cover;background:linear-gradient(145deg,#49333a,#17151a);display:grid;place-items:center;color:#f6d8df;font-size:15px;font-weight:750;border:1px solid #ffffff19}
-    .collector-copy{flex:1;min-width:0}
-    .collector-name{font-size:13px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .collector-username{margin-top:4px;color:#918c96;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .collector-copy{flex:1;min-width:0;display:block}
+    .collector-name{display:block;font-size:13px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .collector-username{display:block;margin-top:4px;color:#918c96;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .collector-bio{display:-webkit-box;margin-top:5px;color:#b9b3bd;font-size:10px;line-height:1.4;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal}
     .collector-count{flex:none;padding:7px 9px;border:1px solid #ffcf7b22;border-radius:11px;background:#ffcf7b0c;color:#f4d38e;font-size:10px;font-weight:750;white-space:nowrap}
     .leaderboard-state{padding:18px 12px;color:#92909a;font-size:12px;text-align:center;border:1px dashed #ffffff16;border-radius:16px;background:#ffffff03}
     .profile-view{padding-top:0}
@@ -309,9 +310,9 @@
         const card=document.createElement("button");card.className="collector-card";card.type="button";
         const rank=document.createElement("span");rank.className="collector-rank";rank.textContent=`#${user.rank}`;
         let avatar;if(user.photo_url){avatar=document.createElement("img");avatar.className="collector-avatar";avatar.src=user.photo_url;avatar.alt="";avatar.onerror=()=>{const fallback=document.createElement("span");fallback.className="collector-avatar";fallback.textContent=initials(user.first_name);avatar.replaceWith(fallback)}}else{avatar=document.createElement("span");avatar.className="collector-avatar";avatar.textContent=initials(user.first_name)}
-        const copy=document.createElement("span");copy.className="collector-copy";const name=document.createElement("span");name.className="collector-name";name.textContent=user.first_name||"Telegram user";const username=document.createElement("span");username.className="collector-username";username.textContent=user.username?"@"+user.username:"Gift collector";copy.append(name,username);
+        const copy=document.createElement("span");copy.className="collector-copy";const name=document.createElement("span");name.className="collector-name";name.textContent=user.first_name||"Telegram user";const username=document.createElement("span");username.className="collector-username";username.textContent=user.username?"@"+user.username:"Gift collector";const bio=document.createElement("span");bio.className="collector-bio";bio.textContent=String(user.bio||"").trim()||"No bio set";copy.append(name,username,bio);
         const count=document.createElement("span");count.className="collector-count";count.textContent=`${user.gift_count} ${Number(user.gift_count)===1?"gift":"gifts"}`;
-        card.append(rank,avatar,copy,count);card.addEventListener("click",()=>openPublicProfile(user.user_id));list.append(card);
+        card.append(rank,avatar,copy,count);card.addEventListener("click",()=>openPublicProfile(user.user_id,user));list.append(card);
       }
     }
     async function loadLeaderboard(){
@@ -346,7 +347,8 @@
       try{const result=await api("buy",{item_id:item.id});applyPayload(result);showToast(`${item.name} added to your collection.`);openGift(item,result.purchase||null)}catch(error){showToast(error.message||"Purchase failed.");button.textContent="Buy Gift · "+formatCoins(item.price)+" F";button.disabled=false}
       finally{state.busy=false}
     }
-    async function openPublicProfile(userId){
+    async function openPublicProfile(userId,knownProfile=null){
+      if(knownProfile&&Array.isArray(knownProfile.gifts)){state.externalProfile=knownProfile;state.externalGifts=knownProfile.gifts;hideModal("giftModal");setView("profileView");return}
       try{const result=await api("profile",{user_id:Number(userId)});state.externalProfile=result.profile;state.externalGifts=result.gifts||[];hideModal("giftModal");setView("profileView")}
       catch(error){showToast(error.message||"Could not open profile.")}
     }
@@ -372,8 +374,10 @@
       try{
         let json=state.animationJson.get(key);
         if(!json){const bytes=Uint8Array.from(atob(TGS_DATA[key]),(char)=>char.charCodeAt(0));json=window.pako.ungzip(bytes,{to:"string"});state.animationJson.set(key,json)}
-        const instance=window.lottie.loadAnimation({container,renderer:"canvas",loop:true,autoplay:false,animationData:JSON.parse(json),rendererSettings:{clearCanvas:true,preserveAspectRatio:"xMidYMid meet",dpr:1}});
-        instance.setSubframe(false);instance.setSpeed(.8);record.instance=instance;instance.play();
+        const renderer=key==="iceQueen"?"svg":"canvas";
+        const rendererSettings=renderer==="svg"?{preserveAspectRatio:"xMidYMid meet",progressiveLoad:true}:{clearCanvas:true,preserveAspectRatio:"xMidYMid meet",dpr:1};
+        const instance=window.lottie.loadAnimation({container,renderer,loop:true,autoplay:false,animationData:JSON.parse(json),rendererSettings});
+        instance.setSubframe(false);instance.setSpeed(key==="iceQueen"?0.65:0.8);record.instance=instance;instance.play();
       }catch(_){container.classList.add("animation-unavailable")}
     }
     function loadAnimation(container,key){
